@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.ulop.chuvsu.app.MainActivity;
 import com.ulop.chuvsu.app.R;
 
 /**
@@ -66,7 +67,7 @@ public class NewsCardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.list_of_news, container, false);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView1);
-        NewsCardAdapter cardAdapter = new NewsCardAdapter(rootView.getContext());
+        NewsCardAdapter cardAdapter = MainActivity.newList;
         listView.setAdapter(cardAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -1,7 +1,5 @@
 package com.ulop.newscardlist.dummy;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ulop.chuvsu.app.R;
+
+import java.util.ArrayList;
 
 public class NewsCardAdapter extends BaseAdapter {
 	
@@ -24,15 +24,7 @@ public class NewsCardAdapter extends BaseAdapter {
 		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-    static {
-        addItem(new NewsCard("Title", "Text, text, text", "01.01.14"));
-        addItem(new NewsCard("Title", "Text, text, text", "01.01.14"));
-        addItem(new NewsCard("Title", "Text, text, text", "01.01.14"));
-        addItem(new NewsCard("Title", "Text, text, text", "01.01.14"));
-        addItem(new NewsCard("Title", "Text, text, text", "01.01.14"));
-        addItem(new NewsCard("Title", "Text, text, text", "01.01.14"));
 
-    }
 
     public static void addItem(NewsCard item) {
         objects.add(item);

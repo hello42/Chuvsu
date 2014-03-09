@@ -59,47 +59,6 @@ public class MainActivity extends ActionBarActivity
 
 
 
-        /*
-        Button btn = (Button) findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               TextView textView = (TextView) findViewById(R.id.textView);
-                InputStream inputStream = getInputStreamFromUrl("http://evgenkorobkov.ru:4000/news/last.json");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                StringBuilder sb = new StringBuilder();
-
-                String line = null;
-                try {
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }finally {
-                    try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
-                }
-
-               StringBuilder stringBuilder = new StringBuilder();
-                try {
-                    JSONArray jsonArray = null;
-                    try {
-                        jsonArray = new JSONArray(sb.toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    for (int i = 0; i < jsonArray.length(); i++){
-                        stringBuilder.append(jsonArray.getJSONObject(i).get("body"));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                textView.setText(stringBuilder.toString());
-            }
-        });
-        */
     }
 
     @Override
@@ -119,6 +78,10 @@ public class MainActivity extends ActionBarActivity
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void UpdateNews(){
+
     }
 
     public JSONArray getLastNews() throws IOException{

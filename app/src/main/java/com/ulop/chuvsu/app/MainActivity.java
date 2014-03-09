@@ -72,6 +72,8 @@ public class MainActivity extends ActionBarActivity
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
+                }finally {
+                    try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
                 }
                 textView.setText(sb.toString());
             }

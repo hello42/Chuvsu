@@ -1,37 +1,30 @@
 package com.ulop.chuvsu.app;
 
 import android.app.Activity;
-import android.os.StrictMode;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.Button;
 import android.widget.TextView;
-import android.net.http.AndroidHttpClient;
 
-import com.ulop.newscardlist.dummy.NewsCardFragment;
-
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+import java.io.InputStreamReader;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -68,30 +61,33 @@ public class MainActivity extends ActionBarActivity
             @Override
             public void onClick(View v) {
                TextView textView = (TextView) findViewById(R.id.textView);
-              try {
-                  URL url = new URL("http://evgenkorobkov.ru:4000/articles/1.json");
-                  HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                  conn.setReadTimeout(10000 /* milliseconds */);
-                  conn.setConnectTimeout(15000 /* milliseconds */);
-                  conn.setRequestMethod("GET");
-                  conn.setDoInput(true);
-                  // Starts the query
-                  conn.connect();
+                InputStream inputStream = getInputStreamFromUrl("http://evgenkorobkov.ru:4000/articles/1.json");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder sb = new StringBuilder();
 
-                  InputStream stream = conn.getInputStream();
-                  String answ = stream.toString();
-
-
-                  textView.setText(answ);
-              } catch (MalformedURLException e) {
-                  e.printStackTrace();
-              } catch (ProtocolException e) {
-                  e.printStackTrace();
-              } catch (IOException e) {
-                  e.printStackTrace();
-              }
+                String line = null;
+                try {
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                textView.setText(sb.toString());
             }
         });
+    }
+
+    public static InputStream getInputStreamFromUrl(String url) {
+        InputStream content = null;
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response = httpclient.execute(new HttpGet(url));
+            content = response.getEntity().getContent();
+        } catch (Exception e) {
+            Log.d("[GET REQUEST]", "Network exception", e);
+        }
+        return content;
     }
 
     @Override

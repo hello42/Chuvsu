@@ -20,6 +20,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,7 +63,7 @@ public class MainActivity extends ActionBarActivity
             @Override
             public void onClick(View v) {
                TextView textView = (TextView) findViewById(R.id.textView);
-                InputStream inputStream = getInputStreamFromUrl("http://evgenkorobkov.ru:4000/articles.json");
+                InputStream inputStream = getInputStreamFromUrl("http://evgenkorobkov.ru:4000/news/last.json");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder sb = new StringBuilder();
 
@@ -75,7 +77,24 @@ public class MainActivity extends ActionBarActivity
                 }finally {
                     try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
                 }
-                textView.setText(sb.toString());
+
+               StringBuilder stringBuilder = new StringBuilder();
+                try {
+                    JSONArray jsonArray = null;
+                    try {
+                        jsonArray = new JSONArray(sb.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    for (int i = 0; i < jsonArray.length(); i++){
+                        stringBuilder.append(jsonArray.getJSONObject(i).get("body"));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                textView.setText(stringBuilder.toString());
             }
         });
     }

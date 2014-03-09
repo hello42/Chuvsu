@@ -61,7 +61,7 @@ public class MainActivity extends ActionBarActivity
             @Override
             public void onClick(View v) {
                TextView textView = (TextView) findViewById(R.id.textView);
-                InputStream inputStream = getInputStreamFromUrl("http://evgenkorobkov.ru:4000/articles/1.json");
+                InputStream inputStream = getInputStreamFromUrl("http://evgenkorobkov.ru:4000/articles.json");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder sb = new StringBuilder();
 

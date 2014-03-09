@@ -1,6 +1,7 @@
 package com.ulop.chuvsu.app;
 
 import android.app.Activity;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Button;
 import android.widget.TextView;
+import android.net.http.AndroidHttpClient;
 
 import com.ulop.newscardlist.dummy.NewsCardFragment;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -34,6 +51,9 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -42,15 +62,45 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        Button btn = (Button) findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               TextView textView = (TextView) findViewById(R.id.textView);
+              try {
+                  URL url = new URL("http://evgenkorobkov.ru:4000/articles/1.json");
+                  HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                  conn.setReadTimeout(10000 /* milliseconds */);
+                  conn.setConnectTimeout(15000 /* milliseconds */);
+                  conn.setRequestMethod("GET");
+                  conn.setDoInput(true);
+                  // Starts the query
+                  conn.connect();
+
+                  InputStream stream = conn.getInputStream();
+                  String answ = stream.toString();
+
+
+                  textView.setText(answ);
+              } catch (MalformedURLException e) {
+                  e.printStackTrace();
+              } catch (ProtocolException e) {
+                  e.printStackTrace();
+              } catch (IOException e) {
+                  e.printStackTrace();
+              }
+            }
+        });
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, NewsCardFragment.newInstance("lol", "lol"))
-                .commit();
+       // FragmentManager fragmentManager = getSupportFragmentManager();
+        //fragmentManager.beginTransaction()
+        //        .replace(R.id.container, NewsCardFragment.newInstance("lol", "lol"))
+         //       .commit();
     }
 
     public void onSectionAttached(int number) {

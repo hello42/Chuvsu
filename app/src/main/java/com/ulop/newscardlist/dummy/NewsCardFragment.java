@@ -2,6 +2,7 @@ package com.ulop.newscardlist.dummy;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.ulop.NewsFullActivity;
 import com.ulop.chuvsu.app.MainActivity;
 import com.ulop.chuvsu.app.R;
 
@@ -73,8 +74,12 @@ public class NewsCardFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), NewsCardAdapter.objects.get(position).toString(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), NewsFullActivity.class);
+                intent.putExtra("position", position);
+                startActivity(intent);
             }
+
+
         });
         return rootView;
     }

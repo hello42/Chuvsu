@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+
+
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -107,7 +109,7 @@ public class MainActivity extends ActionBarActivity
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        //jsonArray.
         return jsonArray;
 
     }

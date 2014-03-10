@@ -1,6 +1,7 @@
 package com.ulop.newscardlist.dummy;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,8 @@ public class NewsCardAdapter extends BaseAdapter {
 
 
     public static void addItem(NewsCard item) {
-        objects.add(item);
+        objects.add(0, item);
+
     }
 
 	@Override
@@ -57,7 +59,7 @@ public class NewsCardAdapter extends BaseAdapter {
 		}
 		NewsCard nCard = getNewsCard(position);
 		((TextView) view.findViewById(R.id.Title)).setText(nCard.title);
-		((TextView) view.findViewById(R.id.newsText)).setText(nCard.content);
+		((TextView) view.findViewById(R.id.newsText)).setText(Html.fromHtml(nCard.content));
 		((TextView) view.findViewById(R.id.publishing_date)).setText(nCard.publicTime);
 		
 		return view;

@@ -20,6 +20,13 @@
             android:name="com.ulop.NewsFullView.NewsFullActivity"
             android:label="@string/title_activity_news_full" >
         </activity>
+
+        <provider
+            android:name="com.ulop.SyncAdapter.FeedsContentProvider"
+            android:authorities="http://evgenkorobkov.ru:4000/news/last.json"
+            android:enabled="true"
+            android:exported="true" >
+        </provider>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

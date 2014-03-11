@@ -22,16 +22,23 @@
         </activity>
 
         <provider
-            android:name="com.ulop.SyncAdapter.FeedsContentProvider"
+            android:name="com.ulop.SyncAdapter.FeedsProvider"
             android:authorities="http://evgenkorobkov.ru:4000/news/last.json"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="false"
+            android:syncable="true">
         </provider>
 
         <service
             android:name="com.ulop.SyncAdapter.AuthenticatorService"
             android:enabled="true"
             android:exported="true" >
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
         </service>
     </application>
 

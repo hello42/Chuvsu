@@ -27,6 +27,12 @@
             android:enabled="true"
             android:exported="true" >
         </provider>
+
+        <service
+            android:name="com.ulop.SyncAdapter.AuthenticatorService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

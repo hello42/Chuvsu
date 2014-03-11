@@ -1,4 +1,4 @@
-package com.ulop.newscardlist.dummy;
+package com.ulop.NewsFullView;
 
 import android.app.Activity;
 import android.net.Uri;

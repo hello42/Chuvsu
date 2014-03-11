@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.ulop.NewsFullActivity;
+import com.ulop.NewsFullView.NewsFullActivity;
 import com.ulop.chuvsu.app.MainActivity;
 import com.ulop.chuvsu.app.R;
 

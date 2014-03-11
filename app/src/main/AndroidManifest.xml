@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ulop.NewsFullActivity"
+            android:name="com.ulop.NewsFullView.NewsFullActivity"
             android:label="@string/title_activity_news_full" >
         </activity>
     </application>

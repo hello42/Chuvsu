@@ -17,7 +17,6 @@ import android.util.Log;
 import com.ulop.chuvsu.app.FeedParser;
 import com.ulop.newscardlist.dummy.NewsCardAdapter;
 
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -101,11 +100,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e(TAG, "Error reading from network: " + e.toString());
             syncResult.stats.numIoExceptions++;
             return;
-        } catch (XmlPullParserException e) {
-            Log.e(TAG, "Error parsing feed: " + e.toString());
-            syncResult.stats.numParseExceptions++;
-            return;
-        } catch (ParseException e) {
+        }  catch (ParseException e) {
             Log.e(TAG, "Error parsing feed: " + e.toString());
             syncResult.stats.numParseExceptions++;
             return;
@@ -122,7 +117,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     public void updateLocalFeedData(final InputStream stream, final SyncResult syncResult)
-            throws IOException, XmlPullParserException, RemoteException,
+            throws IOException, RemoteException,
             OperationApplicationException, ParseException {
         final FeedParser feedParser = new FeedParser();
         final ContentResolver contentResolver = getContext().getContentResolver();
@@ -169,7 +164,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         .appendPath(Integer.toString(id)).build();
                 if ((match.title != null && !match.title.equals(title)) ||
                         (match.content != null && !match.content.equals(link)) ||
-                        (match.publicTime != published)) {
+                        (!match.publicTime.equals(published))) {
                     // Update existing record
                     Log.i(TAG, "Scheduling update: " + existingUri);
                     batch.add(ContentProviderOperation.newUpdate(existingUri)

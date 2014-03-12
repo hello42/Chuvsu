@@ -26,7 +26,7 @@
             android:authorities="http://evgenkorobkov.ru:4000/news/last.json"
             android:enabled="true"
             android:exported="false"
-            android:syncable="true">
+            android:syncable="true" >
         </provider>
 
         <service
@@ -34,11 +34,24 @@
             android:enabled="true"
             android:exported="true" >
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
+        </service>
+        <service
+            android:name="com.ulop.SyncAdapter.SyncService"
+            android:enabled="false"
+            android:exported="true" >
+
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <!-- This points to a required XML file which describes our SyncAdapter. -->
+            <meta-data android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
         </service>
     </application>
 

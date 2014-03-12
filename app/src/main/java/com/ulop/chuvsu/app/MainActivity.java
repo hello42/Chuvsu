@@ -1,5 +1,6 @@
 package com.ulop.chuvsu.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 
 import com.ulop.newscardlist.dummy.NewsCardAdapter;
 import com.ulop.newscardlist.dummy.NewsCardFragment;
+import com.ulop.syncadapter.SyncService;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -177,7 +179,7 @@ public class MainActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.refresh) {
-            return true;
+            startService(new Intent(this, SyncService.class));
         }
         return super.onOptionsItemSelected(item);
     }

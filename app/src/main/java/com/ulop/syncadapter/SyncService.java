@@ -13,6 +13,7 @@ public class SyncService extends Service {
     private static SyncAdapter sSyncAdapter = null;
 
     public SyncService() {
+        Log.i(TAG, "here");
     }
 
     @Override

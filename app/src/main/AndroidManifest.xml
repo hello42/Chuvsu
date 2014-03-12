@@ -2,6 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ulop.chuvsu.app" >
 
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="17" />
+
+    <!-- Required for fetching feed data. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Required to register a SyncStatusObserver to display a "syncing..." progress indicator. -->
+    <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
+    <!-- Required to enable our SyncAdapter after it's created. -->
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <!-- Required because we're manually creating a new account. -->
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -16,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.ulop.NewsFullView.NewsFullActivity"
             android:label="@string/title_activity_news_full" >
@@ -23,28 +37,26 @@
 
         <provider
             android:name="com.ulop.syncadapter.FeedsProvider"
-            android:authorities="http://evgenkorobkov.ru:4000/news/last.json"
-            android:enabled="true"
-            android:exported="false"
-            android:syncable="true" >
+            android:authorities="com.ulop"
+            android:exported="false" >
         </provider>
 
         <service
-            android:name="com.ulop.syncadapter.AuthenticatorService"
-            android:enabled="true"
-            android:exported="true" >
+            android:name="com.ulop.syncadapter.AuthenticatorService" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
 
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator" />
+                android:resource="@xml/authenticator"/>
         </service>
+
         <service
             android:name="com.ulop.syncadapter.SyncService"
-            android:enabled="false"
-            android:exported="true" >
+            android:exported="true"
+            android:enabled="true"
+            android:permission="">
 
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
@@ -55,11 +67,6 @@
         </service>
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
-    <!-- Required to enable our SyncAdapter after it's created. -->
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <!-- Required because we're manually creating a new account. -->
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+
 
 </manifest>

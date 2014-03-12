@@ -28,8 +28,31 @@ public class FeedsProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        // Implement this to handle requests to delete one or more rows.
-        return 0;
+        SelectionBuilder builder = new SelectionBuilder();
+        final SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+        int count;
+        switch (match) {
+            case ROUTE_ENTRIES:
+                count = builder.table(FeedContract.Entry.TABLE_NAME)
+                        .where(selection, selectionArgs)
+                        .delete(db);
+                break;
+            case ROUTE_ENTRIES_ID:
+                String id = uri.getLastPathSegment();
+                count = builder.table(FeedContract.Entry.TABLE_NAME)
+                        .where(FeedContract.Entry._ID + "=?", id)
+                        .where(selection, selectionArgs)
+                        .delete(db);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        // Send broadcast to registered ContentObservers, to refresh UI.
+        Context ctx = getContext();
+        assert ctx != null;
+        ctx.getContentResolver().notifyChange(uri, null, false);
+        return count;
     }
 
     @Override
@@ -47,8 +70,25 @@ public class FeedsProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        // TODO: Implement this to handle requests to insert a new row.
-        throw new UnsupportedOperationException("Not yet implemented");
+        final SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
+        assert db != null;
+        final int match = sUriMatcher.match(uri);
+        Uri result;
+        switch (match) {
+            case ROUTE_ENTRIES:
+                long id = db.insertOrThrow(FeedContract.Entry.TABLE_NAME, null, values);
+                result = Uri.parse(FeedContract.Entry.CONTENT_URI + "/" + id);
+                break;
+            case ROUTE_ENTRIES_ID:
+                throw new UnsupportedOperationException("Insert not supported on URI: " + uri);
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        // Send broadcast to registered ContentObservers, to refresh UI.
+        Context ctx = getContext();
+        assert ctx != null;
+        ctx.getContentResolver().notifyChange(uri, null, false);
+        return result;
     }
 
     @Override
@@ -87,8 +127,30 @@ public class FeedsProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection,
             String[] selectionArgs) {
-        // TODO: Implement this to handle requests to update one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        SelectionBuilder builder = new SelectionBuilder();
+        final SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+        int count;
+        switch (match) {
+            case ROUTE_ENTRIES:
+                count = builder.table(FeedContract.Entry.TABLE_NAME)
+                        .where(selection, selectionArgs)
+                        .update(db, values);
+                break;
+            case ROUTE_ENTRIES_ID:
+                String id = uri.getLastPathSegment();
+                count = builder.table(FeedContract.Entry.TABLE_NAME)
+                        .where(FeedContract.Entry._ID + "=?", id)
+                        .where(selection, selectionArgs)
+                        .update(db, values);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        Context ctx = getContext();
+        assert ctx != null;
+        ctx.getContentResolver().notifyChange(uri, null, false);
+        return count;
     }
 
     /**

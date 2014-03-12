@@ -75,6 +75,7 @@ public class NewsCardAdapter extends BaseAdapter {
         public String title;
         public String content;
         public String publicTime;
+        public String id;
 
         public NewsCard(String _title, String _content, String _time){
             title = _title;

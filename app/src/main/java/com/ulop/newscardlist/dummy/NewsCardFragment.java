@@ -1,26 +1,35 @@
 package com.ulop.newscardlist.dummy;
 
 
+import android.accounts.Account;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SyncStatusObserver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ulop.NewsFullView.NewsFullActivity;
-import com.ulop.SyncAdapter.FeedContract;
-import com.ulop.SyncAdapter.SyncUtils;
+import com.ulop.syncadapter.AuthenticatorService;
+import com.ulop.syncadapter.FeedContract;
+import com.ulop.syncadapter.SyncUtils;
 import com.ulop.chuvsu.app.MainActivity;
 import com.ulop.chuvsu.app.R;
+
+import static com.ulop.chuvsu.app.R.id.refresh;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -73,8 +82,14 @@ public class NewsCardFragment extends Fragment
      */
     private static final String[] FROM_COLUMNS = new String[]{
             FeedContract.Entry.COLUMN_NAME_TITLE,
+            FeedContract.Entry.COLUMN_NAME_CONTENT,
             FeedContract.Entry.COLUMN_NAME_PUBLISHED
     };
+
+    private static final int[] TO_FIELDS = new int[]{
+            R.id.Title,
+            R.id.newsText,
+            R.id.publishing_date};
 
 
     /**
@@ -117,11 +132,38 @@ public class NewsCardFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mAdapter = new SimpleCursorAdapter(
+                getActivity(),       // Current context
+                R.layout.news_card,  // Layout for individual rows
+                null,                // Cursor
+                FROM_COLUMNS,        // Cursor columns to use
+                TO_FIELDS,           // Layout fields to use
+                0                    // No flags
+        );
+        mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int i) {
+               /* if (i == COLUMN_PUBLISHED) {
+                    // Convert timestamp to human-readable date
+                    Time t = new Time();
+                    t.set(cursor.getLong(i));
+                    ((TextView) view).setText(t.format("%Y-%m-%d %H:%M"));
+                    return true;
+                } else {
+                    // Let SimpleCursorAdapter handle other fields automatically
+                    return false;
+                }*/
+
+                return false;
+            }
+        });
+
         View rootView = inflater.inflate(R.layout.list_of_news, container, false);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView1);
         NewsCardAdapter cardAdapter = MainActivity.newList;
-        listView.setAdapter(cardAdapter);
+        listView.setAdapter(mAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -136,19 +178,111 @@ public class NewsCardFragment extends Fragment
         return rootView;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mSyncObserverHandle != null) {
+            ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
+            mSyncObserverHandle = null;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // If the user clicks the "Refresh" button.
+            case refresh:
+                SyncUtils.TriggerRefresh();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        mOptionsMenu = menu;
+        inflater.inflate(R.menu.main, menu);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSyncStatusObserver.onStatusChanged(0);
+
+        // Watch for sync state changes
+        final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
+                ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
+        mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
+    }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+        return new CursorLoader(getActivity(),  // Context
+                FeedContract.Entry.CONTENT_URI, // URI
+                PROJECTION,                // Projection
+                null,                           // Selection
+                null,                           // Selection args
+                FeedContract.Entry.COLUMN_NAME_PUBLISHED + " desc");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        mAdapter.changeCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        mAdapter.changeCursor(null);
     }
+
+    public void setRefreshActionButtonState(boolean refreshing) {
+        if (mOptionsMenu == null) {
+            return;
+        }
+
+        final MenuItem refreshItem = mOptionsMenu.findItem(R.id.refresh);
+        if (refreshItem != null) {
+            if (refreshing) {
+                refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+            } else {
+                refreshItem.setActionView(null);
+            }
+        }
+    }
+
+    private SyncStatusObserver mSyncStatusObserver = new SyncStatusObserver() {
+        /** Callback invoked with the sync adapter status changes. */
+        @Override
+        public void onStatusChanged(int which) {
+            getActivity().runOnUiThread(new Runnable() {
+                /**
+                 * The SyncAdapter runs on a background thread. To update the UI, onStatusChanged()
+                 * runs on the UI thread.
+                 */
+                @Override
+                public void run() {
+                    // Create a handle to the account that was created by
+                    // SyncService.CreateSyncAccount(). This will be used to query the system to
+                    // see how the sync status has changed.
+                    Account account = AuthenticatorService.GetAccount();
+                    if (account == null) {
+                        // GetAccount() returned an invalid value. This shouldn't happen, but
+                        // we'll set the status to "not refreshing".
+                        setRefreshActionButtonState(false);
+                        return;
+                    }
+
+                    // Test the ContentResolver to see if the sync adapter is active or pending.
+                    // Set the state of the refresh button accordingly.
+                    boolean syncActive = ContentResolver.isSyncActive(
+                            account, FeedContract.CONTENT_AUTHORITY);
+                    boolean syncPending = ContentResolver.isSyncPending(
+                            account, FeedContract.CONTENT_AUTHORITY);
+                    setRefreshActionButtonState(syncActive || syncPending);
+                }
+            });
+        }
+    };
 }

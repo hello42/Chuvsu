@@ -20,7 +20,7 @@
  * -Changed package name
  */
 
-package com.ulop.SyncAdapter;
+package com.ulop.syncadapter;
 
 import android.content.ContentValues;
 import android.database.Cursor;

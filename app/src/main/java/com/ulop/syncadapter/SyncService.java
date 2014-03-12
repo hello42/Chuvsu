@@ -1,4 +1,4 @@
-package com.ulop.SyncAdapter;
+package com.ulop.syncadapter;
 
 import android.app.Service;
 import android.content.Intent;

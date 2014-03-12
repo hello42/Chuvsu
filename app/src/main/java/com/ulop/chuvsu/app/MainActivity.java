@@ -19,7 +19,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,7 +66,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onPostCreate (Bundle savedInstanceState){
         super.onPostCreate(savedInstanceState);
-        newList = new NewsCardAdapter(this);
+        /*newList = new NewsCardAdapter(this);
         try {
             JSONArray jsonArray = getLastNews();
             for (int i = 0; i < jsonArray.length(); i++){
@@ -80,7 +79,7 @@ public class MainActivity extends ActionBarActivity
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public void UpdateNews(){
@@ -177,7 +176,7 @@ public class MainActivity extends ActionBarActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.refresh) {
             return true;
         }
         return super.onOptionsItemSelected(item);

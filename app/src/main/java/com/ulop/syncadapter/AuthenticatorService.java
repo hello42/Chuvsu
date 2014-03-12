@@ -1,4 +1,4 @@
-package com.ulop.SyncAdapter;
+package com.ulop.syncadapter;
 
 import android.accounts.Account;
 import android.app.Service;
@@ -8,7 +8,7 @@ import android.os.IBinder;
 public class AuthenticatorService extends Service {
 
     private static final String TAG = "GenericAccountService";
-    private static final String ACCOUNT_TYPE = "com.ulop.SyncAdapter";
+    private static final String ACCOUNT_TYPE = "com.ulop.syncadapter";
     public static final String ACCOUNT_NAME = "sync";
 
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ulop.SyncAdapter;
+package com.ulop.syncadapter;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;

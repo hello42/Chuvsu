@@ -13,6 +13,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,13 +23,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ulop.NewsFullView.NewsFullActivity;
-import com.ulop.syncadapter.accounts.AuthenticatorService;
-import com.ulop.syncadapter.FeedContract;
-import com.ulop.syncadapter.SyncUtils;
 import com.ulop.chuvsu.app.MainActivity;
 import com.ulop.chuvsu.app.R;
+import com.ulop.syncadapter.FeedContract;
+import com.ulop.syncadapter.SyncUtils;
+import com.ulop.syncadapter.accounts.AuthenticatorService;
 
 import static com.ulop.chuvsu.app.R.id.refresh;
 
@@ -142,21 +144,22 @@ public class NewsCardFragment extends Fragment
                 TO_FIELDS,           // Layout fields to use
                 0                    // No flags
         );
+
+
+
         mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int i) {
-               /* if (i == COLUMN_PUBLISHED) {
-                    // Convert timestamp to human-readable date
-                    Time t = new Time();
-                    t.set(cursor.getLong(i));
-                    ((TextView) view).setText(t.format("%Y-%m-%d %H:%M"));
+                if (i == COLUMN_CONTENT) {
+                    String str = cursor.getString(i);
+                    ((TextView) view).setText(Html.fromHtml(str));
                     return true;
                 } else {
                     // Let SimpleCursorAdapter handle other fields automatically
                     return false;
-                }*/
+                }
 
-                return false;
+
             }
         });
 
@@ -227,7 +230,7 @@ public class NewsCardFragment extends Fragment
                 PROJECTION,                // Projection
                 null,                           // Selection
                 null,                           // Selection args
-                FeedContract.Entry.COLUMN_NAME_PUBLISHED + " desc");
+                FeedContract.Entry.COLUMN_NAME_NEWS_ID + " asc");
     }
 
     @Override

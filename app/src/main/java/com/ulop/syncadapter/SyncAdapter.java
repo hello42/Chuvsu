@@ -141,7 +141,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         // Get list of all items
         Log.i(TAG, "Fetching local entries for merge");
         Uri uri = FeedContract.Entry.CONTENT_URI; // Get all entries
-        Cursor c = contentResolver.query(uri, PROJECTION, null, null, null);
+        String sortOrder = FeedContract.Entry.COLUMN_NAME_NEWS_ID;
+        Cursor c = contentResolver.query(uri, PROJECTION, null, null, sortOrder);
         assert c != null;
         Log.i(TAG, "Found " + c.getCount() + " local entries. Computing merge solution...");
 

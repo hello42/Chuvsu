@@ -23,7 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ulop.NewsFullView.NewsFullActivity;
-import com.ulop.syncadapter.AuthenticatorService;
+import com.ulop.syncadapter.accounts.AuthenticatorService;
 import com.ulop.syncadapter.FeedContract;
 import com.ulop.syncadapter.SyncUtils;
 import com.ulop.chuvsu.app.MainActivity;
@@ -117,7 +117,6 @@ public class NewsCardFragment extends Fragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        SyncUtils.CreateSyncAccount(activity);
     }
 
     @Override

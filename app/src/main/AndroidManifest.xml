@@ -37,12 +37,13 @@
 
         <provider
             android:name="com.ulop.syncadapter.FeedsProvider"
-            android:authorities="com.ulop"
-            android:exported="false" >
+            android:authorities="com.ulop.syncadapter"
+            android:exported="true"
+            android:syncable="true">
         </provider>
 
         <service
-            android:name="com.ulop.syncadapter.AuthenticatorService" >
+            android:name="com.ulop.syncadapter.accounts.AuthenticatorService" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -55,8 +56,7 @@
         <service
             android:name="com.ulop.syncadapter.SyncService"
             android:exported="true"
-            android:enabled="true"
-            android:permission="">
+            android:process=":sync">
 
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />

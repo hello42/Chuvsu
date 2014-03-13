@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.ulop.chuvsu.app.FeedParser;
 import com.ulop.newscardlist.dummy.NewsCardAdapter;
+import com.ulop.syncadapter.accounts.AuthenticatorService;
 
 
 import java.io.IOException;
@@ -67,6 +68,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         mContentResolver = context.getContentResolver();
+        mContentResolver.setSyncAutomatically(AuthenticatorService.GetAccount(), FeedContract.CONTENT_AUTHORITY, true);
+        //mContentResolver.re
     }
 
     public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {

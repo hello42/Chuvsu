@@ -1,13 +1,14 @@
-package com.ulop.syncadapter;
+package com.ulop.syncadapter.accounts;
 
 import android.accounts.Account;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 public class AuthenticatorService extends Service {
 
-    private static final String TAG = "GenericAccountService";
+    private static final String TAG = "AuthenticatorService";
     private static final String ACCOUNT_TYPE = "com.ulop.syncadapter";
     public static final String ACCOUNT_NAME = "sync";
 
@@ -31,7 +32,13 @@ public class AuthenticatorService extends Service {
     @Override
     public void onCreate() {
         // Create a new authenticator object
+        Log.i(TAG, "Service created");
         mAuthenticator = new Authenticator(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "Service destroyed");
     }
 
     @Override

@@ -14,7 +14,7 @@ public class FeedContract {
     /**
      * Content provider authority.
      */
-    public static final String CONTENT_AUTHORITY = "com.ulop.SyncAdapter";
+    public static final String CONTENT_AUTHORITY = "com.ulop.syncadapter";
 
     /**
      * Base URI. (content://com.example.android.network.sync.basicsyncadapter)

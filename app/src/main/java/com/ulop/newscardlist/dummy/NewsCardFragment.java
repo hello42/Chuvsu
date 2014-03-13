@@ -13,6 +13,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -132,7 +133,7 @@ public class NewsCardFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        Log.i(TAG, "NewsCardFragment view create");
         mAdapter = new SimpleCursorAdapter(
                 getActivity(),       // Current context
                 R.layout.news_card,  // Layout for individual rows
@@ -164,6 +165,7 @@ public class NewsCardFragment extends Fragment
         ListView listView = (ListView) rootView.findViewById(R.id.listView1);
         NewsCardAdapter cardAdapter = MainActivity.newList;
         listView.setAdapter(mAdapter);
+        getLoaderManager().initLoader(0, null, this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -219,6 +221,7 @@ public class NewsCardFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.i(TAG, "Cursor loader create");
         return new CursorLoader(getActivity(),  // Context
                 FeedContract.Entry.CONTENT_URI, // URI
                 PROJECTION,                // Projection

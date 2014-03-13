@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-
+        newList = new NewsCardAdapter(this);
 
     }
 
@@ -134,9 +134,15 @@ public class MainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         //update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, NewsCardFragment.newInstance("lol", "lol"))
-                .commit();
+        switch (position){
+            case 0:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, NewsCardFragment.newInstance("lol", "lol"))
+                        .commit();
+                break;
+            default: break;
+        }
+
     }
 
     public void onSectionAttached(int number) {

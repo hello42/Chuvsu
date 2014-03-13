@@ -17,7 +17,6 @@ import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +25,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ulop.NewsFullView.NewsFullActivity;
-import com.ulop.chuvsu.app.MainActivity;
 import com.ulop.chuvsu.app.R;
 import com.ulop.syncadapter.FeedContract;
-import com.ulop.syncadapter.SyncUtils;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
-
-import static com.ulop.chuvsu.app.R.id.refresh;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -166,15 +161,26 @@ public class NewsCardFragment extends Fragment
         View rootView = inflater.inflate(R.layout.list_of_news, container, false);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView1);
-        NewsCardAdapter cardAdapter = MainActivity.newList;
+
+        //ursor cursor = (Cursor) mAdapter.getCursor();
+
+
+
+
         listView.setAdapter(mAdapter);
         getLoaderManager().initLoader(0, null, this);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String title = ((SimpleCursorAdapter) parent.getAdapter()).getCursor().getString(COLUMN_TITLE);
+                String content = ((SimpleCursorAdapter) parent.getAdapter()).getCursor().getString(COLUMN_CONTENT);
+                String pTime = ((SimpleCursorAdapter) parent.getAdapter()).getCursor().getString(COLUMN_PUBLISHED);
                 Intent intent = new Intent(getActivity(), NewsFullActivity.class);
-                intent.putExtra("position", position);
+                intent.putExtra("title", title);
+                intent.putExtra("content", content);
+                intent.putExtra("time", pTime);
                 startActivity(intent);
             }
 
@@ -192,23 +198,6 @@ public class NewsCardFragment extends Fragment
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // If the user clicks the "Refresh" button.
-            case refresh:
-                SyncUtils.TriggerRefresh();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        mOptionsMenu = menu;
-        inflater.inflate(R.menu.main, menu);
-    }
 
     @Override
     public void onResume() {

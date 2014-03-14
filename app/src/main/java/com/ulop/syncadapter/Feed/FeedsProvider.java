@@ -1,4 +1,4 @@
-package com.ulop.syncadapter;
+package com.ulop.syncadapter.Feed;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+
+import com.ulop.syncadapter.SelectionBuilder;
 
 public class FeedsProvider extends ContentProvider {
     FeedDatabase mDatabaseHelper;

@@ -36,7 +36,7 @@
         </activity>
 
         <provider
-            android:name="com.ulop.syncadapter.FeedsProvider"
+            android:name="com.ulop.syncadapter.Feed.FeedsProvider"
             android:authorities="com.ulop.syncadapter"
             android:exported="true"
             android:syncable="true">

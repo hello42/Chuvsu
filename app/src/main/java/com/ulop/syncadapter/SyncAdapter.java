@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.ulop.chuvsu.app.FeedParser;
 import com.ulop.newscardlist.dummy.NewsCardAdapter;
+import com.ulop.syncadapter.Feed.FeedContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 
 

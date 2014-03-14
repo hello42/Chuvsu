@@ -1,4 +1,4 @@
-package com.ulop.syncadapter;
+package com.ulop.syncadapter.Feed;
 
 import android.content.ContentResolver;
 import android.net.Uri;

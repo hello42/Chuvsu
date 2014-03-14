@@ -26,7 +26,7 @@ import android.widget.TextView;
 
 import com.ulop.NewsFullView.NewsFullActivity;
 import com.ulop.chuvsu.app.R;
-import com.ulop.syncadapter.FeedContract;
+import com.ulop.syncadapter.Feed.FeedContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 
 /**

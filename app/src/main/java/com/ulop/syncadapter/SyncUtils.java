@@ -23,6 +23,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import com.ulop.syncadapter.Feed.FeedContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 
 

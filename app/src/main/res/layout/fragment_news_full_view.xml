@@ -1,9 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     tools:context="com.ulop.NewsFullView.NewsFullViewFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:scrollbars="vertical">
 
 
     <TextView
@@ -27,15 +36,13 @@
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment"
         android:linksClickable="true"
         android:id="@+id/body"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:autoText="true"/>
-
-
-
-
+</LinearLayout>
+    </ScrollView>
 </LinearLayout>

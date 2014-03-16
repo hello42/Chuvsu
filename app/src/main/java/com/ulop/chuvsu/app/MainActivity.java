@@ -2,31 +2,27 @@ package com.ulop.chuvsu.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.ulop.faculty.FacultyFragment;
 import com.ulop.newscardlist.dummy.NewsCardAdapter;
 import com.ulop.newscardlist.dummy.NewsCardFragment;
+import com.ulop.syncadapter.Feed.FeedsProvider;
 import com.ulop.syncadapter.SyncService;
 import com.ulop.syncadapter.SyncUtils;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
+import java.nio.channels.FileChannel;
 
 
 public class MainActivity extends ActionBarActivity
@@ -70,65 +66,12 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onPostCreate (Bundle savedInstanceState){
         super.onPostCreate(savedInstanceState);
-        /*newList = new NewsCardAdapter(this);
-        try {
-            JSONArray jsonArray = getLastNews();
-            for (int i = 0; i < jsonArray.length(); i++){
-                JSONObject object = jsonArray.getJSONObject(i);
-                newList.addItem(new NewsCardAdapter.NewsCard(object.getString("title"),
-                        object.getString("body"), "000"));
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-    }
-
-    public void UpdateNews(){
 
     }
 
-    public JSONArray getLastNews() throws IOException{
-        InputStream inputStream = getInputStreamFromUrl("http://evgenkorobkov.ru:4000/news/last.json");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder sb = new StringBuilder();
 
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
-        }
 
-        StringBuilder stringBuilder = new StringBuilder();
-        JSONArray jsonArray = null;
-        try {
-            jsonArray = new JSONArray(sb.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        //jsonArray.
-        return jsonArray;
 
-    }
-
-    public static InputStream getInputStreamFromUrl(String url) {
-        InputStream content = null;
-        try {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpResponse response = httpclient.execute(new HttpGet(url));
-            content = response.getEntity().getContent();
-        } catch (Exception e) {
-            Log.d("[GET REQUEST]", "Network exception", e);
-        }
-        return content;
-    }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -138,6 +81,11 @@ public class MainActivity extends ActionBarActivity
             case 0:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, NewsCardFragment.newInstance("lol", "lol"))
+                        .commit();
+                break;
+            case 3:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, FacultyFragment.newInstance())
                         .commit();
                 break;
             default: break;
@@ -189,7 +137,31 @@ public class MainActivity extends ActionBarActivity
         if (id == R.id.refresh) {
             startService(new Intent(this, SyncService.class));
         }
+        if (id == R.id.export){
+            exportDB();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void exportDB(){
+        File sd = Environment.getExternalStorageDirectory();
+        File data = Environment.getDataDirectory();
+        FileChannel source=null;
+        FileChannel destination=null;
+        String currentDBPath = "/data/com.ulop.chuvsu.app/databases/feed.db";
+        String backupDBPath = FeedsProvider.FeedDatabase.DATABASE_NAME;
+        File currentDB = new File(data, currentDBPath);
+        File backupDB = new File(sd, backupDBPath);
+        try {
+            source = new FileInputStream(currentDB).getChannel();
+            destination = new FileOutputStream(backupDB).getChannel();
+            destination.transferFrom(source, 0, source.size());
+            source.close();
+            destination.close();
+            Toast.makeText(this, "DB Exported!", Toast.LENGTH_LONG).show();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

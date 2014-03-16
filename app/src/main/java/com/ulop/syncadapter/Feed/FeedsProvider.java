@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.util.Log;
 
 import com.ulop.syncadapter.SelectionBuilder;
 
@@ -26,6 +27,13 @@ public class FeedsProvider extends ContentProvider {
 
 
     public FeedsProvider() {
+        //final SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
+        //Log.i("db",  db.getPath());
+    }
+
+    public String getPath(){
+        final SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
+        return db.getPath();
     }
 
     @Override
@@ -103,6 +111,7 @@ public class FeedsProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
             String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
+        Log.d("db", new String(db.getPath()));
         SelectionBuilder builder = new SelectionBuilder();
         int uriMatch = sUriMatcher.match(uri);
         switch (uriMatch) {
@@ -124,6 +133,7 @@ public class FeedsProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+
     }
 
     @Override
@@ -161,7 +171,7 @@ public class FeedsProvider extends ContentProvider {
      * Provides access to an disk-backed, SQLite datastore which is utilized by FeedProvider. This
      * database should never be accessed by other parts of the application directly.
      */
-    static class FeedDatabase extends SQLiteOpenHelper {
+    public static class FeedDatabase extends SQLiteOpenHelper {
         /** Schema version. */
         public static final int DATABASE_VERSION = 1;
         /** Filename for SQLite file. */
@@ -196,6 +206,7 @@ public class FeedsProvider extends ContentProvider {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             // This database is only a cache for online data, so its upgrade policy is
             // to simply to discard the data and start over
+
             db.execSQL(SQL_DELETE_ENTRIES);
             onCreate(db);
         }

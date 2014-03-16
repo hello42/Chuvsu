@@ -20,8 +20,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ulop.NewsFullView.NewsFullActivity;
@@ -158,14 +158,9 @@ public class NewsCardFragment extends Fragment
             }
         });
 
-        View rootView = inflater.inflate(R.layout.list_of_news, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_univernews, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listView1);
-
-        //ursor cursor = (Cursor) mAdapter.getCursor();
-
-
-
+        AbsListView listView = (AbsListView) rootView.findViewById(R.id.listView1);
 
         listView.setAdapter(mAdapter);
         getLoaderManager().initLoader(0, null, this);

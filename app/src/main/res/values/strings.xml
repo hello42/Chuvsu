@@ -13,6 +13,8 @@
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
     <string name="hello_blank_fragment">Hello vv fragment</string>
-    <string name="title_activity_news_full">NewsFullActivity</string>
+    <string name="title_activity_news_full">Новости</string>
+    <string name="news_notification_placeholder_text_template">LOLKA</string>
+    <string name="facultetsmenu">Факультеты</string>
 
 </resources>

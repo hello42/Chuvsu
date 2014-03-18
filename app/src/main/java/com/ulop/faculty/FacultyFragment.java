@@ -27,14 +27,12 @@ import com.ulop.chuvsu.app.R;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class FacultyFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class FacultyFragment extends Fragment {
 
 
 
 
-    private OnFragmentInteractionListener mListener;
 
-    private FacultyListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
     public static FacultyFragment newInstance() {
@@ -61,20 +59,21 @@ public class FacultyFragment extends Fragment implements AbsListView.OnItemClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_faculty_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_faculty, container, false);
 
-        mAdapter = new FacultyListAdapter(view.getContext());
+        FacultyListAdapter mAdapter; mAdapter = new FacultyListAdapter(getActivity());
 
         // Set the adapter
         AbsListView mListView = (AbsListView) view.findViewById(R.id.fctlist);
         mListView.setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AbsListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("Faculty", "onItemClick");
-                String url = ((FacultyContent.FacultyItem) mAdapter.getItem(position)).link;
+                FacultyListAdapter facultyListAdapter = ((FacultyListAdapter) parent.getAdapter());
+                String url = ((FacultyContent.FacultyItem) facultyListAdapter.getItem(position)).link;
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
@@ -96,17 +95,7 @@ public class FacultyFragment extends Fragment implements AbsListView.OnItemClick
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
 
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.i("Faculty", "onItemClick");
-        String url = ((FacultyContent.FacultyItem) mAdapter.getItem(position)).link;
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
     }
 
 
@@ -143,7 +132,7 @@ public class FacultyFragment extends Fragment implements AbsListView.OnItemClick
 
         @Override
         public boolean isEnabled(int position) {
-            return false;
+            return true;
         }
 
         @Override
@@ -173,7 +162,7 @@ public class FacultyFragment extends Fragment implements AbsListView.OnItemClick
 
         @Override
         public boolean hasStableIds() {
-            return false;
+            return true;
         }
 
         @Override

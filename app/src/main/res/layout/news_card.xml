@@ -6,8 +6,7 @@
     android:layout_margin="5dp"
     android:background="#FFF"
     android:measureWithLargestChild="true"
-    android:baselineAligned="false"
-    android:orientation="vertical">
+    android:baselineAligned="false">
 
     <TextView
         android:id="@+id/Title"

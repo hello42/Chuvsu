@@ -158,7 +158,7 @@ public class NewsCardFragment extends Fragment
             }
         });
 
-        View rootView = inflater.inflate(R.layout.fragment_univernews, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_univernews_list, container, false);
 
         AbsListView listView = (AbsListView) rootView.findViewById(R.id.listView1);
 

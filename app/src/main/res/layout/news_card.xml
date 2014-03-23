@@ -8,6 +8,7 @@
     android:measureWithLargestChild="true"
     android:baselineAligned="false">
 
+
     <TextView
         android:id="@+id/Title"
         android:layout_width="fill_parent"
@@ -41,6 +42,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="254dp" />
+
+
 
 
 </RelativeLayout>

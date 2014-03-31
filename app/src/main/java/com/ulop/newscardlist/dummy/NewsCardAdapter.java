@@ -76,11 +76,13 @@ public class NewsCardAdapter extends BaseAdapter {
         public String content;
         public String publicTime;
         public String id;
+        public int image;
 
-        public NewsCard(String _title, String _content, String _time){
+        public NewsCard(String _title, String _content, String _time, int _image){
             title = _title;
             content = _content;
             publicTime = _time;
+            image = _image;
         }
 
         @Override

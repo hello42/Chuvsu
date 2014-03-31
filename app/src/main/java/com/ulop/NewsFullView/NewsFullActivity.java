@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -179,7 +178,7 @@ public class NewsFullActivity extends ActionBarActivity {
             //NewsCardAdapter.NewsCard card = (NewsCardAdapter.NewsCard) newList.getItem(pos);
 
             titleTextView.setText(title);
-            contentTextView.setText(Html.fromHtml(content));
+            contentTextView.setText((content));
             dateTextView.setText(pTime);
 
             //TextView textView = (TextView) rootView.findViewById(R.id.section_label);

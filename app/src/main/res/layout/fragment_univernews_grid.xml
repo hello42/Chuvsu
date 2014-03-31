@@ -9,7 +9,7 @@
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="2dp"
+        android:dividerHeight="8dp"
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="false"
         android:layoutMode="clipBounds"

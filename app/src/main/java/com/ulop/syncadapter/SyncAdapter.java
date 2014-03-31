@@ -19,7 +19,6 @@ import com.ulop.newscardlist.dummy.NewsCardAdapter;
 import com.ulop.syncadapter.Feed.FeedContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -35,7 +34,7 @@ import java.util.HashMap;
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static final String TAG = "SyncAdapter";
-    private static final String FEED_URL = "http://evgenkorobkov.ru:4000/news/last.json";
+    private static final String FEED_URL = "http://chuvsu.evgenkorobkov.ru/news/last.json";
 
     /**
      * Network connection timeout, in milliseconds.

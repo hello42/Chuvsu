@@ -13,7 +13,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.TextView;
 
 import com.ulop.NewsFullView.NewsFullActivity;
 import com.ulop.chuvsu.app.R;
@@ -86,8 +84,8 @@ public class NewsCardFragment extends Fragment
 
     private static final int[] TO_FIELDS = new int[]{
             R.id.Title,
-            R.id.newsText,
-            R.id.publishing_date};
+            R.id.textView,
+            R.id.textView2};
 
 
     /**
@@ -133,7 +131,7 @@ public class NewsCardFragment extends Fragment
         Log.i(TAG, "NewsCardFragment view create");
         mAdapter = new SimpleCursorAdapter(
                 getActivity(),       // Current context
-                R.layout.news_card,  // Layout for individual rows
+                R.layout.card_news,  // Layout for individual rows
                 null,                // Cursor
                 FROM_COLUMNS,        // Cursor columns to use
                 TO_FIELDS,           // Layout fields to use
@@ -145,16 +143,16 @@ public class NewsCardFragment extends Fragment
         mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int i) {
-                if (i == COLUMN_CONTENT) {
+            /*    if (i == COLUMN_CONTENT) {
                     String str = cursor.getString(i);
                     ((TextView) view).setText(Html.fromHtml(str));
                     return true;
                 } else {
                     // Let SimpleCursorAdapter handle other fields automatically
                     return false;
-                }
+                }*/
 
-
+                return false;
             }
         });
 

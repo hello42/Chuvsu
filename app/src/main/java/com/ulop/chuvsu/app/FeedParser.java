@@ -26,7 +26,8 @@ public class FeedParser {
             for (int i = 0; i < jsonArray.length(); i++){
                 JSONObject object = jsonArray.getJSONObject(i);
                 NewsCardAdapter.NewsCard newsCard = new NewsCardAdapter.NewsCard(object.getString("title"),
-                        object.getString("body"), "000", 0);
+                        object.getString("body"), "000", "");
+                newsCard.image = object.getString("image");
                 newsCard.id = object.getString("id");
                 newsList.add(0, newsCard);
             }

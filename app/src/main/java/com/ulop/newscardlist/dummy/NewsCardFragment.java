@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SyncStatusObserver;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -21,7 +22,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.ulop.NewsFullView.NewsFullActivity;
 import com.ulop.chuvsu.app.R;
 import com.ulop.syncadapter.Feed.FeedContract;
@@ -50,6 +56,8 @@ public class NewsCardFragment extends Fragment
 
     private Object mSyncObserverHandle;
 
+    DisplayImageOptions options;
+
     /**
      * Options menu used to populate ActionBar.
      */
@@ -62,7 +70,8 @@ public class NewsCardFragment extends Fragment
             FeedContract.Entry._ID,
             FeedContract.Entry.COLUMN_NAME_TITLE,
             FeedContract.Entry.COLUMN_NAME_CONTENT,
-            FeedContract.Entry.COLUMN_NAME_PUBLISHED
+            FeedContract.Entry.COLUMN_NAME_PUBLISHED,
+            FeedContract.Entry.COLUMN_NAME_IMAGE
     };
 
     private static final int COLUMN_ID = 0;
@@ -72,6 +81,7 @@ public class NewsCardFragment extends Fragment
     private static final int COLUMN_CONTENT = 2;
     /** Column index for published */
     private static final int COLUMN_PUBLISHED = 3;
+    private static final int COLUMN_IMAGE = 4;
 
     /**
      * List of Cursor columns to read from when preparing an adapter to populate the ListView.
@@ -79,13 +89,16 @@ public class NewsCardFragment extends Fragment
     private static final String[] FROM_COLUMNS = new String[]{
             FeedContract.Entry.COLUMN_NAME_TITLE,
             FeedContract.Entry.COLUMN_NAME_CONTENT,
-            FeedContract.Entry.COLUMN_NAME_PUBLISHED
+            FeedContract.Entry.COLUMN_NAME_PUBLISHED,
+            FeedContract.Entry.COLUMN_NAME_IMAGE
     };
 
     private static final int[] TO_FIELDS = new int[]{
             R.id.Title,
             R.id.textView,
-            R.id.textView2};
+            R.id.textView2,
+            R.id.imageView};
+    protected ImageLoader imageLoader = ImageLoader.getInstance();
 
 
     /**
@@ -123,11 +136,26 @@ public class NewsCardFragment extends Fragment
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         setHasOptionsMenu(true);
+
+        options = new DisplayImageOptions.Builder()
+                .showImageForEmptyUri(R.drawable.abc_ic_clear)
+                .showImageOnFail(R.drawable.abc_ic_go)
+                .resetViewBeforeLoading(true)
+                .cacheOnDisc(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .considerExifParams(true)
+                .displayer(new SimpleBitmapDisplayer())
+                .build();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        final View rootView = inflater.inflate(R.layout.fragment_univernews_list, container, false);
+
         Log.i(TAG, "NewsCardFragment view create");
         mAdapter = new SimpleCursorAdapter(
                 getActivity(),       // Current context
@@ -143,20 +171,58 @@ public class NewsCardFragment extends Fragment
         mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int i) {
-            /*    if (i == COLUMN_CONTENT) {
+             if (i == COLUMN_IMAGE) {
                     String str = cursor.getString(i);
-                    ((TextView) view).setText(Html.fromHtml(str));
+                 //final ProgressBar spinner = (ProgressBar) rootView.findViewById(R.id.loading);
+
+                 imageLoader.displayImage(str, ((ImageView) view), options);
+                   /*      , new SimpleImageLoadingListener() {
+                     @Override
+                     public void onLoadingStarted(String imageUri, View view) {
+                         spinner.setVisibility(View.VISIBLE);
+                     }
+
+                     @Override
+                     public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                         String message = null;
+                         switch (failReason.getType()) {
+                             case IO_ERROR:
+                                 message = "Input/Output error";
+                                 break;
+                             case DECODING_ERROR:
+                                 message = "Image can't be decoded";
+                                 break;
+                             case NETWORK_DENIED:
+                                 message = "Downloads are denied";
+                                 break;
+                             case OUT_OF_MEMORY:
+                                 message = "Out Of Memory error";
+                                 break;
+                             case UNKNOWN:
+                                 message = "Unknown error";
+                                 break;
+                         }
+                         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+
+                         spinner.setVisibility(View.GONE);
+                     }
+
+                     @Override
+                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                         spinner.setVisibility(View.GONE);
+                     }
+                 });*/
+                    //((TextView) view).setText(Html.fromHtml(str));
                     return true;
                 } else {
                     // Let SimpleCursorAdapter handle other fields automatically
                     return false;
-                }*/
+                }
 
-                return false;
             }
         });
 
-        View rootView = inflater.inflate(R.layout.fragment_univernews_list, container, false);
+        //View rootView = inflater.inflate(R.layout.fragment_univernews_list, container, false);
 
         AbsListView listView = (AbsListView) rootView.findViewById(R.id.listView1);
 

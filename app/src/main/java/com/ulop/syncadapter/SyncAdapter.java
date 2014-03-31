@@ -56,7 +56,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             FeedContract.Entry.COLUMN_NAME_NEWS_ID,
             FeedContract.Entry.COLUMN_NAME_TITLE,
             FeedContract.Entry.COLUMN_NAME_CONTENT,
-            FeedContract.Entry.COLUMN_NAME_PUBLISHED};
+            FeedContract.Entry.COLUMN_NAME_PUBLISHED,
+            FeedContract.Entry.COLUMN_NAME_IMAGE};
 
     // Constants representing column positions from PROJECTION.
     public static final int COLUMN_ID = 0;
@@ -64,6 +65,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int COLUMN_TITLE = 2;
     public static final int COLUMN_CONTENT = 3;
     public static final int COLUMN_PUBLISHED = 4;
+    public static final int COLUMN_IMAGE = 5;
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -152,13 +154,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         String title;
         String link;
         String published;
+        String image;
         while (c.moveToNext()) {
             syncResult.stats.numEntries++;
             id = c.getInt(COLUMN_ID);
             entryId = c.getString(COLUMN_NEWS_ID);
             title = c.getString(COLUMN_TITLE);
+           published = c.getString(COLUMN_PUBLISHED);
             link = c.getString(COLUMN_CONTENT);
-            published = c.getString(COLUMN_PUBLISHED);
+            image = c.getString(COLUMN_IMAGE);
             NewsCardAdapter.NewsCard match = entryMap.get(entryId);
             if (match != null) {
                 // Entry exists. Remove from entry map to prevent insert later.
@@ -175,6 +179,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             .withValue(FeedContract.Entry.COLUMN_NAME_TITLE, title)
                             .withValue(FeedContract.Entry.COLUMN_NAME_CONTENT, link)
                             .withValue(FeedContract.Entry.COLUMN_NAME_PUBLISHED, published)
+                            .withValue(FeedContract.Entry.COLUMN_NAME_IMAGE, image)
                             .build());
                     syncResult.stats.numUpdates++;
                 } else {
@@ -199,6 +204,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     .withValue(FeedContract.Entry.COLUMN_NAME_TITLE, e.title)
                     .withValue(FeedContract.Entry.COLUMN_NAME_CONTENT, e.content)
                     .withValue(FeedContract.Entry.COLUMN_NAME_PUBLISHED, e.publicTime)
+                    .withValue(FeedContract.Entry.COLUMN_NAME_IMAGE, e.image)
                     .build());
             syncResult.stats.numInserts++;
         }

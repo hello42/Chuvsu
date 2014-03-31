@@ -187,7 +187,8 @@ public class FeedsProvider extends ContentProvider {
                         FeedContract.Entry.COLUMN_NAME_NEWS_ID + TYPE_TEXT + COMMA_SEP +
                         FeedContract.Entry.COLUMN_NAME_TITLE    + TYPE_TEXT + COMMA_SEP +
                         FeedContract.Entry.COLUMN_NAME_CONTENT + TYPE_TEXT + COMMA_SEP +
-                        FeedContract.Entry.COLUMN_NAME_PUBLISHED + TYPE_TEXT + ")";
+                        FeedContract.Entry.COLUMN_NAME_PUBLISHED + TYPE_TEXT + COMMA_SEP +
+                        FeedContract.Entry.COLUMN_NAME_IMAGE + TYPE_TEXT + ")";
 
         /** SQL statement to drop "entry" table. */
         private static final String SQL_DELETE_ENTRIES =

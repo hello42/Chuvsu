@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Chuvsu</string>
+    <string name="app_name">ЧГУ имени И.Н. Ульянова</string>
     <string name="title_section1">Новости</string>
     <string name="title_section2">Структура</string>
     <string name="title_section3">Документы</string>

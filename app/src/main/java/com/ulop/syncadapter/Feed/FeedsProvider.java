@@ -13,7 +13,7 @@ import android.util.Log;
 import com.ulop.syncadapter.SelectionBuilder;
 
 public class FeedsProvider extends ContentProvider {
-    FeedDatabase mDatabaseHelper;
+    public static FeedDatabase mDatabaseHelper;
     private static final String AUTHORITY = FeedContract.CONTENT_AUTHORITY;
 
     public static final int ROUTE_ENTRIES = 1;

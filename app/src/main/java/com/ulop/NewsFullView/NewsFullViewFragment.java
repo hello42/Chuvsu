@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.ulop.chuvsu.app.R;
 
@@ -52,6 +50,9 @@ public class NewsFullViewFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         args.putString(ARG_PARAM3, param3);
         fragment.setArguments(args);
+
+
+
         return fragment;
     }
     public NewsFullViewFragment() {
@@ -74,14 +75,16 @@ public class NewsFullViewFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_news_full_view, container, false);
 
-        TextView titleTextView = (TextView) rootView.findViewById(R.id.newTitle);
+
+
+       /* TextView titleTextView = (TextView) rootView.findViewById(R.id.newTitle);
         TextView contentTextView = (TextView) rootView.findViewById(R.id.body);
         TextView dateTextView = (TextView) rootView.findViewById(R.id.publicDate);
 
         titleTextView.setText(title);
         contentTextView.setText(Html.fromHtml(content));
         dateTextView.setText(date);
-
+*/
         return rootView;
     }
 

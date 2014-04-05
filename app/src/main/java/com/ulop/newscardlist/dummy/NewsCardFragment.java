@@ -142,6 +142,7 @@ public class NewsCardFragment extends Fragment
                 .showImageOnFail(R.drawable.abc_ic_go)
                 .resetViewBeforeLoading(true)
                 .cacheOnDisc(true)
+                .cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .considerExifParams(true)
@@ -233,13 +234,11 @@ public class NewsCardFragment extends Fragment
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String title = ((SimpleCursorAdapter) parent.getAdapter()).getCursor().getString(COLUMN_TITLE);
-                String content = ((SimpleCursorAdapter) parent.getAdapter()).getCursor().getString(COLUMN_CONTENT);
-                String pTime = ((SimpleCursorAdapter) parent.getAdapter()).getCursor().getString(COLUMN_PUBLISHED);
                 Intent intent = new Intent(getActivity(), NewsFullActivity.class);
-                intent.putExtra("title", title);
-                intent.putExtra("content", content);
-                intent.putExtra("time", pTime);
+                intent.putExtra("position", position);
+                intent.putExtra("count", ((SimpleCursorAdapter) parent.getAdapter()).getCursor().getCount());
+
+
                 startActivity(intent);
             }
 

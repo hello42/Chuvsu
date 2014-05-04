@@ -6,12 +6,12 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
 
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|top">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -32,7 +32,7 @@
 -->
 
                     <ImageView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView"
                         android:layout_gravity="center_horizontal|top" />
@@ -41,7 +41,8 @@
 
                 <RelativeLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="49dp">
+                    android:layout_height="49dp"
+                    android:layout_margin="5dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -57,13 +58,15 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="New Text"
                         android:id="@+id/textView"
+                        android:textColor="#ff717171"
                         android:lines="2" />
 
                     <TextView

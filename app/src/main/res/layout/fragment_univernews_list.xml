@@ -3,20 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ulop.newscardlist.dummy.NewsCardFragment">
+    tools:context="com.ulop.newscardlist.dummy.NewsCardFragment"
+    android:background="#ffd1d1d1">
 
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="8dp"
-        android:fadingEdge="vertical|horizontal"
+        android:dividerHeight="6dp"
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="false"
-        android:layoutMode="clipBounds"
+        android:divider="#ffd1d1d1"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="8dp" >
+        android:paddingTop="8dp"
+        >
 
     </ListView>
 

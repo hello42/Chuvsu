@@ -143,7 +143,7 @@ public class NewsCardFragment extends Fragment
                 .resetViewBeforeLoading(true)
                 .cacheOnDisc(true)
                 .cacheInMemory(true)
-                .imageScaleType(ImageScaleType.EXACTLY)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .considerExifParams(true)
                 .displayer(new SimpleBitmapDisplayer())

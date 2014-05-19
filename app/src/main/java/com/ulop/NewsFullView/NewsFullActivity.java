@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,9 +71,10 @@ public class NewsFullActivity extends ActionBarActivity {
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(nPosition);
+
 
     }
 
@@ -114,8 +116,8 @@ public class NewsFullActivity extends ActionBarActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            position += nPosition;
-            return PlaceholderFragment.newInstance(position - 1);
+
+            return PlaceholderFragment.newInstance(position + 1);
             //return NewsFullViewFragment.newInstance(title, content, pTime);
         }
 
@@ -184,13 +186,14 @@ public class NewsFullActivity extends ActionBarActivity {
             args.putInt(ARG_SECTION_NUMBER, position);
             fragment.setArguments(args);
 
+
             options = new DisplayImageOptions.Builder()
                     .showImageForEmptyUri(R.drawable.abc_ic_clear)
                     .showImageOnFail(R.drawable.abc_ic_go)
                     .resetViewBeforeLoading(true)
                     .cacheOnDisc(true)
                     .cacheInMemory(true)
-                    .imageScaleType(ImageScaleType.EXACTLY)
+                    .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                     .bitmapConfig(Bitmap.Config.RGB_565)
                     .considerExifParams(true)
                     .displayer(new SimpleBitmapDisplayer())
@@ -216,8 +219,9 @@ public class NewsFullActivity extends ActionBarActivity {
             final ContentResolver contentResolver = getActivity().getContentResolver();
             String sortOrder = FeedContract.Entry.COLUMN_NAME_NEWS_ID;
             Uri uri = FeedContract.Entry.CONTENT_URI;
-            Cursor cursor = contentResolver.query(uri, PROJECTION, null, null, sortOrder);
+            Cursor cursor = contentResolver.query(uri, PROJECTION, null, null, sortOrder + " desc");
             int pos = getArguments().getInt(ARG_SECTION_NUMBER);
+            Log.i("full", new Integer(pos).toString());
             cursor.move(pos);
 
             titleTextView.setText(cursor.getString(COLUMN_TITLE));

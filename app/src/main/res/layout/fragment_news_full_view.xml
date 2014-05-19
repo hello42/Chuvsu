@@ -45,9 +45,13 @@
         android:text="@string/hello_blank_fragment"
         android:linksClickable="true"
         android:id="@+id/body"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:autoText="true"/>
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:autoText="false"
+        android:textStyle="normal"
+        android:typeface="serif"
+        android:textSize="20dp"
+        android:lineSpacingExtra="6dp"/>
 </LinearLayout>
     </ScrollView>
 </LinearLayout>

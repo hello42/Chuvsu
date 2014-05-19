@@ -74,6 +74,7 @@ public class FacultyFragment extends Fragment {
                 Log.i("Faculty", "onItemClick");
                 FacultyListAdapter facultyListAdapter = ((FacultyListAdapter) parent.getAdapter());
                 String url = ((FacultyContent.FacultyItem) facultyListAdapter.getItem(position)).link;
+
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);

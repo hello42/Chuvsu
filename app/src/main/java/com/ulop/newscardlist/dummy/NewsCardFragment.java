@@ -142,7 +142,7 @@ public class NewsCardFragment extends Fragment
                 .showImageOnFail(R.drawable.abc_ic_go)
                 .resetViewBeforeLoading(true)
                 .cacheOnDisc(true)
-                .cacheInMemory(true)
+                .cacheInMemory(false)
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .considerExifParams(true)
@@ -237,7 +237,7 @@ public class NewsCardFragment extends Fragment
                 Intent intent = new Intent(getActivity(), NewsFullActivity.class);
                 intent.putExtra("position", position);
                 intent.putExtra("count", ((SimpleCursorAdapter) parent.getAdapter()).getCursor().getCount());
-
+                Log.i("cards", new Integer(position).toString());
 
                 startActivity(intent);
             }
@@ -277,7 +277,7 @@ public class NewsCardFragment extends Fragment
                 PROJECTION,                // Projection
                 null,                           // Selection
                 null,                           // Selection args
-                FeedContract.Entry.COLUMN_NAME_NEWS_ID + " asc");
+                FeedContract.Entry.COLUMN_NAME_NEWS_ID + " desc");
     }
 
     @Override

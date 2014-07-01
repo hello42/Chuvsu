@@ -226,7 +226,7 @@ public class NewsFullActivity extends ActionBarActivity {
 
             titleTextView.setText(cursor.getString(COLUMN_TITLE));
             contentTextView.setText(cursor.getString(COLUMN_CONTENT));
-            dateTextView.setText(cursor.getString(COLUMN_PUBLISHED));
+            dateTextView.setText(cursor.getString(COLUMN_PUBLISHED).substring(0, 10));
             String str = cursor.getString(COLUMN_IMAGE);
             imageLoader.displayImage(str, imageView, options);
 

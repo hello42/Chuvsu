@@ -1,4 +1,4 @@
-package com.ulop.syncadapter.Feed;
+package com.ulop.syncadapter.facultyInfo;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -12,21 +12,24 @@ import android.util.Log;
 
 import com.ulop.syncadapter.SelectionBuilder;
 
-public class FeedsProvider extends ContentProvider {
-    public static FeedDatabase mDatabaseHelper;
-    private static final String AUTHORITY = FeedContract.CONTENT_AUTHORITY;
+/**
+ * Created by ulop on 01.07.14.
+ */
+public class FacultyProvider extends ContentProvider {
+    public static FacultyDatabase mDatabaseHelper;
+    private static final String AUTHORITY = FacultyContract.CONTENT_AUTHORITY;
 
-    public static final int ROUTE_ENTRIES = 1;
-    public static final int ROUTE_ENTRIES_ID = 2;
+    public static final int ROUTE_FACULTIES = 1;
+    public static final int ROUTE_FACULTIES_ID = 2;
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
-        sUriMatcher.addURI(AUTHORITY, "entries", ROUTE_ENTRIES);
-        sUriMatcher.addURI(AUTHORITY, "entries/*", ROUTE_ENTRIES_ID);
+        sUriMatcher.addURI(AUTHORITY, "entries", ROUTE_FACULTIES);
+        sUriMatcher.addURI(AUTHORITY, "entries/*", ROUTE_FACULTIES_ID);
     }
 
 
-    public FeedsProvider() {
+    public FacultyProvider() {
         //final SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         //Log.i("db",  db.getPath());
     }
@@ -43,15 +46,15 @@ public class FeedsProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         int count;
         switch (match) {
-            case ROUTE_ENTRIES:
-                count = builder.table(FeedContract.Entry.TABLE_NAME)
+            case ROUTE_FACULTIES:
+                count = builder.table(FacultyContract.Faculty.TABLE_NAME)
                         .where(selection, selectionArgs)
                         .delete(db);
                 break;
-            case ROUTE_ENTRIES_ID:
+            case ROUTE_FACULTIES_ID:
                 String id = uri.getLastPathSegment();
-                count = builder.table(FeedContract.Entry.TABLE_NAME)
-                        .where(FeedContract.Entry._ID + "=?", id)
+                count = builder.table(FacultyContract.Faculty.TABLE_NAME)
+                        .where(FacultyContract.Faculty._ID + "=?", id)
                         .where(selection, selectionArgs)
                         .delete(db);
                 break;
@@ -69,10 +72,10 @@ public class FeedsProvider extends ContentProvider {
     public String getType(Uri uri) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
-            case ROUTE_ENTRIES:
-                return FeedContract.Entry.CONTENT_TYPE;
-            case ROUTE_ENTRIES_ID:
-                return FeedContract.Entry.CONTENT_ITEM_TYPE;
+            case ROUTE_FACULTIES:
+                return FacultyContract.Faculty.CONTENT_TYPE;
+            case ROUTE_FACULTIES_ID:
+                return FacultyContract.Faculty.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -85,11 +88,11 @@ public class FeedsProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         Uri result;
         switch (match) {
-            case ROUTE_ENTRIES:
-                long id = db.insertOrThrow(FeedContract.Entry.TABLE_NAME, null, values);
-                result = Uri.parse(FeedContract.Entry.CONTENT_URI + "/" + id);
+            case ROUTE_FACULTIES:
+                long id = db.insertOrThrow(FacultyContract.Faculty.TABLE_NAME, null, values);
+                result = Uri.parse(FacultyContract.Faculty.CONTENT_URI + "/" + id);
                 break;
-            case ROUTE_ENTRIES_ID:
+            case ROUTE_FACULTIES_ID:
                 throw new UnsupportedOperationException("Insert not supported on URI: " + uri);
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -103,25 +106,25 @@ public class FeedsProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mDatabaseHelper = new FeedDatabase(getContext());
+        mDatabaseHelper = new FacultyDatabase(getContext());
         return true;
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
-            String[] selectionArgs, String sortOrder) {
+                        String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
         Log.d("db", new String(db.getPath()));
         SelectionBuilder builder = new SelectionBuilder();
         int uriMatch = sUriMatcher.match(uri);
         switch (uriMatch) {
-            case ROUTE_ENTRIES_ID:
+            case ROUTE_FACULTIES_ID:
                 // Return a single entry, by ID.
                 String id = uri.getLastPathSegment();
-                builder.where(FeedContract.Entry._ID + "=?", id);
-            case ROUTE_ENTRIES:
+                builder.where(FacultyContract.Faculty._ID + "=?", id);
+            case ROUTE_FACULTIES:
                 // Return all known entries.
-                builder.table(FeedContract.Entry.TABLE_NAME)
+                builder.table(FacultyContract.Faculty.TABLE_NAME)
                         .where(selection, selectionArgs);
                 Cursor c = builder.query(db, projection, sortOrder);
                 // Note: Notification URI must be manually set here for loaders to correctly
@@ -138,21 +141,21 @@ public class FeedsProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection,
-            String[] selectionArgs) {
+                      String[] selectionArgs) {
         SelectionBuilder builder = new SelectionBuilder();
         final SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         int count;
         switch (match) {
-            case ROUTE_ENTRIES:
-                count = builder.table(FeedContract.Entry.TABLE_NAME)
+            case ROUTE_FACULTIES:
+                count = builder.table(FacultyContract.Faculty.TABLE_NAME)
                         .where(selection, selectionArgs)
                         .update(db, values);
                 break;
-            case ROUTE_ENTRIES_ID:
+            case ROUTE_FACULTIES_ID:
                 String id = uri.getLastPathSegment();
-                count = builder.table(FeedContract.Entry.TABLE_NAME)
-                        .where(FeedContract.Entry._ID + "=?", id)
+                count = builder.table(FacultyContract.Faculty.TABLE_NAME)
+                        .where(FacultyContract.Faculty._ID + "=?", id)
                         .where(selection, selectionArgs)
                         .update(db, values);
                 break;
@@ -171,7 +174,7 @@ public class FeedsProvider extends ContentProvider {
      * Provides access to an disk-backed, SQLite datastore which is utilized by FeedProvider. This
      * database should never be accessed by other parts of the application directly.
      */
-    public static class FeedDatabase extends SQLiteOpenHelper {
+    public static class FacultyDatabase extends SQLiteOpenHelper {
         /** Schema version. */
         public static final int DATABASE_VERSION = 1;
         /** Filename for SQLite file. */
@@ -182,19 +185,19 @@ public class FeedsProvider extends ContentProvider {
         private static final String COMMA_SEP = ",";
         /** SQL statement to create "entry" table. */
         private static final String SQL_CREATE_ENTRIES =
-                "CREATE TABLE " + FeedContract.Entry.TABLE_NAME + " (" +
-                        FeedContract.Entry._ID + " INTEGER PRIMARY KEY," +
-                        FeedContract.Entry.COLUMN_NAME_NEWS_ID + TYPE_TEXT + COMMA_SEP +
-                        FeedContract.Entry.COLUMN_NAME_TITLE    + TYPE_TEXT + COMMA_SEP +
-                        FeedContract.Entry.COLUMN_NAME_CONTENT + TYPE_TEXT + COMMA_SEP +
-                        FeedContract.Entry.COLUMN_NAME_PUBLISHED + TYPE_TEXT + COMMA_SEP +
-                        FeedContract.Entry.COLUMN_NAME_IMAGE + TYPE_TEXT + ")";
+                "CREATE TABLE " + FacultyContract.Faculty.TABLE_NAME + " (" +
+                        FacultyContract.Faculty._ID + " INTEGER PRIMARY KEY," +
+                        FacultyContract.Faculty.COLUMN_NAME_FACULTY_NAME + TYPE_TEXT + COMMA_SEP +
+                        FacultyContract.Faculty.COLUMN_NAME_FACULTY_ID    + TYPE_INTEGER + COMMA_SEP +
+                        FacultyContract.Faculty.COLUMN_NAME_LOGO + TYPE_TEXT + COMMA_SEP +
+                        FacultyContract.Faculty.COLUMN_NAME_URL + TYPE_TEXT + COMMA_SEP +
+                        FacultyContract.Faculty.COLUMN_NAME_INFO + TYPE_TEXT + ")";
 
         /** SQL statement to drop "entry" table. */
         private static final String SQL_DELETE_ENTRIES =
-                "DROP TABLE IF EXISTS " + FeedContract.Entry.TABLE_NAME;
+                "DROP TABLE IF EXISTS " + FacultyContract.Faculty.TABLE_NAME;
 
-        public FeedDatabase(Context context) {
+        public FacultyDatabase(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 

@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -215,7 +216,15 @@ public class NewsCardFragment extends Fragment
                  });*/
                     //((TextView) view).setText(Html.fromHtml(str));
                     return true;
-                } else {
+                } else
+             if (i == COLUMN_PUBLISHED){
+                 TextView tW = (TextView) view.findViewById(R.id.textView2);
+                 String str = cursor.getString(i);
+                 str = str.substring(0, 10);
+                 tW.setText(str);
+                 return  true;
+             }
+             else {
                     // Let SimpleCursorAdapter handle other fields automatically
                     return false;
                 }

@@ -16,16 +16,16 @@ import com.ulop.syncadapter.SelectionBuilder;
  * Created by ulop on 01.07.14.
  */
 public class FacultyProvider extends ContentProvider {
-    public static FacultyDatabase mDatabaseHelper;
+    private static FacultyDatabase mDatabaseHelper;
     private static final String AUTHORITY = FacultyContract.CONTENT_AUTHORITY;
 
-    public static final int ROUTE_FACULTIES = 1;
-    public static final int ROUTE_FACULTIES_ID = 2;
+    private static final int ROUTE_FACULTIES = 1;
+    private static final int ROUTE_FACULTIES_ID = 2;
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
-        sUriMatcher.addURI(AUTHORITY, "entries", ROUTE_FACULTIES);
-        sUriMatcher.addURI(AUTHORITY, "entries/*", ROUTE_FACULTIES_ID);
+        sUriMatcher.addURI(AUTHORITY, "faculties", ROUTE_FACULTIES);
+        sUriMatcher.addURI(AUTHORITY, "faculties/*", ROUTE_FACULTIES_ID);
     }
 
 

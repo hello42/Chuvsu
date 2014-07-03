@@ -112,7 +112,7 @@ public class SelectionBuilder {
      *
      * @see #getSelectionArgs()
      */
-    public String getSelection() {
+    String getSelection() {
         return mSelection.toString();
     }
 
@@ -121,7 +121,7 @@ public class SelectionBuilder {
      *
      * @see #getSelection()
      */
-    public String[] getSelectionArgs() {
+    String[] getSelectionArgs() {
         return mSelectionArgs.toArray(new String[mSelectionArgs.size()]);
     }
 
@@ -150,8 +150,8 @@ public class SelectionBuilder {
     /**
      * Execute query using the current internal state as {@code WHERE} clause.
      */
-    public Cursor query(SQLiteDatabase db, String[] columns, String groupBy,
-                        String having, String orderBy, String limit) {
+    Cursor query(SQLiteDatabase db, String[] columns, String groupBy,
+                 String having, String orderBy, String limit) {
         assertTable();
         if (columns != null) mapColumns(columns);
         Log.v(TAG, "query(columns=" + Arrays.toString(columns) + ") " + this);

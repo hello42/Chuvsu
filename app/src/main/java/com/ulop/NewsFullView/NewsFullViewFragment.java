@@ -27,11 +27,6 @@ public class NewsFullViewFragment extends Fragment {
     private static final String ARG_PARAM2 = "content";
     private static final String ARG_PARAM3 = "date";
 
-    // TODO: Rename and change types of parameters
-    private String title;
-    private String content;
-    private String date;
-
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -63,9 +58,9 @@ public class NewsFullViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            title = getArguments().getString(ARG_PARAM1);
-            content = getArguments().getString(ARG_PARAM2);
-            date = getArguments().getString(ARG_PARAM3);
+            String title = getArguments().getString(ARG_PARAM1);
+            String content = getArguments().getString(ARG_PARAM2);
+            String date = getArguments().getString(ARG_PARAM3);
         }
     }
 

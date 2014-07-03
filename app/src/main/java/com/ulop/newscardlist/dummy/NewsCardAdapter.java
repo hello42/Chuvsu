@@ -13,14 +13,13 @@ import com.ulop.chuvsu.app.R;
 import java.util.ArrayList;
 
 public class NewsCardAdapter extends BaseAdapter {
-	
-	  Context ctx;
-	  LayoutInflater lInflater;
-	  public static ArrayList<NewsCard> objects = new ArrayList<NewsCard>();
+
+    private LayoutInflater lInflater;
+	  private static ArrayList<NewsCard> objects = new ArrayList<NewsCard>();
 
 	public NewsCardAdapter(Context context) {
 		// TODO Auto-generated constructor stub
-		ctx = context;
+        Context ctx = context;
 		lInflater = (LayoutInflater) ctx
 		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}

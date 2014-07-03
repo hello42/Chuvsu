@@ -21,7 +21,7 @@ public class FacultyContent {
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static Map<String, FacultyItem> ITEM_MAP = new HashMap<String, FacultyItem>();
+    private static final Map<String, FacultyItem> ITEM_MAP = new HashMap<String, FacultyItem>();
 
     static {
         // Add 3 sample items.
@@ -192,14 +192,15 @@ public class FacultyContent {
         public String fctName;
         public String content;
         public String link;
-        public String decanName;
+        public String logo;
+        public String id;
 
 
-        public FacultyItem(String fctName, String content, String link, String decanName) {
+        public FacultyItem(String fctName, String content, String link, String logo) {
             this.fctName = fctName;
             this.content = content;
             this.link = link;
-            this.decanName = decanName;
+            this.logo = logo;
         }
 
         @Override

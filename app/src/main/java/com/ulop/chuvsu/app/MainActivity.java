@@ -16,7 +16,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.ulop.faculty.FacultyFragment;
-import com.ulop.newscardlist.dummy.NewsCardAdapter;
 import com.ulop.newscardlist.dummy.NewsCardFragment;
 import com.ulop.syncadapter.Feed.FeedsProvider;
 import com.ulop.syncadapter.SyncService;
@@ -42,7 +41,6 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
-    public static NewsCardAdapter newList;
     protected ImageLoader imageLoader = ImageLoader.getInstance();
 
     @Override
@@ -65,7 +63,6 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        newList = new NewsCardAdapter(this);
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                 .threadPriority(Thread.NORM_PRIORITY)
@@ -123,7 +120,7 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
-    public void restoreActionBar() {
+    void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
@@ -137,11 +134,11 @@ public class MainActivity extends ActionBarActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            //getMenuInflater().inflate(R.menu.main, menu);
+            getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
             return true;
         }
-        return false;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -156,7 +153,7 @@ public class MainActivity extends ActionBarActivity
         if (id == R.id.export){
             exportDB();
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     private void exportDB(){
@@ -164,7 +161,7 @@ public class MainActivity extends ActionBarActivity
         File data = Environment.getDataDirectory();
         FileChannel source=null;
         FileChannel destination=null;
-        String currentDBPath = "/data/com.ulop.chuvsu.app/databases/feed.db";
+        String currentDBPath = "/data/com.ulop.chuvsu.app/databases/chuvsu.db";
         String backupDBPath = FeedsProvider.FeedDatabase.DATABASE_NAME;
         File currentDB = new File(data, currentDBPath);
         File backupDB = new File(sd, backupDBPath);

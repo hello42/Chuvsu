@@ -16,7 +16,7 @@ public class FacultyContract {
     /**
      * Base URI. (content://com.example.android.network.sync.basicsyncadapter)
      */
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     /**
      * Path component for "entry"-type resources..
@@ -33,7 +33,7 @@ public class FacultyContract {
          * MIME type for individual entries.
          */
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.chuvsu.faculties";
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.chuvsu.faculty";
 
         /**
          * Fully qualified URI for "entry" resources.

@@ -10,7 +10,7 @@ import android.os.Bundle;
 /**
  * Created by ulop on 12.03.14.
  */
-public class Authenticator extends AbstractAccountAuthenticator {
+class Authenticator extends AbstractAccountAuthenticator {
     public Authenticator(Context context) {
         super(context);
     }

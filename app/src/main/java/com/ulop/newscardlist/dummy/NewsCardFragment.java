@@ -47,17 +47,13 @@ public class NewsCardFragment extends Fragment
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private static final String TAG = "NewsCardFragment";
 
     private SimpleCursorAdapter mAdapter;
 
     private Object mSyncObserverHandle;
 
-    DisplayImageOptions options;
+    private DisplayImageOptions options;
 
     /**
      * Options menu used to populate ActionBar.
@@ -99,7 +95,7 @@ public class NewsCardFragment extends Fragment
             R.id.textView,
             R.id.textView2,
             R.id.imageView};
-    protected ImageLoader imageLoader = ImageLoader.getInstance();
+    private ImageLoader imageLoader = ImageLoader.getInstance();
 
 
     /**
@@ -133,8 +129,8 @@ public class NewsCardFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
         setHasOptionsMenu(true);
 
@@ -299,7 +295,7 @@ public class NewsCardFragment extends Fragment
         mAdapter.changeCursor(null);
     }
 
-    public void setRefreshActionButtonState(boolean refreshing) {
+    void setRefreshActionButtonState(boolean refreshing) {
         if (mOptionsMenu == null) {
             return;
         }

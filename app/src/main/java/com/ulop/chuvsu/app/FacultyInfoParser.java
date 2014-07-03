@@ -1,6 +1,6 @@
 package com.ulop.chuvsu.app;
 
-import com.ulop.newscardlist.dummy.NewsCardAdapter;
+import com.ulop.faculty.FacultyContent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,26 +13,26 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * Created by ulop on 12.03.14.
+ * Created by ulop on 01.07.14.
  */
-public class FeedParser {
-    public ArrayList<NewsCardAdapter.NewsCard> parse(InputStream in)
+public class FacultyInfoParser {
+    public ArrayList<FacultyContent.FacultyItem> parse(InputStream in)
             throws IOException {
-        ArrayList<NewsCardAdapter.NewsCard> newsList = new ArrayList<NewsCardAdapter.NewsCard>();
+        ArrayList<FacultyContent.FacultyItem> fctList = new ArrayList<FacultyContent.FacultyItem>();
         try {
 
             JSONArray jsonArray = getJSONArray(in);
 
             for (int i = 0; i < jsonArray.length(); i++){
                 JSONObject object = jsonArray.getJSONObject(i);
-                NewsCardAdapter.NewsCard newsCard = new NewsCardAdapter.NewsCard(object.getString("title"),
-                        object.getString("body"), object.getString("updated_at"), "");
-                newsCard.image = object.getString("image");
-                newsCard.id = object.getString("id");
-                newsList.add(0, newsCard);
+                FacultyContent.FacultyItem fctCard = new FacultyContent.FacultyItem(object.getString("name"),
+                        object.getString("info"), object.getString("url"), "");
+                fctCard.logo = object.getString("logo");
+                fctCard.id = object.getString("id");
+                fctList.add(0, fctCard);
             }
 
-           return newsList;
+            return fctList;
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -40,7 +40,7 @@ public class FeedParser {
             in.close();
         }
 
-        return newsList;
+        return fctList;
     }
 
     JSONArray getJSONArray(InputStream in) throws IOException{

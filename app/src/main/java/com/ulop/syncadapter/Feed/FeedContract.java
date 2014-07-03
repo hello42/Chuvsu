@@ -19,7 +19,7 @@ public class FeedContract {
     /**
      * Base URI. (content://com.example.android.network.sync.basicsyncadapter)
      */
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     /**
      * Path component for "entry"-type resources..

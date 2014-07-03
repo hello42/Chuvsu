@@ -42,6 +42,14 @@
             android:syncable="true" >
         </provider>
 
+        <provider
+            android:name="com.ulop.syncadapter.facultyInfo.FacultyProvider"
+            android:authorities="com.ulop.syncadapter"
+            android:exported="true"
+            android:syncable="true" >
+        </provider>
+
+
         <service android:name="com.ulop.syncadapter.accounts.AuthenticatorService" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />

@@ -117,11 +117,9 @@ public class FacultyFragment extends Fragment {
 
     public class FacultyListAdapter implements ListAdapter {
 
-        Context ctx;
         LayoutInflater lInflater;
 
         public FacultyListAdapter(Context ctx) {
-            this.ctx = ctx;
             lInflater = (LayoutInflater) ctx
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
@@ -180,7 +178,7 @@ public class FacultyFragment extends Fragment {
             TextView shortInfo = (TextView) view.findViewById(R.id.short_info);
 
             fctName.setText(facultyItem.fctName);
-            decName.setText(facultyItem.decanName);
+            decName.setText(facultyItem.logo);
             shortInfo.setText(facultyItem.content);
 
             return view;

@@ -13,11 +13,11 @@ import android.util.Log;
 import com.ulop.syncadapter.SelectionBuilder;
 
 public class FeedsProvider extends ContentProvider {
-    public static FeedDatabase mDatabaseHelper;
+    private static FeedDatabase mDatabaseHelper;
     private static final String AUTHORITY = FeedContract.CONTENT_AUTHORITY;
 
-    public static final int ROUTE_ENTRIES = 1;
-    public static final int ROUTE_ENTRIES_ID = 2;
+    private static final int ROUTE_ENTRIES = 1;
+    private static final int ROUTE_ENTRIES_ID = 2;
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {

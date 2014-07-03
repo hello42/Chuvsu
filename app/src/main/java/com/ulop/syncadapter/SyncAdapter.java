@@ -14,10 +14,13 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.ulop.chuvsu.app.FacultyInfoParser;
 import com.ulop.chuvsu.app.FeedParser;
+import com.ulop.faculty.FacultyContent;
 import com.ulop.newscardlist.dummy.NewsCardAdapter;
 import com.ulop.syncadapter.Feed.FeedContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
+import com.ulop.syncadapter.facultyInfo.FacultyContract;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,10 +34,11 @@ import java.util.HashMap;
 /**
  * Created by ulop on 12.03.14.
  */
-public class SyncAdapter extends AbstractThreadedSyncAdapter {
+class SyncAdapter extends AbstractThreadedSyncAdapter {
 
-    public static final String TAG = "SyncAdapter";
+    private static final String TAG = "SyncAdapter";
     private static final String FEED_URL = "http://chuvsu.evgenkorobkov.ru/news/last.json";
+    private static final String FACULTY_URL = "http://chuvsu.evgenkorobkov.ru/facults.json";
 
     /**
      * Network connection timeout, in milliseconds.
@@ -60,17 +64,34 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             FeedContract.Entry.COLUMN_NAME_IMAGE};
 
     // Constants representing column positions from PROJECTION.
-    public static final int COLUMN_ID = 0;
-    public static final int COLUMN_NEWS_ID = 1;
-    public static final int COLUMN_TITLE = 2;
-    public static final int COLUMN_CONTENT = 3;
-    public static final int COLUMN_PUBLISHED = 4;
-    public static final int COLUMN_IMAGE = 5;
+    private static final int COLUMN_ID = 0;
+    private static final int COLUMN_NEWS_ID = 1;
+    private static final int COLUMN_TITLE = 2;
+    private static final int COLUMN_CONTENT = 3;
+    private static final int COLUMN_PUBLISHED = 4;
+    private static final int COLUMN_IMAGE = 5;
+
+    //for faculties
+    private static final String[] PROJECTION_FCT = new String[] {
+            FacultyContract.Faculty._ID,
+            FacultyContract.Faculty.COLUMN_NAME_FACULTY_ID,
+            FacultyContract.Faculty.COLUMN_NAME_FACULTY_NAME,
+            FacultyContract.Faculty.COLUMN_NAME_INFO,
+            FacultyContract.Faculty.COLUMN_NAME_URL,
+            FacultyContract.Faculty.COLUMN_NAME_LOGO};
+
+    // Constants representing column positions from PROJECTION.
+    public static final int COLUMN_ID_FCT = 0;
+    private static final int COLUMN_FCT_ID = 1;
+    private static final int COLUMN_NAME = 2;
+    private static final int COLUMN_INFO = 3;
+    private static final int COLUMN_URL = 4;
+    private static final int COLUMN_LOGO = 5;
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         mContentResolver = context.getContentResolver();
-        mContentResolver.setSyncAutomatically(AuthenticatorService.GetAccount(), FeedContract.CONTENT_AUTHORITY, true);
+        ContentResolver.setSyncAutomatically(AuthenticatorService.GetAccount(), FeedContract.CONTENT_AUTHORITY, true);
         //mContentResolver.re
     }
 
@@ -86,15 +107,26 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             final URL location = new URL(FEED_URL);
             InputStream stream = null;
 
+            final URL fctLocation = new URL(FACULTY_URL);
+            InputStream fctStream = null;
+
             try {
                 Log.i(TAG, "Streaming data from network: " + location);
                 stream = downloadUrl(location);
                 updateLocalFeedData(stream, syncResult);
+
+                Log.i(TAG, "Streaming data from network: " + fctLocation);
+                fctStream = downloadUrl(fctLocation);
+                updateLocalFacultyData(fctStream, syncResult);
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
             } finally {
                 if (stream != null) {
                     stream.close();
+                }
+
+                if (fctStream != null) {
+                    fctStream.close();
                 }
             }
         } catch (MalformedURLException e) {
@@ -121,13 +153,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Log.i(TAG, "Network synchronization complete");
     }
 
-    public void updateLocalFeedData(final InputStream stream, final SyncResult syncResult)
+    void updateLocalFeedData(final InputStream stream, final SyncResult syncResult)
             throws IOException, RemoteException,
             OperationApplicationException, ParseException {
         final FeedParser feedParser = new FeedParser();
         final ContentResolver contentResolver = getContext().getContentResolver();
 
-        Log.i(TAG, "Parsing stream as Atom feed");
+        Log.i(TAG, "Parsing stream as News");
         final ArrayList<NewsCardAdapter.NewsCard> newsCards = feedParser.parse(stream);
         Log.i(TAG, "Parsing complete. Found " + newsCards.size() + " news");
 
@@ -212,6 +244,103 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         mContentResolver.applyBatch(FeedContract.CONTENT_AUTHORITY, batch);
         mContentResolver.notifyChange(
                 FeedContract.Entry.CONTENT_URI, // URI where data was modified
+                null,                           // No local observer
+                false);                         // IMPORTANT: Do not sync to network
+        // This sample doesn't support uploads, but if *your* code does, make sure you set
+        // syncToNetwork=false in the line above to prevent duplicate syncs.
+    }
+
+    void updateLocalFacultyData(final InputStream stream, final SyncResult syncResult)
+            throws IOException, RemoteException,
+            OperationApplicationException, ParseException {
+        final FacultyInfoParser fctParser = new FacultyInfoParser();
+        final ContentResolver contentResolver = getContext().getContentResolver();
+
+        Log.i(TAG, "Parsing stream as Atom faculty");
+        final ArrayList<FacultyContent.FacultyItem> fctCards = fctParser.parse(stream);
+        Log.i(TAG, "Parsing complete. Found " + fctCards.size() + " faculties");
+
+
+        ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+
+        // Build hash table of incoming entries
+        HashMap<String, FacultyContent.FacultyItem> facultyItemHashMap = new HashMap<String, FacultyContent.FacultyItem>();
+        for (FacultyContent.FacultyItem e : fctCards) {
+            facultyItemHashMap.put(e.id, e);
+        }
+
+        // Get list of all items
+        Log.i(TAG, "Fetching local faculties for merge");
+        Uri uri = FacultyContract.Faculty.CONTENT_URI; // Get all entries
+        String sortOrder = FacultyContract.Faculty.COLUMN_NAME_FACULTY_ID;
+        Cursor c = contentResolver.query(uri, PROJECTION_FCT, null, null, sortOrder);
+        assert c != null;
+        Log.i(TAG, "Found " + c.getCount() + " local faculties. Computing merge solution...");
+
+        // Find stale data
+        int id;
+        String fctId;
+        String name;
+        String url;
+        String info;
+        String logo;
+        while (c.moveToNext()) {
+            syncResult.stats.numEntries++;
+            id = c.getInt(COLUMN_ID);
+            fctId = c.getString(COLUMN_FCT_ID);
+            name = c.getString(COLUMN_NAME);
+            info = c.getString(COLUMN_INFO);
+            url = c.getString(COLUMN_URL);
+            logo = c.getString(COLUMN_LOGO);
+            FacultyContent.FacultyItem match = facultyItemHashMap.get(fctId);
+            if (match != null) {
+                // Entry exists. Remove from entry map to prevent insert later.
+                facultyItemHashMap.remove(fctId);
+                // Check to see if the entry needs to be updated
+                Uri existingUri = FacultyContract.Faculty.CONTENT_URI.buildUpon()
+                        .appendPath(Integer.toString(id)).build();
+                if ((match.fctName != null && !match.fctName.equals(name)) ||
+                        (match.content != null && !match.content.equals(info)) ||
+                        (!match.link.equals(url))) {
+                    // Update existing record
+                    Log.i(TAG, "Scheduling update: " + existingUri);
+                    batch.add(ContentProviderOperation.newUpdate(existingUri)
+                            .withValue(FacultyContract.Faculty.COLUMN_NAME_FACULTY_NAME, name)
+                            .withValue(FacultyContract.Faculty.COLUMN_NAME_INFO, info)
+                            .withValue(FacultyContract.Faculty.COLUMN_NAME_URL, url)
+                            .withValue(FacultyContract.Faculty.COLUMN_NAME_LOGO, logo)
+                            .build());
+                    syncResult.stats.numUpdates++;
+                } else {
+                    Log.i(TAG, "No action: " + existingUri);
+                }
+            } else {
+                // Entry doesn't exist. Remove it from the database.
+                Uri deleteUri = FacultyContract.Faculty.CONTENT_URI.buildUpon()
+                        .appendPath(Integer.toString(id)).build();
+                Log.i(TAG, "Scheduling delete: " + deleteUri);
+                batch.add(ContentProviderOperation.newDelete(deleteUri).build());
+                syncResult.stats.numDeletes++;
+            }
+        }
+        c.close();
+
+        // Add new items
+        for (FacultyContent.FacultyItem e : facultyItemHashMap.values()) {
+            Log.i(TAG, "Scheduling insert: entry_id=" + e.id);
+            batch.add(ContentProviderOperation.newInsert(FacultyContract.Faculty.CONTENT_URI)
+                    .withValue(FacultyContract.Faculty.COLUMN_NAME_FACULTY_ID, e.id)
+                    .withValue(FacultyContract.Faculty.COLUMN_NAME_FACULTY_NAME, e.fctName)
+                    .withValue(FacultyContract.Faculty.COLUMN_NAME_INFO, e.content)
+                    .withValue(FacultyContract.Faculty.COLUMN_NAME_URL, e.link)
+                    .withValue(FacultyContract.Faculty.COLUMN_NAME_LOGO, e.logo)
+                    .build());
+            syncResult.stats.numInserts++;
+        }
+        Log.i(TAG, "Merge solution ready. Applying batch update");
+        mContentResolver.applyBatch(FacultyContract.CONTENT_AUTHORITY, batch);
+        mContentResolver.notifyChange(
+                FacultyContract.Faculty.CONTENT_URI, // URI where data was modified
                 null,                           // No local observer
                 false);                         // IMPORTANT: Do not sync to network
         // This sample doesn't support uploads, but if *your* code does, make sure you set

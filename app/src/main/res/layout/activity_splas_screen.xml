@@ -16,7 +16,7 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/logo_chuvsu_gray"
         android:minHeight="256dp"
-        android:minWidth="256dp" />
+        android:minWidth="256dp"/>
 
     <TextView
         android:layout_width="wrap_content"

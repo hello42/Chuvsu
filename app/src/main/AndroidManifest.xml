@@ -25,7 +25,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="sensor" >
+            android:screenOrientation="sensorPortrait" >
         </activity>
         <activity
             android:name="com.ulop.NewsFullView.NewsFullActivity"
@@ -34,20 +34,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ulop.chuvsu.app.MainActivity" />
         </activity>
-
-        <provider
-            android:name="com.ulop.syncadapter.Feed.FeedsProvider"
-            android:authorities="com.ulop.syncadapter"
-            android:exported="true"
-            android:syncable="true" >
-        </provider>
-
-        <provider
-            android:name="com.ulop.syncadapter.facultyInfo.FacultyProvider"
-            android:authorities="com.ulop.syncadapter"
-            android:exported="true"
-            android:syncable="true" >
-        </provider>
 
 
         <service android:name="com.ulop.syncadapter.accounts.AuthenticatorService" >
@@ -81,6 +67,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="com.ulop.syncadapter.ChuvsuContentProvider"
+            android:authorities="com.ulop.syncadapter"
+            android:enabled="true"
+            android:exported="true" >
+        </provider>
     </application>
 
     <uses-permission android:name="android.permission.VIBRATE" />

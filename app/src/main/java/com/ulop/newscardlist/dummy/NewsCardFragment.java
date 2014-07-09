@@ -154,6 +154,7 @@ public class NewsCardFragment extends Fragment
 
         final View rootView = inflater.inflate(R.layout.fragment_univernews_list, container, false);
 
+/*
         Log.i(TAG, "NewsCardFragment view create");
         mAdapter = new SimpleCursorAdapter(
                 getActivity(),       // Current context
@@ -174,7 +175,8 @@ public class NewsCardFragment extends Fragment
                  //final ProgressBar spinner = (ProgressBar) rootView.findViewById(R.id.loading);
 
                  imageLoader.displayImage(str, ((ImageView) view), options);
-                   /*      , new SimpleImageLoadingListener() {
+                   */
+/*      , new SimpleImageLoadingListener() {
                      @Override
                      public void onLoadingStarted(String imageUri, View view) {
                          spinner.setVisibility(View.VISIBLE);
@@ -209,7 +211,8 @@ public class NewsCardFragment extends Fragment
                      public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                          spinner.setVisibility(View.GONE);
                      }
-                 });*/
+                 });*//*
+
                     //((TextView) view).setText(Html.fromHtml(str));
                     return true;
                 } else
@@ -249,6 +252,7 @@ public class NewsCardFragment extends Fragment
 
 
         });
+*/
         return rootView;
     }
 

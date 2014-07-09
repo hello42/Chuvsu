@@ -4,13 +4,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/abc_menu_dropdown_panel_holo_dark">
+    android:background="@drawable/abc_menu_dropdown_panel_holo_light">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff"
-        android:layout_marginTop="-4dp">
+        android:layout_marginTop="-16dp">
 
         <FrameLayout
             android:layout_width="fill_parent"

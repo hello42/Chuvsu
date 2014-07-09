@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.ulop.faculty.FacultyFragment;
 import com.ulop.newscardlist.dummy.NewsCardFragment;
+import com.ulop.syncadapter.ChuvsuDatabase;
 import com.ulop.syncadapter.Feed.FeedsProvider;
 import com.ulop.syncadapter.SyncService;
 import com.ulop.syncadapter.SyncUtils;
@@ -162,7 +163,7 @@ public class MainActivity extends ActionBarActivity
         FileChannel source=null;
         FileChannel destination=null;
         String currentDBPath = "/data/com.ulop.chuvsu.app/databases/chuvsu.db";
-        String backupDBPath = FeedsProvider.FeedDatabase.DATABASE_NAME;
+        String backupDBPath = ChuvsuDatabase.DATABASE_NAME;
         File currentDB = new File(data, currentDBPath);
         File backupDB = new File(sd, backupDBPath);
         try {

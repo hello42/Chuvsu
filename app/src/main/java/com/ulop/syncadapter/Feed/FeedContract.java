@@ -68,4 +68,50 @@ public class FeedContract {
 
         public static final String COLUMN_NAME_IMAGE = "image";
     }
+
+    private static final String PATH_FACULTIES = "faculties";
+
+    public static class Faculty implements BaseColumns {
+        /**
+         * MIME type for lists of entries.
+         */
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.chuvsu.faculties";
+        /**
+         * MIME type for individual entries.
+         */
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.chuvsu.faculty";
+
+        /**
+         * Fully qualified URI for "entry" resources.
+         */
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_FACULTIES).build();
+
+        /**
+         * Table name where records are stored for "entry" resources.
+         */
+        public static final String TABLE_NAME = "faculty";
+        /**
+         * Atom ID. (Note: Not to be confused with the database primary key, which is _ID.
+         */
+        public static final String COLUMN_NAME_FACULTY_ID = "faculty_id";
+        /**
+         * Article title
+         */
+        public static final String COLUMN_NAME_FACULTY_NAME = "namefct";
+        /**
+         * Article hyperlink. Corresponds to the rel="alternate" link in the
+         * Atom spec.
+         */
+        public static final String COLUMN_NAME_LOGO = "logo";
+        /**
+         * Date article was published.
+         */
+        public static final String COLUMN_NAME_URL = "urlfct";
+
+        public static final String COLUMN_NAME_INFO = "info";
+    }
+
 }

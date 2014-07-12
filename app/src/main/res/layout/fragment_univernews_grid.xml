@@ -27,6 +27,8 @@
         android:longClickable="false"
         android:scrollingCache="false"
         android:smoothScrollbar="true"
-        android:stackFromBottom="false"/>
+        android:stackFromBottom="false"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp" />
 
 </FrameLayout>

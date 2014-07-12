@@ -276,7 +276,6 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         c = getContext().getContentResolver().query(Uri.parse("content://com.ulop.syncadapter/faculties"), PROJECTION_FCT, null, null, sortOrder);
         Log.i(TAG, "I'm get cursor. " + c.toString());
 
-        assert c != null;
         Log.i(TAG, "Found " + c.getCount() + " local faculties. Computing merge solution...");
 
         // Find stale data
@@ -380,7 +379,6 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         Cursor c = contentResolver.query(uri, PROJECTION_FCT, null, null, sortOrder);
         Log.i(TAG, "I'm get cursor. " + c.toString());
 
-        assert c != null;
         Log.i(TAG, "Found " + c.getCount() + " local faculties. Computing merge solution...");
 
         // Find stale data

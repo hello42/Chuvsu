@@ -8,12 +8,12 @@
     <ListView
         android:id="@+id/fctlist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:dividerHeight="2dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="8dp"
-        android:layoutMode="clipBounds"/>
+        android:layout_height="wrap_content"
+        android:dividerHeight="0dp"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:divider="#ffd1d1d1"
+        android:paddingTop="8dp" />
 
 
 </FrameLayout>

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff"
-        android:layout_marginTop="-16dp">
+        >
 
         <FrameLayout
             android:layout_width="fill_parent"
@@ -22,6 +22,7 @@
                 android:layout_height="fill_parent">
 
                 <FrameLayout
+
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
 
@@ -35,9 +36,11 @@
 -->
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView"
+                        android:scaleType="fitStart"
+                        android:adjustViewBounds="true"
+                        android:id="@+id/facultyLogo"
                         android:layout_gravity="center_horizontal|top" />
 
                 </FrameLayout>
@@ -78,7 +81,7 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Small Text"
                         android:id="@+id/textView2"
-                        android:layout_gravity="right" />
+                        android:layout_gravity="end" />
                 </LinearLayout>
             </LinearLayout>
 

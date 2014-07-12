@@ -25,14 +25,11 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.ulop.NewsFullView.NewsFullActivity;
 import com.ulop.chuvsu.app.R;
 import com.ulop.syncadapter.Feed.FeedContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -53,7 +50,6 @@ public class NewsCardFragment extends Fragment
 
     private Object mSyncObserverHandle;
 
-    private DisplayImageOptions options;
 
     /**
      * Options menu used to populate ActionBar.
@@ -94,8 +90,8 @@ public class NewsCardFragment extends Fragment
             R.id.Title,
             R.id.textView,
             R.id.textView2,
-            R.id.imageView};
-    private ImageLoader imageLoader = ImageLoader.getInstance();
+            R.id.facultyLogo};
+
 
 
     /**
@@ -132,19 +128,8 @@ public class NewsCardFragment extends Fragment
             String mParam1 = getArguments().getString(ARG_PARAM1);
             String mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(false);
 
-        options = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.abc_ic_clear)
-                .showImageOnFail(R.drawable.abc_ic_go)
-                .resetViewBeforeLoading(true)
-                .cacheOnDisc(true)
-                .cacheInMemory(false)
-                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .considerExifParams(true)
-                .displayer(new SimpleBitmapDisplayer())
-                .build();
 
     }
 
@@ -154,7 +139,6 @@ public class NewsCardFragment extends Fragment
 
         final View rootView = inflater.inflate(R.layout.fragment_univernews_list, container, false);
 
-/*
         Log.i(TAG, "NewsCardFragment view create");
         mAdapter = new SimpleCursorAdapter(
                 getActivity(),       // Current context
@@ -174,46 +158,9 @@ public class NewsCardFragment extends Fragment
                     String str = cursor.getString(i);
                  //final ProgressBar spinner = (ProgressBar) rootView.findViewById(R.id.loading);
 
-                 imageLoader.displayImage(str, ((ImageView) view), options);
-                   */
-/*      , new SimpleImageLoadingListener() {
-                     @Override
-                     public void onLoadingStarted(String imageUri, View view) {
-                         spinner.setVisibility(View.VISIBLE);
-                     }
-
-                     @Override
-                     public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                         String message = null;
-                         switch (failReason.getType()) {
-                             case IO_ERROR:
-                                 message = "Input/Output error";
-                                 break;
-                             case DECODING_ERROR:
-                                 message = "Image can't be decoded";
-                                 break;
-                             case NETWORK_DENIED:
-                                 message = "Downloads are denied";
-                                 break;
-                             case OUT_OF_MEMORY:
-                                 message = "Out Of Memory error";
-                                 break;
-                             case UNKNOWN:
-                                 message = "Unknown error";
-                                 break;
-                         }
-                         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-
-                         spinner.setVisibility(View.GONE);
-                     }
-
-                     @Override
-                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                         spinner.setVisibility(View.GONE);
-                     }
-                 });*//*
-
-                    //((TextView) view).setText(Html.fromHtml(str));
+                 Picasso.with(getActivity()).
+                         load(str).
+                         into((ImageView) view);
                     return true;
                 } else
              if (i == COLUMN_PUBLISHED){
@@ -231,8 +178,6 @@ public class NewsCardFragment extends Fragment
             }
         });
 
-        //View rootView = inflater.inflate(R.layout.fragment_univernews_list, container, false);
-
         AbsListView listView = (AbsListView) rootView.findViewById(R.id.listView1);
 
         listView.setAdapter(mAdapter);
@@ -245,14 +190,13 @@ public class NewsCardFragment extends Fragment
                 Intent intent = new Intent(getActivity(), NewsFullActivity.class);
                 intent.putExtra("position", position);
                 intent.putExtra("count", ((SimpleCursorAdapter) parent.getAdapter()).getCursor().getCount());
-                Log.i("cards", new Integer(position).toString());
+                Log.i("cards", Integer.toString(position));
 
                 startActivity(intent);
             }
 
 
         });
-*/
         return rootView;
     }
 

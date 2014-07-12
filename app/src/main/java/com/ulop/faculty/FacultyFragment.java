@@ -1,22 +1,37 @@
 package com.ulop.faculty;
 
+import android.accounts.Account;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SyncStatusObserver;
+import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.ulop.chuvsu.app.R;
+import com.ulop.syncadapter.Feed.FeedContract;
+import com.ulop.syncadapter.accounts.AuthenticatorService;
+import com.squareup.picasso.Picasso;
 
 /**
  * A fragment representing a list of Items.
@@ -27,11 +42,44 @@ import com.ulop.chuvsu.app.R;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class FacultyFragment extends Fragment {
+public class FacultyFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    private static final String TAG = "NewsCardFragment";
+
+    private SimpleCursorAdapter mAdapter;
+
+    private Object mSyncObserverHandle;
+
+    private Menu mOptionsMenu;
 
 
+    private static final String[] PROJECTION = new String[]{
+            FeedContract.Faculty._ID,
+            FeedContract.Faculty.COLUMN_NAME_FACULTY_NAME,
+            FeedContract.Faculty.COLUMN_NAME_INFO,
+            FeedContract.Faculty.COLUMN_NAME_LOGO,
+            FeedContract.Faculty.COLUMN_NAME_URL
+    };
 
+    private static final int COLUMN_ID = 0;
+    private static final int COLUMN_FACULTY_NAME = 1;
+    private static final int COLUMN_INFO = 2;
+    private static final int COLUMN_LOGO = 3;
+    private static final int COLUMN_URL = 4;
 
+    private static final String[] FROM_COLUMNS = new String[]{
+            FeedContract.Faculty.COLUMN_NAME_FACULTY_NAME,
+          //  FeedContract.Faculty.COLUMN_NAME_INFO,
+            FeedContract.Faculty.COLUMN_NAME_LOGO
+    };
+
+    private static final int[] TO_FIELDS = new int[]{
+            R.id.facultyName,
+           // R.id.facultyInfo,
+            R.id.facultyLogo};
 
 
     // TODO: Rename and change types of parameters
@@ -51,9 +99,6 @@ public class FacultyFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        // TODO: Change Adapter to display your content
-
     }
 
     @Override
@@ -61,30 +106,75 @@ public class FacultyFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_faculty_list, container, false);
 
-        FacultyListAdapter mAdapter; mAdapter = new FacultyListAdapter(getActivity());
+        mAdapter = new SimpleCursorAdapter(
+                getActivity(),       // Current context
+                R.layout.card_of_faculty_withaut_info,  // Layout for individual rows
+                null,                // Cursor
+                FROM_COLUMNS,        // Cursor columns to use
+                TO_FIELDS,           // Layout fields to use
+                0                    // No flags
+        );
 
-        // Set the adapter
-        AbsListView mListView = (AbsListView) view.findViewById(R.id.fctlist);
-        mListView.setAdapter(mAdapter);
-
-        // Set OnItemClickListener so we can be notified on item clicks
-        mListView.setOnItemClickListener(new AbsListView.OnItemClickListener() {
+        mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("Faculty", "onItemClick");
-                FacultyListAdapter facultyListAdapter = ((FacultyListAdapter) parent.getAdapter());
-                String url = ((FacultyContent.FacultyItem) facultyListAdapter.getItem(position)).link;
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                if (columnIndex == COLUMN_LOGO) {
+                    String str = cursor.getString(columnIndex);
+                    //imageLoader.displayImage(str, ((ImageView) view), options);
+                    Picasso.with(getActivity()).load(str).
+                            resize(96, 96).
+                            into((ImageView) view);
+                    return true;
+                }
+                else {
+                    // Let SimpleCursorAdapter handle other fields automatically
+                    return false;
+                }
 
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
             }
         });
 
 
+        AbsListView listView = (AbsListView) view.findViewById(R.id.fctlist);
+
+        listView.setAdapter(mAdapter);
+        getLoaderManager().initLoader(0, null, this);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Cursor cursor = mAdapter.getCursor();
+                cursor.moveToPosition(i);
+                String url = cursor.getString(4);
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+            }
+        });
 
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSyncStatusObserver.onStatusChanged(0);
+
+        // Watch for sync state changes
+        final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
+                ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
+        mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mSyncObserverHandle != null) {
+            ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
+            mSyncObserverHandle = null;
+        }
     }
 
     @Override
@@ -97,6 +187,27 @@ public class FacultyFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
 
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.i(TAG, "Cursor loader create");
+        return new CursorLoader(getActivity(),  // Context
+                FeedContract.Faculty.CONTENT_URI, // URI
+                PROJECTION,                // Projection
+                null,                           // Selection
+                null,                           // Selection args
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mAdapter.changeCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdapter.changeCursor(null);
     }
 
 
@@ -115,89 +226,55 @@ public class FacultyFragment extends Fragment {
         public void onFragmentInteraction(String id);
     }
 
-    public class FacultyListAdapter implements ListAdapter {
-
-        LayoutInflater lInflater;
-
-        public FacultyListAdapter(Context ctx) {
-            lInflater = (LayoutInflater) ctx
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    void setRefreshActionButtonState(boolean refreshing) {
+        if (mOptionsMenu == null) {
+            return;
         }
 
-        @Override
-        public boolean areAllItemsEnabled() {
-            return true;
-        }
-
-        @Override
-        public boolean isEnabled(int position) {
-            return true;
-        }
-
-        @Override
-        public void registerDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public void unregisterDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public int getCount() {
-            return FacultyContent.ITEMS.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return FacultyContent.ITEMS.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = convertView;
-            if (view == null) {
-                view = lInflater.inflate(R.layout.faculty_card, parent, false);
+        final MenuItem refreshItem = mOptionsMenu.findItem(R.id.refresh);
+        if (refreshItem != null) {
+            if (refreshing) {
+                refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+            } else {
+                refreshItem.setActionView(null);
             }
-
-            FacultyContent.FacultyItem facultyItem = (FacultyContent.FacultyItem) getItem(position);
-
-            TextView fctName = (TextView) view.findViewById(R.id.faculty_name);
-            TextView decName = (TextView) view.findViewById(R.id.dec_name);
-            TextView shortInfo = (TextView) view.findViewById(R.id.short_info);
-
-            fctName.setText(facultyItem.fctName);
-            decName.setText(facultyItem.logo);
-            shortInfo.setText(facultyItem.content);
-
-            return view;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return 1;
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return 1;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
         }
     }
+
+    private SyncStatusObserver mSyncStatusObserver = new SyncStatusObserver() {
+        /** Callback invoked with the sync adapter status changes. */
+        @Override
+        public void onStatusChanged(int which) {
+            getActivity().runOnUiThread(new Runnable() {
+                /**
+                 * The SyncAdapter runs on a background thread. To update the UI, onStatusChanged()
+                 * runs on the UI thread.
+                 */
+                @Override
+                public void run() {
+                    // Create a handle to the account that was created by
+                    // SyncService.CreateSyncAccount(). This will be used to query the system to
+                    // see how the sync status has changed.
+                    Account account = AuthenticatorService.GetAccount();
+                    if (account == null) {
+                        // GetAccount() returned an invalid value. This shouldn't happen, but
+                        // we'll set the status to "not refreshing".
+                        setRefreshActionButtonState(false);
+                        return;
+                    }
+
+                    // Test the ContentResolver to see if the sync adapter is active or pending.
+                    // Set the state of the refresh button accordingly.
+                    boolean syncActive = ContentResolver.isSyncActive(
+                            account, FeedContract.CONTENT_AUTHORITY);
+                    boolean syncPending = ContentResolver.isSyncPending(
+                            account, FeedContract.CONTENT_AUTHORITY);
+                    setRefreshActionButtonState(syncActive || syncPending);
+                }
+            });
+        }
+    };
+
+
 
 }

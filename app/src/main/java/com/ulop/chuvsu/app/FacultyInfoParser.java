@@ -55,7 +55,9 @@ public class FacultyInfoParser {
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            try{if(in != null)in.close();}catch(Exception ignored){}
+            try{
+                in.close();
+            }catch(Exception ignored){}
         }
 
         StringBuilder stringBuilder = new StringBuilder();

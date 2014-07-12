@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/abc_menu_dropdown_panel_holo_light">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="#ffffff">
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/facultyLogo"
+                        android:maxHeight="96dp"
+                        android:maxWidth="96dp"
+                        android:minHeight="96dp"
+                        android:minWidth="96dp"
+                        android:src="@android:drawable/ic_menu_help"
+                        android:layout_gravity="center_horizontal|top"/>
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Large Text"
+                        android:id="@+id/facultyName"
+                        android:paddingRight="16dp"
+                        android:paddingEnd="16dp"
+                        android:gravity="center_vertical|center_horizontal" />
+
+                </LinearLayout>
+
+
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -41,7 +41,7 @@
         android:layout_below="@+id/newsText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:gravity="right" />
+        android:gravity="end" />
 
 
 

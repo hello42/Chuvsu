@@ -17,7 +17,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/publicDate"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:inputType="none" />
 
     <TextView

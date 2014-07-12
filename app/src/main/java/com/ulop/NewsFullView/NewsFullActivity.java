@@ -21,12 +21,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.ulop.chuvsu.app.R;
 import com.ulop.syncadapter.Feed.FeedContract;
+import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
 
@@ -118,8 +115,7 @@ public class NewsFullActivity extends ActionBarActivity {
         }
 
         @Override
-        public int getCount() {
-            // Show 3 total pages.
+        public int getCount() {            // Show 3 total pages.
             return count;
         }
 
@@ -142,7 +138,6 @@ public class NewsFullActivity extends ActionBarActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment{
-        private static DisplayImageOptions options;
 
         private static final String[] PROJECTION = new String[]{
                 FeedContract.Entry._ID,
@@ -162,9 +157,7 @@ public class NewsFullActivity extends ActionBarActivity {
         private static final int COLUMN_IMAGE = 4;
 
 
-        ImageLoader imageLoader = ImageLoader.getInstance();
-
-        /**
+         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
@@ -182,20 +175,6 @@ public class NewsFullActivity extends ActionBarActivity {
             args.putInt(ARG_SECTION_NUMBER, position);
             fragment.setArguments(args);
 
-
-            options = new DisplayImageOptions.Builder()
-                    .showImageForEmptyUri(R.drawable.abc_ic_clear)
-                    .showImageOnFail(R.drawable.abc_ic_go)
-                    .resetViewBeforeLoading(true)
-                    .cacheOnDisc(true)
-                    .cacheInMemory(true)
-                    .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-                    .bitmapConfig(Bitmap.Config.RGB_565)
-                    .considerExifParams(true)
-                    .displayer(new SimpleBitmapDisplayer())
-                    .build();
-
-
             return fragment;
         }
 
@@ -210,21 +189,24 @@ public class NewsFullActivity extends ActionBarActivity {
             TextView titleTextView = (TextView) rootView.findViewById(R.id.newTitle);
             TextView contentTextView = (TextView) rootView.findViewById(R.id.body);
             TextView dateTextView = (TextView) rootView.findViewById(R.id.publicDate);
-            ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
+            ImageView imageView = (ImageView) rootView.findViewById(R.id.facultyLogo);
 
             final ContentResolver contentResolver = getActivity().getContentResolver();
+
             String sortOrder = FeedContract.Entry.COLUMN_NAME_NEWS_ID;
             Uri uri = FeedContract.Entry.CONTENT_URI;
             Cursor cursor = contentResolver.query(uri, PROJECTION, null, null, sortOrder + " desc");
+
             int pos = getArguments().getInt(ARG_SECTION_NUMBER);
-            Log.i("full", new Integer(pos).toString());
+
             cursor.move(pos);
 
             titleTextView.setText(cursor.getString(COLUMN_TITLE));
             contentTextView.setText(cursor.getString(COLUMN_CONTENT));
             dateTextView.setText(cursor.getString(COLUMN_PUBLISHED).substring(0, 10));
             String str = cursor.getString(COLUMN_IMAGE);
-            imageLoader.displayImage(str, imageView, options);
+            Picasso.with(getActivity()).load(str).into(imageView);
+
 
             return rootView;
         }

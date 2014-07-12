@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
 
 public class SplasScreenActivity extends Activity {
 
@@ -14,6 +16,12 @@ public class SplasScreenActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splas_screen);
+        Picasso.with(this).
+
+                load(R.drawable.logo_chuvsu_gray).
+
+                into((ImageView) findViewById(R.id.facultyLogo));
+
         getActionBar().hide();
 
         new Handler().postDelayed(new Runnable(){

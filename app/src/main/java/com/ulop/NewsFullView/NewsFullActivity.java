@@ -94,10 +94,11 @@ public class NewsFullActivity extends ActionBarActivity {
         int id = item.getItemId();
         if (id == R.id.share) {
             TextView contentTextView = (TextView) findViewById(R.id.body);
-            Intent.createChooser(new Intent(Intent.ACTION_SEND)
-                    //.setType("text/plain")
-                    .putExtra(Intent.EXTRA_TEXT, "lala"), "Dummy title");
-            Log.i("full", (String) contentTextView.getText());
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, contentTextView.getText());
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent, "Поделиться новостью"));
             return true;
         }
         return super.onOptionsItemSelected(item);

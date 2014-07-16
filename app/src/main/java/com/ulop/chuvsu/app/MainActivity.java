@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.ulop.faculty.FacultyFragment;
 import com.ulop.newscardlist.dummy.NewsCardFragment;
 import com.ulop.syncadapter.ChuvsuDatabase;
-import com.ulop.syncadapter.Feed.FeedsProvider;
 import com.ulop.syncadapter.SyncService;
 import com.ulop.syncadapter.SyncUtils;
 

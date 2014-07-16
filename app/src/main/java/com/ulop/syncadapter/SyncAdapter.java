@@ -37,8 +37,8 @@ import java.util.HashMap;
 class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String TAG = "SyncAdapter";
-    private static final String FEED_URL = "http://chuvsu.evgenkorobkov.ru/news/last.json";
-    private static final String FACULTY_URL = "http://chuvsu.evgenkorobkov.ru/facults.json";
+    private static final String FEED_URL = "http://chuvsu.vtrave.com/news/last.json";
+    private static final String FACULTY_URL = "http://chuvsu.vtrave.com/facults.json";
 
     /**
      * Network connection timeout, in milliseconds.
@@ -173,7 +173,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // Get list of all items
         Log.i(TAG, "Fetching local entries for merge");
-        Uri uri = com.ulop.syncadapter.Feed.FeedContract.Entry.CONTENT_URI; // Get all entries
+        Uri uri = FeedContract.Entry.CONTENT_URI; // Get all entries
 
         Log.i(TAG, "Will work with " + uri);
         String sortOrder = com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_NEWS_ID;

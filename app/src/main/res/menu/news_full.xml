@@ -7,9 +7,10 @@
     <item
         android:id="@+id/share"
         android:title="@string/action_share"
-        android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:icon="@drawable/abc_ic_menu_share_holo_light"
+        android:actionProviderClass=
+            "android.widget.ShareActionProvider"
         />
     
 </menu>

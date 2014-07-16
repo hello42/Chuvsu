@@ -7,7 +7,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SyncStatusObserver;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -230,7 +229,7 @@ public class NewsCardFragment extends Fragment
                 PROJECTION,                // Projection
                 null,                           // Selection
                 null,                           // Selection args
-                FeedContract.Entry.COLUMN_NAME_NEWS_ID + " desc");
+                FeedContract.Entry.COLUMN_NAME_PUBLISHED + " desc");
     }
 
     @Override

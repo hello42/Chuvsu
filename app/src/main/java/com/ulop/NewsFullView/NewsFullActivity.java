@@ -3,7 +3,6 @@ package com.ulop.NewsFullView;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.InputDevice;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +21,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
-import com.ulop.chuvsu.app.NewsNotification;
 import com.ulop.chuvsu.app.R;
 import com.ulop.syncadapter.Feed.FeedContract;
 import com.squareup.picasso.Picasso;
@@ -32,6 +32,7 @@ import java.util.Locale;
 
 public class NewsFullActivity extends ActionBarActivity {
 
+    private static final String TAG = "FullView";
     private int count;
 
 
@@ -75,6 +76,7 @@ public class NewsFullActivity extends ActionBarActivity {
 
 
 
+
     }
 
 
@@ -91,13 +93,16 @@ public class NewsFullActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        ShareActionProvider mShareActionProvider = new ShareActionProvider(getApplication());
+       // mShareActionProvider.
         int id = item.getItemId();
         if (id == R.id.share) {
             TextView contentTextView = (TextView) findViewById(R.id.body);
-            Intent.createChooser(new Intent(Intent.ACTION_SEND)
-                    //.setType("text/plain")
-                    .putExtra(Intent.EXTRA_TEXT, "lala"), "Dummy title");
-            Log.i("full", (String) contentTextView.getText());
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, contentTextView.getText());
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent, "Поделиться новостью"));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -204,7 +209,7 @@ public class NewsFullActivity extends ActionBarActivity {
 
             final ContentResolver contentResolver = getActivity().getContentResolver();
 
-            String sortOrder = FeedContract.Entry.COLUMN_NAME_NEWS_ID;
+            String sortOrder = FeedContract.Entry.COLUMN_NAME_PUBLISHED;
             Uri uri = FeedContract.Entry.CONTENT_URI;
             Cursor cursor = contentResolver.query(uri, PROJECTION, null, null, sortOrder + " desc");
 
@@ -218,6 +223,25 @@ public class NewsFullActivity extends ActionBarActivity {
             String str = cursor.getString(COLUMN_IMAGE);
             Picasso.with(getActivity()).load(str).into(imageView);
 
+
+            ScrollView scrollView = (ScrollView) rootView. findViewById(R.id.scroll);
+            scrollView.setOnGenericMotionListener(new View.OnGenericMotionListener() {
+                @Override
+                public boolean onGenericMotion(View view, MotionEvent motionEvent) {
+                    if (motionEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER)) {
+                        switch (motionEvent.getAction()) {
+                            case MotionEvent.ACTION_HOVER_MOVE:
+                                // process the mouse hover movement...
+                                return true;
+                            case MotionEvent.ACTION_SCROLL:
+
+                                Log.i(TAG, "scroool");
+                                return true;
+                        }
+                    }
+                    return true;
+                }
+            });
 
 
             return rootView;

@@ -20,7 +20,7 @@ import android.support.v4.app.NotificationCompat;
  * This class makes heavy use of the {@link NotificationCompat.Builder} helper
  * class to create notifications in a backward-compatible way.
  */
-class NewsNotification {
+public class NewsNotification {
     /**
      * The unique identifier for this type of notification.
      */
@@ -47,14 +47,13 @@ class NewsNotification {
 
         // This image is used as the notification's large icon (thumbnail).
         // TODO: Remove this if your notification has no relevant thumbnail.
-        final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.example_picture);
+        final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 
 
         final String ticker = exampleString;
         final String title = res.getString(
-                R.string.news_notification_title_template, exampleString);
-        final String text = res.getString(
-                R.string.news_notification_placeholder_text_template, exampleString);
+                R.string.app_name, exampleString);
+        final String text = "Информаиця:";
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
@@ -64,7 +63,7 @@ class NewsNotification {
 
                 // Set required fields, including the small icon, the
                 // notification title, and text.
-                .setSmallIcon(R.drawable.ic_stat_news)
+                .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(title)
                 .setContentText(text)
 

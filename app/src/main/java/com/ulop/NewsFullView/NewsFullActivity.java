@@ -16,11 +16,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.ulop.chuvsu.app.NewsNotification;
 import com.ulop.chuvsu.app.R;
 import com.ulop.syncadapter.Feed.FeedContract;
 import com.squareup.picasso.Picasso;
@@ -47,6 +50,8 @@ public class NewsFullActivity extends ActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         /*
@@ -69,6 +74,7 @@ public class NewsFullActivity extends ActionBarActivity {
         mViewPager.setCurrentItem(nPosition);
 
 
+
     }
 
 
@@ -86,7 +92,12 @@ public class NewsFullActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.refresh) {
+        if (id == R.id.share) {
+            TextView contentTextView = (TextView) findViewById(R.id.body);
+            Intent.createChooser(new Intent(Intent.ACTION_SEND)
+                    //.setType("text/plain")
+                    .putExtra(Intent.EXTRA_TEXT, "lala"), "Dummy title");
+            Log.i("full", (String) contentTextView.getText());
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -206,6 +217,7 @@ public class NewsFullActivity extends ActionBarActivity {
             dateTextView.setText(cursor.getString(COLUMN_PUBLISHED).substring(0, 10));
             String str = cursor.getString(COLUMN_IMAGE);
             Picasso.with(getActivity()).load(str).into(imageView);
+
 
 
             return rootView;

@@ -24,6 +24,8 @@ public class SplasScreenActivity extends Activity {
 
         getActionBar().hide();
 
+        NewsNotification.notify(this, "Приложение запущено!", 10);
+
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {

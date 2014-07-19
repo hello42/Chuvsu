@@ -29,6 +29,7 @@ public class FeedParser {
                         object.getString("body"), object.getString("updated_at"), "");
                 newsCard.image = object.getString("image");
                 newsCard.id = object.getString("id");
+
                 newsList.add(0, newsCard);
             }
 
@@ -60,7 +61,6 @@ public class FeedParser {
             }catch(Exception ignored){}
         }
 
-        StringBuilder stringBuilder = new StringBuilder();
         JSONArray jsonArray = null;
         try {
             jsonArray = new JSONArray(sb.toString());

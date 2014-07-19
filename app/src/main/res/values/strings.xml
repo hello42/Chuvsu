@@ -21,5 +21,6 @@
     <string name="new_news_notification_title_template">New news: %1$s</string>
     <string name="title_activity_splas_screen">SplasScreenActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="default_abiturient_news_url">none</string>
 
 </resources>

@@ -25,7 +25,7 @@ import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.ulop.chuvsu.app.R;
-import com.ulop.syncadapter.Feed.FeedContract;
+import com.ulop.syncadapter.Info.InfoContract;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
@@ -156,11 +156,11 @@ public class NewsFullActivity extends ActionBarActivity {
     public static class PlaceholderFragment extends Fragment{
 
         private static final String[] PROJECTION = new String[]{
-                FeedContract.Entry._ID,
-                FeedContract.Entry.COLUMN_NAME_TITLE,
-                FeedContract.Entry.COLUMN_NAME_CONTENT,
-                FeedContract.Entry.COLUMN_NAME_PUBLISHED,
-                FeedContract.Entry.COLUMN_NAME_IMAGE
+                InfoContract.Entry._ID,
+                InfoContract.Entry.COLUMN_NAME_TITLE,
+                InfoContract.Entry.COLUMN_NAME_CONTENT,
+                InfoContract.Entry.COLUMN_NAME_PUBLISHED,
+                InfoContract.Entry.COLUMN_NAME_IMAGE
         };
 
         private static final int COLUMN_ID = 0;
@@ -209,8 +209,8 @@ public class NewsFullActivity extends ActionBarActivity {
 
             final ContentResolver contentResolver = getActivity().getContentResolver();
 
-            String sortOrder = FeedContract.Entry.COLUMN_NAME_PUBLISHED;
-            Uri uri = FeedContract.Entry.CONTENT_URI;
+            String sortOrder = InfoContract.Entry.COLUMN_NAME_PUBLISHED;
+            Uri uri = InfoContract.Entry.CONTENT_URI;
             Cursor cursor = contentResolver.query(uri, PROJECTION, null, null, sortOrder + " desc");
 
             int pos = getArguments().getInt(ARG_SECTION_NUMBER);

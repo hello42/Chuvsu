@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.ulop.AbiturientNewsFragment;
+import com.ulop.abiturients.AbiturientNewsFragment;
 import com.ulop.faculty.FacultyFragment;
 import com.ulop.newscardlist.dummy.NewsCardFragment;
 import com.ulop.syncadapter.ChuvsuDatabase;

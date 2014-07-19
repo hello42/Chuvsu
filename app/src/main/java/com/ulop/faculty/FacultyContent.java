@@ -1,10 +1,5 @@
 package com.ulop.faculty;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Helper class for providing sample content for user interfaces created by
  * Android template wizards.
@@ -13,26 +8,6 @@ import java.util.Map;
  */
 public class FacultyContent {
 
-    /**
-     * An array of sample (dummy) items.
-     */
-    public static List<FacultyItem> ITEMS = new ArrayList<FacultyItem>();
-
-    /**
-     * A map of sample (dummy) items, by ID.
-     */
-    private static final Map<String, FacultyItem> ITEM_MAP = new HashMap<String, FacultyItem>();
-
-
-
-    private static void addItem(FacultyItem item) {
-        ITEMS.add(item);
-        ITEM_MAP.put(item.fctName, item);
-    }
-
-    /**
-     * A dummy item representing a piece of content.
-     */
     public static class FacultyItem {
         public String fctName;
         public String content;

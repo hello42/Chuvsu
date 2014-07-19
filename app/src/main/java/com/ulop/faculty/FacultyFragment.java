@@ -24,7 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.ulop.chuvsu.app.R;
-import com.ulop.syncadapter.Feed.FeedContract;
+import com.ulop.syncadapter.Info.InfoContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 import com.squareup.picasso.Picasso;
 
@@ -52,11 +52,11 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
 
 
     private static final String[] PROJECTION = new String[]{
-            FeedContract.Faculty._ID,
-            FeedContract.Faculty.COLUMN_NAME_FACULTY_NAME,
-            FeedContract.Faculty.COLUMN_NAME_INFO,
-            FeedContract.Faculty.COLUMN_NAME_LOGO,
-            FeedContract.Faculty.COLUMN_NAME_URL
+            InfoContract.Faculty._ID,
+            InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME,
+            InfoContract.Faculty.COLUMN_NAME_INFO,
+            InfoContract.Faculty.COLUMN_NAME_LOGO,
+            InfoContract.Faculty.COLUMN_NAME_URL
     };
 
     private static final int COLUMN_ID = 0;
@@ -66,9 +66,9 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
     private static final int COLUMN_URL = 4;
 
     private static final String[] FROM_COLUMNS = new String[]{
-            FeedContract.Faculty.COLUMN_NAME_FACULTY_NAME,
-          //  FeedContract.Faculty.COLUMN_NAME_INFO,
-            FeedContract.Faculty.COLUMN_NAME_LOGO
+            InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME,
+          //  InfoContract.Faculty.COLUMN_NAME_INFO,
+            InfoContract.Faculty.COLUMN_NAME_LOGO
     };
 
     private static final int[] TO_FIELDS = new int[]{
@@ -188,7 +188,7 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.i(TAG, "Cursor loader create");
         return new CursorLoader(getActivity(),  // Context
-                FeedContract.Faculty.CONTENT_URI, // URI
+                InfoContract.Faculty.CONTENT_URI, // URI
                 PROJECTION,                // Projection
                 null,                           // Selection
                 null,                           // Selection args
@@ -261,9 +261,9 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
                     // Test the ContentResolver to see if the sync adapter is active or pending.
                     // Set the state of the refresh button accordingly.
                     boolean syncActive = ContentResolver.isSyncActive(
-                            account, FeedContract.CONTENT_AUTHORITY);
+                            account, InfoContract.CONTENT_AUTHORITY);
                     boolean syncPending = ContentResolver.isSyncPending(
-                            account, FeedContract.CONTENT_AUTHORITY);
+                            account, InfoContract.CONTENT_AUTHORITY);
                     setRefreshActionButtonState(syncActive || syncPending);
                 }
             });

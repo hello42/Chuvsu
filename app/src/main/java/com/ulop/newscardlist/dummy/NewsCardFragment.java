@@ -13,6 +13,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +27,7 @@ import android.widget.TextView;
 
 import com.ulop.NewsFullView.NewsFullActivity;
 import com.ulop.chuvsu.app.R;
-import com.ulop.syncadapter.Feed.FeedContract;
+import com.ulop.syncadapter.Info.InfoContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 import com.squareup.picasso.Picasso;
 
@@ -59,11 +60,11 @@ public class NewsCardFragment extends Fragment
      * Projection for querying the content provider.
      */
     private static final String[] PROJECTION = new String[]{
-            FeedContract.Entry._ID,
-            FeedContract.Entry.COLUMN_NAME_TITLE,
-            FeedContract.Entry.COLUMN_NAME_CONTENT,
-            FeedContract.Entry.COLUMN_NAME_PUBLISHED,
-            FeedContract.Entry.COLUMN_NAME_IMAGE
+            InfoContract.Entry._ID,
+            InfoContract.Entry.COLUMN_NAME_TITLE,
+            InfoContract.Entry.COLUMN_NAME_CONTENT,
+            InfoContract.Entry.COLUMN_NAME_PUBLISHED,
+            InfoContract.Entry.COLUMN_NAME_IMAGE
     };
 
     private static final int COLUMN_ID = 0;
@@ -79,10 +80,10 @@ public class NewsCardFragment extends Fragment
      * List of Cursor columns to read from when preparing an adapter to populate the ListView.
      */
     private static final String[] FROM_COLUMNS = new String[]{
-            FeedContract.Entry.COLUMN_NAME_TITLE,
-            FeedContract.Entry.COLUMN_NAME_CONTENT,
-            FeedContract.Entry.COLUMN_NAME_PUBLISHED,
-            FeedContract.Entry.COLUMN_NAME_IMAGE
+            InfoContract.Entry.COLUMN_NAME_TITLE,
+            InfoContract.Entry.COLUMN_NAME_CONTENT,
+            InfoContract.Entry.COLUMN_NAME_PUBLISHED,
+            InfoContract.Entry.COLUMN_NAME_IMAGE
     };
 
     private static final int[] TO_FIELDS = new int[]{
@@ -140,7 +141,7 @@ public class NewsCardFragment extends Fragment
 
         Log.i(TAG, "NewsCardFragment view create");
         mAdapter = new SimpleCursorAdapter(
-                getActivity(),       // Current context
+                (ActionBarActivity) getActivity(),       // Current context
                 R.layout.card_news,  // Layout for individual rows
                 null,                // Cursor
                 FROM_COLUMNS,        // Cursor columns to use
@@ -225,11 +226,11 @@ public class NewsCardFragment extends Fragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.i(TAG, "Cursor loader create");
         return new CursorLoader(getActivity(),  // Context
-                FeedContract.Entry.CONTENT_URI, // URI
+                InfoContract.Entry.CONTENT_URI, // URI
                 PROJECTION,                // Projection
                 null,                           // Selection
                 null,                           // Selection args
-                FeedContract.Entry.COLUMN_NAME_PUBLISHED + " desc");
+                InfoContract.Entry.COLUMN_NAME_PUBLISHED + " desc");
     }
 
     @Override
@@ -282,9 +283,9 @@ public class NewsCardFragment extends Fragment
                     // Test the ContentResolver to see if the sync adapter is active or pending.
                     // Set the state of the refresh button accordingly.
                     boolean syncActive = ContentResolver.isSyncActive(
-                            account, FeedContract.CONTENT_AUTHORITY);
+                            account, InfoContract.CONTENT_AUTHORITY);
                     boolean syncPending = ContentResolver.isSyncPending(
-                            account, FeedContract.CONTENT_AUTHORITY);
+                            account, InfoContract.CONTENT_AUTHORITY);
                     setRefreshActionButtonState(syncActive || syncPending);
                 }
             });

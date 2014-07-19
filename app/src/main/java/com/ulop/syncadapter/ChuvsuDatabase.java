@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.ulop.syncadapter.Feed.FeedContract;
+import com.ulop.syncadapter.Info.InfoContract;
 
 
 /**
@@ -21,30 +21,31 @@ public class ChuvsuDatabase extends SQLiteOpenHelper{
     private static final String COMMA_SEP = ",";
     /** SQL statement to create "entry" table. */
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + com.ulop.syncadapter.Feed.FeedContract.Entry.TABLE_NAME + " (" +
-                    com.ulop.syncadapter.Feed.FeedContract.Entry._ID + " INTEGER PRIMARY KEY," +
-                    com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_NEWS_ID + TYPE_TEXT + COMMA_SEP +
-                    com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_TITLE    + TYPE_TEXT + COMMA_SEP +
-                    com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_CONTENT + TYPE_TEXT + COMMA_SEP +
-                    com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_PUBLISHED + TYPE_TEXT + COMMA_SEP +
-                    com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_IMAGE + TYPE_TEXT + ")";
+            "CREATE TABLE " + InfoContract.Entry.TABLE_NAME + " (" +
+                    InfoContract.Entry._ID + " INTEGER PRIMARY KEY," +
+                    InfoContract.Entry.COLUMN_NAME_NEWS_ID + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.Entry.COLUMN_NAME_TITLE    + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.Entry.COLUMN_NAME_CONTENT + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.Entry.COLUMN_NAME_PUBLISHED + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.Entry.COLUMN_NAME_IMAGE + TYPE_TEXT + ")";
 
     /** SQL statement to drop "entry" table. */
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + com.ulop.syncadapter.Feed.FeedContract.Entry.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + InfoContract.Entry.TABLE_NAME;
 
+    /** SQL statement to create "Faculty" table. */
     private static final String SQL_CREATE_FACULTIES =
-            "CREATE TABLE " + FeedContract.Faculty.TABLE_NAME + " (" +
-                    FeedContract.Faculty._ID + " INTEGER PRIMARY KEY," +
-                    FeedContract.Faculty.COLUMN_NAME_FACULTY_NAME + TYPE_TEXT + COMMA_SEP +
-                    FeedContract.Faculty.COLUMN_NAME_FACULTY_ID    + TYPE_TEXT + COMMA_SEP +
-                    FeedContract.Faculty.COLUMN_NAME_LOGO + TYPE_TEXT + COMMA_SEP +
-                    FeedContract.Faculty.COLUMN_NAME_URL + TYPE_TEXT + COMMA_SEP +
-                    FeedContract.Faculty.COLUMN_NAME_INFO + TYPE_TEXT + ")";
+            "CREATE TABLE " + InfoContract.Faculty.TABLE_NAME + " (" +
+                    InfoContract.Faculty._ID + " INTEGER PRIMARY KEY," +
+                    InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.Faculty.COLUMN_NAME_FACULTY_ID    + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.Faculty.COLUMN_NAME_LOGO + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.Faculty.COLUMN_NAME_URL + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.Faculty.COLUMN_NAME_INFO + TYPE_TEXT + ")";
 
     /** SQL statement to drop "entry" table. */
     private static final String SQL_DELETE_FACULTIES =
-            "DROP TABLE IF EXISTS " + FeedContract.Faculty.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + InfoContract.Faculty.TABLE_NAME;
 
 
 

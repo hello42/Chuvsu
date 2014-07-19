@@ -23,7 +23,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import com.ulop.syncadapter.Feed.FeedContract;
+import com.ulop.syncadapter.Info.InfoContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 
 
@@ -32,7 +32,7 @@ import com.ulop.syncadapter.accounts.AuthenticatorService;
  */
 public class SyncUtils {
     private static final long SYNC_FREQUENCY = 60 * 60;  // 1 hour (in seconds)
-    private static final String CONTENT_AUTHORITY = FeedContract.CONTENT_AUTHORITY;
+    private static final String CONTENT_AUTHORITY = InfoContract.CONTENT_AUTHORITY;
     private static final String PREF_SETUP_COMPLETE = "setup_complete";
 
     /**
@@ -88,7 +88,7 @@ public class SyncUtils {
         b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         ContentResolver.requestSync(
                 AuthenticatorService.GetAccount(),      // Sync account
-                FeedContract.CONTENT_AUTHORITY, // Content authority
+                InfoContract.CONTENT_AUTHORITY, // Content authority
                 b);                                      // Extras
     }
 }

@@ -1,4 +1,4 @@
-package com.ulop.syncadapter.Feed;
+package com.ulop.syncadapter.Info;
 
 import android.content.ContentResolver;
 import android.net.Uri;
@@ -7,8 +7,8 @@ import android.provider.BaseColumns;
 /**
  * Created by ulop on 12.03.14.
  */
-public class FeedContract {
-    public FeedContract() {
+public class InfoContract {
+    public InfoContract() {
     }
 
     /**
@@ -114,4 +114,50 @@ public class FeedContract {
         public static final String COLUMN_NAME_INFO = "info";
     }
 
+    private static final String PATH_ABITNEWS = "abitnews";
+
+    public static class AbitNews implements BaseColumns {
+        /**
+         * MIME type for lists of entries.
+         */
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.chuvsu.abitnews";
+        /**
+         * MIME type for individual entries.
+         */
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.chuvsu.abitnew";
+
+        /**
+         * Fully qualified URI for "entry" resources.
+         */
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ABITNEWS).build();
+
+        /**
+         * Table name where records are stored for "entry" resources.
+         */
+        public static final String TABLE_NAME = "abitnew";
+        /**
+         * Atom ID. (Note: Not to be confused with the database primary key, which is _ID.
+         */
+        public static final String COLUMN_NAME_NEWS_ID = "news_id";
+        /**
+         * Article title
+         */
+        public static final String COLUMN_NAME_TITLE = "title";
+        /**
+         * Article hyperlink. Corresponds to the rel="alternate" link in the
+         * Atom spec.
+         */
+        public static final String COLUMN_NAME_CONTENT = "content";
+        /**
+         * Date article was published.
+         */
+        public static final String COLUMN_NAME_PUBLISHED = "published";
+
+        public static final String COLUMN_NAME_IMAGE = "image";
+
+        public static final String COLUMN_NAME_NOTIFICATE = "notificate";
+    }
 }

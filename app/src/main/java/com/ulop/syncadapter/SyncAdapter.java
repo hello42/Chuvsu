@@ -18,7 +18,7 @@ import com.ulop.chuvsu.app.FacultyInfoParser;
 import com.ulop.chuvsu.app.FeedParser;
 import com.ulop.faculty.FacultyContent;
 import com.ulop.newscardlist.dummy.NewsCardAdapter;
-import com.ulop.syncadapter.Feed.FeedContract;
+import com.ulop.syncadapter.Info.InfoContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 
 
@@ -56,12 +56,12 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     private final ContentResolver mContentResolver;
 
     private static final String[] PROJECTION = new String[] {
-            com.ulop.syncadapter.Feed.FeedContract.Entry._ID,
-            com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_NEWS_ID,
-            com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_TITLE,
-            com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_CONTENT,
-            com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_PUBLISHED,
-            com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_IMAGE};
+            InfoContract.Entry._ID,
+            InfoContract.Entry.COLUMN_NAME_NEWS_ID,
+            InfoContract.Entry.COLUMN_NAME_TITLE,
+            InfoContract.Entry.COLUMN_NAME_CONTENT,
+            InfoContract.Entry.COLUMN_NAME_PUBLISHED,
+            InfoContract.Entry.COLUMN_NAME_IMAGE};
 
     // Constants representing column positions from PROJECTION.
     private static final int COLUMN_ID = 0;
@@ -73,11 +73,11 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     //for faculties
     private static final String[] PROJECTION_FCT = new String[] {
-            com.ulop.syncadapter.Feed.FeedContract.Faculty._ID,
-            com.ulop.syncadapter.Feed.FeedContract.Faculty.COLUMN_NAME_FACULTY_NAME,
-            com.ulop.syncadapter.Feed.FeedContract.Faculty.COLUMN_NAME_LOGO,
-            com.ulop.syncadapter.Feed.FeedContract.Faculty.COLUMN_NAME_URL,
-            com.ulop.syncadapter.Feed.FeedContract.Faculty.COLUMN_NAME_INFO};
+            InfoContract.Faculty._ID,
+            InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME,
+            InfoContract.Faculty.COLUMN_NAME_LOGO,
+            InfoContract.Faculty.COLUMN_NAME_URL,
+            InfoContract.Faculty.COLUMN_NAME_INFO};
 
     // Constants representing column positions from PROJECTION.
     public static final int COLUMN_ID_FCT = 0;
@@ -90,7 +90,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         mContentResolver = context.getContentResolver();
-        ContentResolver.setSyncAutomatically(AuthenticatorService.GetAccount(), FeedContract.CONTENT_AUTHORITY, true);
+        ContentResolver.setSyncAutomatically(AuthenticatorService.GetAccount(), InfoContract.CONTENT_AUTHORITY, true);
 
         //mContentResolver.re
     }
@@ -173,10 +173,10 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // Get list of all items
         Log.i(TAG, "Fetching local entries for merge");
-        Uri uri = FeedContract.Entry.CONTENT_URI; // Get all entries
+        Uri uri = InfoContract.Entry.CONTENT_URI; // Get all entries
 
         Log.i(TAG, "Will work with " + uri);
-        String sortOrder = com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_NEWS_ID;
+        String sortOrder = InfoContract.Entry.COLUMN_NAME_NEWS_ID;
         Cursor c = mContentResolver.query(uri, PROJECTION, null, null, sortOrder);
         assert c != null;
         Log.i(TAG, "Found " + c.getCount() + " local entries. Computing merge solution...");
@@ -201,7 +201,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 // Entry exists. Remove from entry map to prevent insert later.
                 entryMap.remove(entryId);
                 // Check to see if the entry needs to be updated
-                Uri existingUri = com.ulop.syncadapter.Feed.FeedContract.Entry.CONTENT_URI.buildUpon()
+                Uri existingUri = InfoContract.Entry.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(id)).build();
                 if ((match.title != null && !match.title.equals(title)) ||
                         (match.content != null && !match.content.equals(link)) ||
@@ -209,10 +209,10 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                     // Update existing record
                     Log.i(TAG, "Scheduling update: " + existingUri);
                     batch.add(ContentProviderOperation.newUpdate(existingUri)
-                            .withValue(com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_TITLE, title)
-                            .withValue(com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_CONTENT, link)
-                            .withValue(com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_PUBLISHED, published)
-                            .withValue(com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_IMAGE, image)
+                            .withValue(InfoContract.Entry.COLUMN_NAME_TITLE, title)
+                            .withValue(InfoContract.Entry.COLUMN_NAME_CONTENT, link)
+                            .withValue(InfoContract.Entry.COLUMN_NAME_PUBLISHED, published)
+                            .withValue(InfoContract.Entry.COLUMN_NAME_IMAGE, image)
                             .build());
                     syncResult.stats.numUpdates++;
                 } else {
@@ -220,7 +220,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             } else {
                 // Entry doesn't exist. Remove it from the database.
-                Uri deleteUri = com.ulop.syncadapter.Feed.FeedContract.Entry.CONTENT_URI.buildUpon()
+                Uri deleteUri = InfoContract.Entry.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(id)).build();
                 Log.i(TAG, "Scheduling delete: " + deleteUri);
                 batch.add(ContentProviderOperation.newDelete(deleteUri).build());
@@ -232,18 +232,18 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         // Add new items
         for (NewsCardAdapter.NewsCard e : entryMap.values()) {
             Log.i(TAG, "Scheduling insert: entry_id=" + e.id);
-            batch.add(ContentProviderOperation.newInsert(com.ulop.syncadapter.Feed.FeedContract.Entry.CONTENT_URI)
-                    .withValue(com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_NEWS_ID, e.id)
-                    .withValue(com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_TITLE, e.title)
-                    .withValue(com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_CONTENT, e.content)
-                    .withValue(com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_PUBLISHED, e.publicTime)
-                    .withValue(com.ulop.syncadapter.Feed.FeedContract.Entry.COLUMN_NAME_IMAGE, e.image)
+            batch.add(ContentProviderOperation.newInsert(InfoContract.Entry.CONTENT_URI)
+                    .withValue(InfoContract.Entry.COLUMN_NAME_NEWS_ID, e.id)
+                    .withValue(InfoContract.Entry.COLUMN_NAME_TITLE, e.title)
+                    .withValue(InfoContract.Entry.COLUMN_NAME_CONTENT, e.content)
+                    .withValue(InfoContract.Entry.COLUMN_NAME_PUBLISHED, e.publicTime)
+                    .withValue(InfoContract.Entry.COLUMN_NAME_IMAGE, e.image)
                     .build());
             syncResult.stats.numInserts++;
         }
         Log.i(TAG, "Merge solution ready. Applying batch update");
-        mContentResolver.applyBatch(FeedContract.CONTENT_AUTHORITY, batch);
-        mContentResolver.notifyChange(FeedContract.Entry.CONTENT_URI, // URI where data was modified
+        mContentResolver.applyBatch(InfoContract.CONTENT_AUTHORITY, batch);
+        mContentResolver.notifyChange(InfoContract.Entry.CONTENT_URI, // URI where data was modified
                 null,                           // No local observer
                 false);                         // IMPORTANT: Do not sync to network
         // This sample doesn't support uploads, but if *your* code does, make sure you set
@@ -268,10 +268,10 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // Get list of all items
         Log.i(TAG, "Fetching local faculties for merge");
-        uri = FeedContract.Faculty.CONTENT_URI; // Get all entries
+        uri = InfoContract.Faculty.CONTENT_URI; // Get all entries
         Log.i(TAG, "Will work with " + uri + " " + contentResolver);
 
-        sortOrder = FeedContract.Faculty.COLUMN_NAME_FACULTY_ID;
+        sortOrder = InfoContract.Faculty.COLUMN_NAME_FACULTY_ID;
         //c = mContentResolver.query(uri, PROJECTION_FCT, null, null, sortOrder);
         c = getContext().getContentResolver().query(Uri.parse("content://com.ulop.syncadapter/faculties"), PROJECTION_FCT, null, null, sortOrder);
         Log.i(TAG, "I'm get cursor. " + c.toString());
@@ -298,7 +298,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 // Entry exists. Remove from entry map to prevent insert later.
                 facultyItemHashMap.remove(fctId);
                 // Check to see if the entry needs to be updated
-                Uri existingUri = FeedContract.Faculty.CONTENT_URI.buildUpon()
+                Uri existingUri = InfoContract.Faculty.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(id)).build();
                 Log.i(TAG, "Existing uri  " + existingUri);
 
@@ -308,11 +308,11 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                     // Update existing record
                     Log.i(TAG, "Scheduling update: " + existingUri);
                     batch.add(ContentProviderOperation.newUpdate(existingUri)
-                            .withValue(FeedContract.Faculty.COLUMN_NAME_FACULTY_NAME, name)
-                            .withValue(FeedContract.Faculty.COLUMN_NAME_FACULTY_ID, fctId)
-                            .withValue(FeedContract.Faculty.COLUMN_NAME_INFO, info)
-                            .withValue(FeedContract.Faculty.COLUMN_NAME_URL, url)
-                            .withValue(FeedContract.Faculty.COLUMN_NAME_LOGO, logo)
+                            .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME, name)
+                            .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_ID, fctId)
+                            .withValue(InfoContract.Faculty.COLUMN_NAME_INFO, info)
+                            .withValue(InfoContract.Faculty.COLUMN_NAME_URL, url)
+                            .withValue(InfoContract.Faculty.COLUMN_NAME_LOGO, logo)
                             .build());
                     syncResult.stats.numUpdates++;
                 } else {
@@ -320,7 +320,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             } else {
                 // Entry doesn't exist. Remove it from the database.
-                Uri deleteUri = FeedContract.Faculty.CONTENT_URI.buildUpon()
+                Uri deleteUri = InfoContract.Faculty.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(id)).build();
                 Log.i(TAG, "Scheduling delete: " + deleteUri);
                 batch.add(ContentProviderOperation.newDelete(deleteUri).build());
@@ -332,19 +332,19 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         // Add new items
         for (FacultyContent.FacultyItem e : facultyItemHashMap.values()) {
             Log.i(TAG, "Scheduling insert: entry_id=" + e.id);
-            batch.add(ContentProviderOperation.newInsert(FeedContract.Faculty.CONTENT_URI)
-                    .withValue(FeedContract.Faculty.COLUMN_NAME_FACULTY_ID, e.id)
-                    .withValue(FeedContract.Faculty.COLUMN_NAME_FACULTY_NAME, e.fctName)
-                    .withValue(FeedContract.Faculty.COLUMN_NAME_INFO, e.content)
-                    .withValue(FeedContract.Faculty.COLUMN_NAME_URL, e.link)
-                    .withValue(FeedContract.Faculty.COLUMN_NAME_LOGO, e.logo)
+            batch.add(ContentProviderOperation.newInsert(InfoContract.Faculty.CONTENT_URI)
+                    .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_ID, e.id)
+                    .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME, e.fctName)
+                    .withValue(InfoContract.Faculty.COLUMN_NAME_INFO, e.content)
+                    .withValue(InfoContract.Faculty.COLUMN_NAME_URL, e.link)
+                    .withValue(InfoContract.Faculty.COLUMN_NAME_LOGO, e.logo)
                     .build());
             syncResult.stats.numInserts++;
         }
         Log.i(TAG, "Merge solution ready. Applying batch update");
-        mContentResolver.applyBatch(FeedContract.CONTENT_AUTHORITY, batch);
+        mContentResolver.applyBatch(InfoContract.CONTENT_AUTHORITY, batch);
         mContentResolver.notifyChange(
-                FeedContract.Faculty.CONTENT_URI, // URI where data was modified
+                InfoContract.Faculty.CONTENT_URI, // URI where data was modified
                 null,                           // No local observer
                 false);                         // IMPORTANT: Do not sync to network
 
@@ -372,10 +372,10 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // Get list of all items
         Log.i(TAG, "Fetching local faculties for merge");
-        Uri uri = FeedContract.Faculty.CONTENT_URI; // Get all entries
+        Uri uri = InfoContract.Faculty.CONTENT_URI; // Get all entries
         Log.i(TAG, "Will work with " + uri + " " + contentResolver);
 
-        String sortOrder = FeedContract.Faculty.COLUMN_NAME_FACULTY_ID;
+        String sortOrder = InfoContract.Faculty.COLUMN_NAME_FACULTY_ID;
         Cursor c = contentResolver.query(uri, PROJECTION_FCT, null, null, sortOrder);
         Log.i(TAG, "I'm get cursor. " + c.toString());
 
@@ -401,7 +401,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 // Entry exists. Remove from entry map to prevent insert later.
                 facultyItemHashMap.remove(fctId);
                 // Check to see if the entry needs to be updated
-                Uri existingUri = FeedContract.Faculty.CONTENT_URI.buildUpon()
+                Uri existingUri = InfoContract.Faculty.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(id)).build();
                 Log.i(TAG, "Existing uri  " + existingUri);
 
@@ -411,11 +411,11 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                     // Update existing record
                     Log.i(TAG, "Scheduling update: " + existingUri);
                     batch.add(ContentProviderOperation.newUpdate(existingUri)
-                            .withValue(FeedContract.Faculty.COLUMN_NAME_FACULTY_NAME, name)
-                            .withValue(FeedContract.Faculty.COLUMN_NAME_FACULTY_ID, fctId)
-                            .withValue(FeedContract.Faculty.COLUMN_NAME_INFO, info)
-                            .withValue(FeedContract.Faculty.COLUMN_NAME_URL, url)
-                            .withValue(FeedContract.Faculty.COLUMN_NAME_LOGO, logo)
+                            .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME, name)
+                            .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_ID, fctId)
+                            .withValue(InfoContract.Faculty.COLUMN_NAME_INFO, info)
+                            .withValue(InfoContract.Faculty.COLUMN_NAME_URL, url)
+                            .withValue(InfoContract.Faculty.COLUMN_NAME_LOGO, logo)
                             .build());
                     syncResult.stats.numUpdates++;
                 } else {
@@ -423,7 +423,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             } else {
                 // Entry doesn't exist. Remove it from the database.
-                Uri deleteUri = FeedContract.Faculty.CONTENT_URI.buildUpon()
+                Uri deleteUri = InfoContract.Faculty.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(id)).build();
                 Log.i(TAG, "Scheduling delete: " + deleteUri);
                 batch.add(ContentProviderOperation.newDelete(deleteUri).build());
@@ -435,19 +435,19 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         // Add new items
         for (FacultyContent.FacultyItem e : facultyItemHashMap.values()) {
             Log.i(TAG, "Scheduling insert: entry_id=" + e.id);
-            batch.add(ContentProviderOperation.newInsert(FeedContract.Faculty.CONTENT_URI)
-                    .withValue(FeedContract.Faculty.COLUMN_NAME_FACULTY_ID, e.id)
-                    .withValue(FeedContract.Faculty.COLUMN_NAME_FACULTY_NAME, e.fctName)
-                    .withValue(FeedContract.Faculty.COLUMN_NAME_INFO, e.content)
-                    .withValue(FeedContract.Faculty.COLUMN_NAME_URL, e.link)
-                    .withValue(FeedContract.Faculty.COLUMN_NAME_LOGO, e.logo)
+            batch.add(ContentProviderOperation.newInsert(InfoContract.Faculty.CONTENT_URI)
+                    .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_ID, e.id)
+                    .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME, e.fctName)
+                    .withValue(InfoContract.Faculty.COLUMN_NAME_INFO, e.content)
+                    .withValue(InfoContract.Faculty.COLUMN_NAME_URL, e.link)
+                    .withValue(InfoContract.Faculty.COLUMN_NAME_LOGO, e.logo)
                     .build());
             syncResult.stats.numInserts++;
         }
         Log.i(TAG, "Merge solution ready. Applying batch update");
-        mContentResolver.applyBatch(FeedContract.CONTENT_AUTHORITY, batch);
+        mContentResolver.applyBatch(InfoContract.CONTENT_AUTHORITY, batch);
         mContentResolver.notifyChange(
-                FeedContract.Faculty.CONTENT_URI, // URI where data was modified
+                InfoContract.Faculty.CONTENT_URI, // URI where data was modified
                 null,                           // No local observer
                 false);                         // IMPORTANT: Do not sync to network
         // This sample doesn't support uploads, but if *your* code does, make sure you set

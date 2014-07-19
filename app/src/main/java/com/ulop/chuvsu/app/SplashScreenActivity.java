@@ -1,10 +1,9 @@
 package com.ulop.chuvsu.app;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.net.Uri;
 
@@ -12,7 +11,7 @@ import com.squareup.picasso.Picasso;
 import com.ulop.syncadapter.Feed.FeedContract;
 
 
-public class SplashScreenActivity extends Activity {
+public class SplashScreenActivity extends ActionBarActivity {
 
     private static final long SPLASH_DISPLAY_LENGTH = 2000;
     private static final String[] PROJECTION = new String[]{
@@ -31,7 +30,7 @@ public class SplashScreenActivity extends Activity {
            //     into((ImageView) findViewById(R.id.facultyLogo));
 
 
-        getActionBar().hide();
+        getSupportActionBar().hide();
 
         Uri uri = FeedContract.Entry.CONTENT_URI;
         Log.i(TAG, "Will work with " + uri);

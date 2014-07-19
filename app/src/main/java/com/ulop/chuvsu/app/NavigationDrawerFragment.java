@@ -11,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,6 +39,7 @@ public class NavigationDrawerFragment extends Fragment {
      * expands it. This shared preference tracks this.
      */
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    private static final String TAG = "Drawer";
 
     /**
      * A pointer to the current callbacks instance (the Activity).
@@ -104,7 +106,8 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
                         getString(R.string.title_section3),
-                        getString(R.string.facultetsmenu)
+                        getString(R.string.facultetsmenu),
+                        getString(R.string.abiturients)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -237,6 +240,16 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerLayout != null && isDrawerOpen()) {
            // inflater.inflate(R.menu.global, menu);
             showGlobalContextActionBar();
+
+            Log.i(TAG, String.valueOf(mCurrentSelectedPosition));
+
+        }
+        if (mDrawerLayout != null && !isDrawerOpen() && mCurrentSelectedPosition == 4) {
+            // inflater.inflate(R.menu.global, menu);
+            showActionBarTabs();
+
+            Log.i(TAG, String.valueOf(mCurrentSelectedPosition));
+
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -246,8 +259,6 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -261,6 +272,11 @@ public class NavigationDrawerFragment extends Fragment {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setTitle(R.string.app_name);
+    }
+
+    private void showActionBarTabs(){
+      ActionBar actionBar = getActionBar();
+      actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
     }
 
     private ActionBar getActionBar() {

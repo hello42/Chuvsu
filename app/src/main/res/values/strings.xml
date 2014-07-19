@@ -16,6 +16,8 @@
     <string name="title_activity_news_full">Новости</string>
     <string name="news_notification_placeholder_text_template">LOLKA</string>
     <string name="facultetsmenu">Факультеты</string>
+    <string name="abiturients">Абитуриент</string>
+    <string name="important">Важное</string>
     <string name="new_news_notification_title_template">New news: %1$s</string>
     <string name="title_activity_splas_screen">SplasScreenActivity</string>
     <string name="hello_world">Hello world!</string>

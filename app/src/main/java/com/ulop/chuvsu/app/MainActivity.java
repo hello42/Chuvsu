@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.ulop.AbiturientNewsFragment;
 import com.ulop.faculty.FacultyFragment;
 import com.ulop.newscardlist.dummy.NewsCardFragment;
 import com.ulop.syncadapter.ChuvsuDatabase;
@@ -35,6 +36,7 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private int curentSelectedItem = 0;
 
 
     @Override
@@ -74,6 +76,7 @@ public class MainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         //update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
+        curentSelectedItem = position;
         switch (position){
             case 0:
                 fragmentManager.beginTransaction()
@@ -83,6 +86,11 @@ public class MainActivity extends ActionBarActivity
             case 3:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, FacultyFragment.newInstance())
+                        .commit();
+                break;
+            case 4:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, AbiturientNewsFragment.newInstance())
                         .commit();
                 break;
             default: break;
@@ -119,7 +127,9 @@ public class MainActivity extends ActionBarActivity
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
            // getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
+            if (curentSelectedItem != 4) {
+                restoreActionBar();
+            }
             return true;
         }
         return super.onCreateOptionsMenu(menu);

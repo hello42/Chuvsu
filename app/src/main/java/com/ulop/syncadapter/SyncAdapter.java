@@ -129,14 +129,6 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Log.i(TAG, "Streaming data from network: " + location);
                 stream = downloadUrl(location);
                 updateLocalFeedData(stream, syncResult);
-
-                //stream.close();
-
-                //Log.i(TAG, "Streaming data from network: " + fctLocation);
-                //stream = downloadUrl(fctLocation);
-                //updateLocalFacultyData(stream, syncResult);
-                // Makes sure that the InputStream is closed after the app is
-                // finished using it.
             } finally {
                 if (stream != null) {
                     stream.close();
@@ -170,6 +162,14 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     void updateLocalFeedData(final InputStream stream, final SyncResult syncResult)
             throws IOException, RemoteException,
             OperationApplicationException, ParseException {
+        updateNews(stream, syncResult);
+        updateFacultyInfo(syncResult);
+        updateAbiturientNews(syncResult);
+
+
+    }
+
+    private void updateNews(InputStream stream, SyncResult syncResult) throws IOException, RemoteException, OperationApplicationException {
         final FeedParser feedParser = new FeedParser();
         //final ContentResolver contentResolver = getContext().getContentResolver();
 
@@ -263,8 +263,14 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 false);                         // IMPORTANT: Do not sync to network
         // This sample doesn't support uploads, but if *your* code does, make sure you set
         // syncToNetwork=false in the line above to prevent duplicate syncs.
+    }
 
-
+    private void updateFacultyInfo(SyncResult syncResult) throws IOException, RemoteException, OperationApplicationException {
+        ArrayList<ContentProviderOperation> batch;
+        Uri uri;
+        String sortOrder;
+        Cursor c;
+        int id;
         final FacultyInfoParser fctParser = new FacultyInfoParser();
         final ContentResolver contentResolver = getContext().getContentResolver();
 
@@ -362,8 +368,19 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 InfoContract.Faculty.CONTENT_URI, // URI where data was modified
                 null,                           // No local observer
                 false);                         // IMPORTANT: Do not sync to network
+    }
 
-
+    private void updateAbiturientNews(SyncResult syncResult) throws IOException, RemoteException, OperationApplicationException {
+        ArrayList<ContentProviderOperation> batch;
+        Uri uri;
+        String sortOrder;
+        Cursor c;
+        int id;
+        String entryId;
+        String title;
+        String published;
+        String link;
+        String image;
         final AbiturientNewsPatser aNewsParser = new AbiturientNewsPatser();
 
         Log.i(TAG, "Parsing stream as Atom abiturient news");
@@ -404,7 +421,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             AbiturientInfoItem match = anewsMap.get(title);
             if (match != null) {
                 // Entry exists. Remove from entry map to prevent insert later.
-                entryMap.remove(title);
+                anewsMap.remove(title);
                 // Check to see if the entry needs to be updated
                 Uri existingUri = InfoContract.AbitNews.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(id)).build();
@@ -455,8 +472,6 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 false);                         // IMPORTANT: Do not sync to network
         // This sample doesn't support uploads, but if *your* code does, make sure you set
         // syncToNetwork=false in the line above to prevent duplicate syncs.
-
-
     }
 
     private InputStream downloadUrl(final URL url) throws IOException {

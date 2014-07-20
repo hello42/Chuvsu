@@ -23,7 +23,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="default_abiturient_news_url">none</string>
     <string name="feed_url">http://chuvsu.vtrave.com/news/last.json</string>
-    <string name="faculty_info_url">ttp://chuvsu.vtrave.com/facults.json</string>
+    <string name="faculty_info_url">http://chuvsu.vtrave.com/facults.json</string>
     <string name="abiturient_news_url">http://chuvsu.vtrave.com/abiturients.json</string>
 
 </resources>

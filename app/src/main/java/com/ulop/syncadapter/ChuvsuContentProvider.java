@@ -197,10 +197,10 @@ public class ChuvsuContentProvider extends ContentProvider {
             case ROUTE_ABITNEWS_ID:
                 // Return a single entry, by ID.
                 String id3 = uri.getLastPathSegment();
-                builder.where(InfoContract.Faculty._ID + "=?", id3);
+                builder.where(InfoContract.AbitNews._ID + "=?", id3);
             case ROUTE_ABITNEWS:
                 // Return all known entries.
-                builder.table(InfoContract.Faculty.TABLE_NAME)
+                builder.table(InfoContract.AbitNews.TABLE_NAME)
                         .where(selection, selectionArgs);
                 Cursor c3 = builder.query(db, projection, sortOrder);
                 // Note: Notification URI must be manually set here for loaders to correctly

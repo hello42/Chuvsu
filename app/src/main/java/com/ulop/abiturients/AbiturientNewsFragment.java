@@ -2,12 +2,17 @@ package com.ulop.abiturients;
 
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 
 import android.support.v4.app.FragmentTransaction;
@@ -17,9 +22,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
+import android.widget.AbsListView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.ulop.chuvsu.app.R;
+import com.ulop.syncadapter.Info.InfoContract;
 
 import java.util.Locale;
 
@@ -38,8 +47,6 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
     private OnFragmentInteractionListener mListener;
 
     private View mRoot;
-    private TabHost mTabHost;
-    private int mCurrentTab;
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -88,6 +95,7 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
             // the adapter. Also specify this Activity object, which implements
             // the TabListener interface, as the callback (listener) for when
             // this tab is selected.
+
             actionBar.addTab(
                     actionBar.newTab()
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
@@ -193,7 +201,15 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position) {
+                case 0:
+                    return NewsFragment.newInstance(0);
+                case 1:
+                    return NewsFragment.newInstance(1);
+                case 2:
+                    return NewsFragment.newInstance(3);
+            }
+            return null;
         }
 
         @Override
@@ -204,14 +220,13 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
+                    return "Новости";
                 case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
+                    return "Важно";
                 case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                    return "Ссылки";
             }
             return null;
         }
@@ -226,6 +241,9 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private static int NEWS_LIST = 0;
+        private static int IMPORTANT_NEWS_LIST = 1;
+        private static int LINKS_LIST = 2;
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -246,8 +264,171 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            int pos = getArguments().getInt(ARG_SECTION_NUMBER);
+            switch (pos){
+                case 0: createNewsList(rootView); break;
+                case 1: createImportantNewsList(rootView); break;
+                case 2: createLinksList(rootView); break;
+                default: new IllegalArgumentException("");
+
+            }
+
             return rootView;
+        }
+
+        private void createLinksList(View view) {
+
+        }
+
+        private void createImportantNewsList(View view) {
+
+        }
+
+        private void createNewsList(View view) {
         }
     }
 
+    public static class NewsFragment extends Fragment
+            implements LoaderManager.LoaderCallbacks<Cursor>{
+
+        private SimpleCursorAdapter mAdapter;
+
+        private static final String[] PROJECTION = new String[]{
+                InfoContract.AbitNews._ID,
+                InfoContract.AbitNews.COLUMN_NAME_TITLE,
+                InfoContract.AbitNews.COLUMN_NAME_CONTENT,
+                InfoContract.AbitNews.COLUMN_NAME_PUBLISHED,
+                InfoContract.AbitNews.COLUMN_NAME_IMAGE
+        };
+
+        private static final int COLUMN_PUBLISHED = 3;
+        private static final int COLUMN_IMAGE = 4;
+
+        /**
+         * List of Cursor columns to read from when preparing an adapter to populate the ListView.
+         */
+        private static final String[] FROM_COLUMNS = new String[]{
+                InfoContract.AbitNews.COLUMN_NAME_TITLE,
+                InfoContract.AbitNews.COLUMN_NAME_CONTENT,
+                InfoContract.AbitNews.COLUMN_NAME_PUBLISHED,
+                InfoContract.AbitNews.COLUMN_NAME_IMAGE
+        };
+
+        private static final int[] TO_FIELDS = new int[]{
+                R.id.Title,
+                R.id.textView,
+                R.id.textView2,
+                R.id.facultyLogo};
+
+
+
+        private int NEWS_TYPE;
+
+        public static NewsFragment newInstance(int newsType){
+            NewsFragment fragment = new NewsFragment();
+
+            Bundle args = new Bundle();
+            args.putInt("NEWS_TYPE", newsType);
+            fragment.setArguments(args);
+
+            return  fragment;
+        }
+
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            Log.i(TAG, "Cursor loader create");
+            int nType = getArguments().getInt("NEWS_TYPE");
+            String selection;
+
+            if (nType == 0) {
+                selection = InfoContract.AbitNews.COLUMN_NAME_NOTIFICATE + "=0";
+            } else {
+                selection = InfoContract.AbitNews.COLUMN_NAME_NOTIFICATE + "=1";
+            }
+
+
+            return new CursorLoader(getActivity(),  // Context
+                    InfoContract.AbitNews.CONTENT_URI, // URI
+                    PROJECTION,                // Projection
+                    selection,                           // Selection
+                    null,                           // Selection args
+                    InfoContract.AbitNews.COLUMN_NAME_PUBLISHED + " desc");
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            mAdapter.changeCursor(data);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+            mAdapter.changeCursor(null);
+        }
+
+        @Override
+        public void onAttach(Activity activity) {
+            super.onAttach(activity);
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (getArguments() != null) {
+                NEWS_TYPE = getArguments().getInt("NEWS_TYPE");
+            }
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_faculty_list, container, false);
+
+            mAdapter = new SimpleCursorAdapter(
+                    (ActionBarActivity) getActivity(),       // Current context
+                    R.layout.card_news,  // Layout for individual rows
+                    null,                // Cursor
+                    FROM_COLUMNS,        // Cursor columns to use
+                    TO_FIELDS,           // Layout fields to use
+                    0                    // No flags
+            );
+
+            Cursor c = mAdapter.getCursor();
+
+            mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+                @Override
+                public boolean setViewValue(View view, Cursor cursor, int i) {
+                    if (i == COLUMN_IMAGE) {
+                        String str = cursor.getString(i);
+                        //final ProgressBar spinner = (ProgressBar) rootView.findViewById(R.id.loading);
+
+                        Picasso.with(getActivity()).
+                                load(str).
+                                into((ImageView) view);
+                        return true;
+                    } else
+                    if (i == COLUMN_PUBLISHED){
+                        TextView tW = (TextView) view.findViewById(R.id.textView2);
+                        String str = cursor.getString(i);
+                        str = str.substring(0, 6);
+                        tW.setText(str);
+                        return  true;
+                    }
+                    else {
+                        // Let SimpleCursorAdapter handle other fields automatically
+                        return false;
+                    }
+
+                }
+            });
+
+            AbsListView listView = (AbsListView) rootView.findViewById(R.id.fctlist);
+
+            listView.setAdapter(mAdapter);
+            getLoaderManager().initLoader(0, null, this);
+
+
+            return rootView;
+        }
+
+
+    }
 }

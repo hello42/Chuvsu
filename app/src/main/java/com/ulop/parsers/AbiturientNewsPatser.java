@@ -25,10 +25,11 @@ public class AbiturientNewsPatser extends BaseParser {
                 JSONObject object = jsonArray.getJSONObject(i);
                 AbiturientInfoItem aNew = new AbiturientInfoItem(object.getString("title"), object.getString("body"));
                 aNew.url = object.getString("url");
-                aNew.image = object.getString("logo");
+                aNew.image = object.getString("img");
                 aNew.id = object.getInt("id");
-                aNew.notification = object.getInt("notificate");
-                aNew.publicTime = object.getString("updated_at");
+                Boolean aBoolean = object.getBoolean("notification");
+                aNew.notification = (aBoolean) ? 1 : 0;
+                aNew.publicTime = "none =("; //object.getString("updated_at");
                 newsList.add(0, aNew);
             }
 

@@ -67,7 +67,9 @@ public class NewsNotification {
                 .setContentTitle(title)
                 .setContentText(text)
 
-                // All fields below this line are optional.
+                        //<editor-fold desc="Description">
+                        // All fields below this line are optional.
+                        //</editor-fold>
 
                 // Use a default priority (recognized on devices running Android
                 // 4.1 or later)

@@ -12,9 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by ulop on 19.07.14.
  */
-public abstract class BaseParser {
-
-     public abstract ArrayList<Object> parse(InputStream in);
+public class BaseParser {
 
     JSONArray getJSONArray(InputStream in) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));

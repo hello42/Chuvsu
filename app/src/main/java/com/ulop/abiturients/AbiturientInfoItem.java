@@ -9,7 +9,8 @@ public class AbiturientInfoItem {
     public String body;
     public String url;
     public String image;
-    public boolean notification;
+    public int notification;
+    public String publicTime;
 
     public AbiturientInfoItem(int id, String title, String body, String url, String image) {
         this.id = id;

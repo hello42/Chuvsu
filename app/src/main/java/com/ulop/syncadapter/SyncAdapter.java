@@ -14,8 +14,11 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.ulop.chuvsu.app.FacultyInfoParser;
-import com.ulop.chuvsu.app.FeedParser;
+import com.ulop.abiturients.AbiturientInfoItem;
+import com.ulop.chuvsu.app.R;
+import com.ulop.parsers.AbiturientNewsPatser;
+import com.ulop.parsers.FacultyInfoParser;
+import com.ulop.parsers.FeedParser;
 import com.ulop.faculty.FacultyContent;
 import com.ulop.newscardlist.dummy.NewsCardAdapter;
 import com.ulop.syncadapter.Info.InfoContract;
@@ -37,8 +40,9 @@ import java.util.HashMap;
 class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String TAG = "SyncAdapter";
-    private static final String FEED_URL = "http://chuvsu.vtrave.com/news/last.json";
-    private static final String FACULTY_URL = "http://chuvsu.vtrave.com/facults.json";
+    private String FEED_URL = getContext().getString(R.string.feed_url);
+    private String FACULTY_URL = getContext().getString(R.string.faculty_info_url);
+    private String ABITNEWS_URL = getContext().getString(R.string.abiturient_news_url);
 
     /**
      * Network connection timeout, in milliseconds.
@@ -70,6 +74,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final int COLUMN_CONTENT = 3;
     private static final int COLUMN_PUBLISHED = 4;
     private static final int COLUMN_IMAGE = 5;
+    private static final int COLUMN_NOTIFICATE = 6;
 
     //for faculties
     private static final String[] PROJECTION_FCT = new String[] {
@@ -86,6 +91,16 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final int COLUMN_INFO = 4;
     private static final int COLUMN_URL = 3;
     private static final int COLUMN_LOGO = 2;
+
+    //for abiturient news
+    private static final String[] PROJECTION_ANEWS = new String[] {
+            InfoContract.AbitNews._ID,
+            InfoContract.AbitNews.COLUMN_NAME_NEWS_ID,
+            InfoContract.AbitNews.COLUMN_NAME_TITLE,
+            InfoContract.AbitNews.COLUMN_NAME_CONTENT,
+            InfoContract.AbitNews.COLUMN_NAME_PUBLISHED,
+            InfoContract.AbitNews.COLUMN_NAME_IMAGE,
+            InfoContract.AbitNews.COLUMN_NAME_NOTIFICATE};
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -349,73 +364,61 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 false);                         // IMPORTANT: Do not sync to network
 
 
-    }
+        final AbiturientNewsPatser aNewsParser = new AbiturientNewsPatser();
 
-    void updateLocalFacultyData(final InputStream stream, final SyncResult syncResult)
-            throws IOException, RemoteException,
-            OperationApplicationException, ParseException {
-        final FacultyInfoParser fctParser = new FacultyInfoParser();
-        final ContentResolver contentResolver = getContext().getContentResolver();
-
-        Log.i(TAG, "Parsing stream as Atom faculty");
-        final ArrayList<FacultyContent.FacultyItem> fctCards = fctParser.parse(stream);
-        Log.i(TAG, "Parsing complete. Found " + fctCards.size() + " faculties");
+        Log.i(TAG, "Parsing stream as Atom abiturient news");
+        final ArrayList<AbiturientInfoItem> aNewsCards = aNewsParser.parse(downloadUrl(new URL(ABITNEWS_URL)));
+        Log.i(TAG, "Parsing complete. Found " + aNewsCards.size() + " abiturient news");
 
 
-        ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+        batch = new ArrayList<ContentProviderOperation>();
+
 
         // Build hash table of incoming entries
-        HashMap<String, FacultyContent.FacultyItem> facultyItemHashMap = new HashMap<String, FacultyContent.FacultyItem>();
-        for (FacultyContent.FacultyItem e : fctCards) {
-            facultyItemHashMap.put(e.id, e);
+        HashMap<String, AbiturientInfoItem> anewsMap = new HashMap<String, AbiturientInfoItem>();
+        for (AbiturientInfoItem e : aNewsCards) {
+            anewsMap.put(e.title, e);
         }
 
         // Get list of all items
-        Log.i(TAG, "Fetching local faculties for merge");
-        Uri uri = InfoContract.Faculty.CONTENT_URI; // Get all entries
-        Log.i(TAG, "Will work with " + uri + " " + contentResolver);
+        Log.i(TAG, "Fetching local abitnews for merge");
+        uri = InfoContract.AbitNews.CONTENT_URI; // Get all entries
 
-        String sortOrder = InfoContract.Faculty.COLUMN_NAME_FACULTY_ID;
-        Cursor c = contentResolver.query(uri, PROJECTION_FCT, null, null, sortOrder);
-        Log.i(TAG, "I'm get cursor. " + c.toString());
-
-        Log.i(TAG, "Found " + c.getCount() + " local faculties. Computing merge solution...");
+        Log.i(TAG, "Will work with " + uri);
+        sortOrder = InfoContract.AbitNews.COLUMN_NAME_NEWS_ID;
+        c = mContentResolver.query(uri, PROJECTION_ANEWS, null, null, sortOrder);
+        assert c != null;
+        Log.i(TAG, "Found " + c.getCount() + " local entries. Computing merge solution...");
 
         // Find stale data
-        int id;
-        String fctId;
-        String name;
-        String url;
-        String info;
-        String logo;
+        int notificate;
         while (c.moveToNext()) {
             syncResult.stats.numEntries++;
-            id = c.getInt(COLUMN_ID_FCT);
-            fctId = c.getString(COLUMN_FCT_ID);
-            name = c.getString(COLUMN_NAME);
-            info = c.getString(COLUMN_INFO);
-            url = c.getString(COLUMN_URL);
-            logo = c.getString(COLUMN_LOGO);
-            FacultyContent.FacultyItem match = facultyItemHashMap.get(fctId);
+            id = c.getInt(COLUMN_ID);
+            entryId = c.getString(COLUMN_NEWS_ID);
+            title = c.getString(COLUMN_TITLE);
+            published = c.getString(COLUMN_PUBLISHED);
+            link = c.getString(COLUMN_CONTENT);
+            image = c.getString(COLUMN_IMAGE);
+            notificate = c.getInt(COLUMN_NOTIFICATE);
+            AbiturientInfoItem match = anewsMap.get(title);
             if (match != null) {
                 // Entry exists. Remove from entry map to prevent insert later.
-                facultyItemHashMap.remove(fctId);
+                entryMap.remove(title);
                 // Check to see if the entry needs to be updated
-                Uri existingUri = InfoContract.Faculty.CONTENT_URI.buildUpon()
+                Uri existingUri = InfoContract.AbitNews.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(id)).build();
-                Log.i(TAG, "Existing uri  " + existingUri);
-
-                if ((match.fctName != null && !match.fctName.equals(name)) ||
-                        (match.content != null && !match.content.equals(info)) ||
-                        (!match.link.equals(url))) {
+                if ((match.title != null && !match.title.equals(title)) ||
+                        (match.body != null && !match.body.equals(link)) ||
+                        (!match.publicTime.equals(published))) {
                     // Update existing record
                     Log.i(TAG, "Scheduling update: " + existingUri);
                     batch.add(ContentProviderOperation.newUpdate(existingUri)
-                            .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME, name)
-                            .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_ID, fctId)
-                            .withValue(InfoContract.Faculty.COLUMN_NAME_INFO, info)
-                            .withValue(InfoContract.Faculty.COLUMN_NAME_URL, url)
-                            .withValue(InfoContract.Faculty.COLUMN_NAME_LOGO, logo)
+                            .withValue(InfoContract.AbitNews.COLUMN_NAME_TITLE, title)
+                            .withValue(InfoContract.AbitNews.COLUMN_NAME_CONTENT, link)
+                            .withValue(InfoContract.AbitNews.COLUMN_NAME_PUBLISHED, published)
+                            .withValue(InfoContract.AbitNews.COLUMN_NAME_IMAGE, image)
+                            .withValue(InfoContract.AbitNews.COLUMN_NAME_NOTIFICATE, notificate)
                             .build());
                     syncResult.stats.numUpdates++;
                 } else {
@@ -423,7 +426,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             } else {
                 // Entry doesn't exist. Remove it from the database.
-                Uri deleteUri = InfoContract.Faculty.CONTENT_URI.buildUpon()
+                Uri deleteUri = InfoContract.AbitNews.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(id)).build();
                 Log.i(TAG, "Scheduling delete: " + deleteUri);
                 batch.add(ContentProviderOperation.newDelete(deleteUri).build());
@@ -433,25 +436,27 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         c.close();
 
         // Add new items
-        for (FacultyContent.FacultyItem e : facultyItemHashMap.values()) {
-            Log.i(TAG, "Scheduling insert: entry_id=" + e.id);
-            batch.add(ContentProviderOperation.newInsert(InfoContract.Faculty.CONTENT_URI)
-                    .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_ID, e.id)
-                    .withValue(InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME, e.fctName)
-                    .withValue(InfoContract.Faculty.COLUMN_NAME_INFO, e.content)
-                    .withValue(InfoContract.Faculty.COLUMN_NAME_URL, e.link)
-                    .withValue(InfoContract.Faculty.COLUMN_NAME_LOGO, e.logo)
+        for (AbiturientInfoItem e : anewsMap.values()) {
+            Log.i(TAG, "Scheduling insert: abitnews_id=" + e.id);
+            batch.add(ContentProviderOperation.newInsert(InfoContract.AbitNews.CONTENT_URI)
+                    .withValue(InfoContract.AbitNews.COLUMN_NAME_NEWS_ID, e.id)
+                    .withValue(InfoContract.AbitNews.COLUMN_NAME_TITLE, e.title)
+                    .withValue(InfoContract.AbitNews.COLUMN_NAME_CONTENT, e.body)
+                    .withValue(InfoContract.AbitNews.COLUMN_NAME_PUBLISHED, e.publicTime)
+                    .withValue(InfoContract.AbitNews.COLUMN_NAME_IMAGE, e.image)
+                    .withValue(InfoContract.AbitNews.COLUMN_NAME_NOTIFICATE, e.notification)
                     .build());
             syncResult.stats.numInserts++;
         }
         Log.i(TAG, "Merge solution ready. Applying batch update");
         mContentResolver.applyBatch(InfoContract.CONTENT_AUTHORITY, batch);
-        mContentResolver.notifyChange(
-                InfoContract.Faculty.CONTENT_URI, // URI where data was modified
+        mContentResolver.notifyChange(InfoContract.AbitNews.CONTENT_URI, // URI where data was modified
                 null,                           // No local observer
                 false);                         // IMPORTANT: Do not sync to network
         // This sample doesn't support uploads, but if *your* code does, make sure you set
         // syncToNetwork=false in the line above to prevent duplicate syncs.
+
+
     }
 
     private InputStream downloadUrl(final URL url) throws IOException {

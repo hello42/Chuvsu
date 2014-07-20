@@ -12,7 +12,7 @@ import com.ulop.syncadapter.Info.InfoContract;
  */
 public class ChuvsuDatabase extends SQLiteOpenHelper{
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     /** Filename for SQLite file. */
     public static final String DATABASE_NAME = "chuvsu.db";
 
@@ -43,10 +43,25 @@ public class ChuvsuDatabase extends SQLiteOpenHelper{
                     InfoContract.Faculty.COLUMN_NAME_URL + TYPE_TEXT + COMMA_SEP +
                     InfoContract.Faculty.COLUMN_NAME_INFO + TYPE_TEXT + ")";
 
-    /** SQL statement to drop "entry" table. */
+    /** SQL statement to drop "faculty" table. */
     private static final String SQL_DELETE_FACULTIES =
             "DROP TABLE IF EXISTS " + InfoContract.Faculty.TABLE_NAME;
 
+
+    /** SQL statement to create "abitnews" table. */
+    private static final String SQL_CREATE_ABITNEWS =
+            "CREATE TABLE " + InfoContract.AbitNews.TABLE_NAME + " (" +
+                    InfoContract.AbitNews._ID + " INTEGER PRIMARY KEY," +
+                    InfoContract.AbitNews.COLUMN_NAME_NEWS_ID + TYPE_INTEGER + COMMA_SEP +
+                    InfoContract.AbitNews.COLUMN_NAME_TITLE    + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.AbitNews.COLUMN_NAME_CONTENT + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.AbitNews.COLUMN_NAME_PUBLISHED + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.AbitNews.COLUMN_NAME_IMAGE + TYPE_TEXT + COMMA_SEP +
+                    InfoContract.AbitNews.COLUMN_NAME_NOTIFICATE + TYPE_INTEGER + ")";
+
+    /** SQL statement to drop "entry" table. */
+    private static final String SQL_DELETE_ABITNEWS =
+            "DROP TABLE IF EXISTS " + InfoContract.AbitNews.TABLE_NAME;
 
 
     public ChuvsuDatabase(Context context) {
@@ -58,6 +73,7 @@ public class ChuvsuDatabase extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
         db.execSQL(SQL_CREATE_FACULTIES);
+        db.execSQL(SQL_CREATE_ABITNEWS);
 
     }
 
@@ -65,6 +81,7 @@ public class ChuvsuDatabase extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int i, int i2) {
         db.execSQL(SQL_DELETE_ENTRIES);
         db.execSQL(SQL_DELETE_FACULTIES);
+        db.execSQL(SQL_DELETE_ABITNEWS);
         onCreate(db);
     }
 }

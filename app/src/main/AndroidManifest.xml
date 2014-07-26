@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ulop.chuvsu.app">
+    package="com.ulop.chuvsu.app"
+    android:versionCode="1"
+    android:versionName="0.2">
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
     <!-- Required for fetching feed data. -->
@@ -16,6 +18,7 @@
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -36,6 +39,13 @@
                 android:value="com.ulop.chuvsu.app.MainActivity" />
         </activity>
 
+        <activity
+            android:name="com.ulop.abiturients.AbitNewsFullActivity"
+            android:label="@string/title_activity_news_full">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ulop.chuvsu.app.MainActivity" />
+        </activity>
 
         <service android:name="com.ulop.syncadapter.accounts.AuthenticatorService">
             <intent-filter>

@@ -151,13 +151,57 @@ public class InfoContract {
          * Atom spec.
          */
         public static final String COLUMN_NAME_CONTENT = "content";
-        /**
-         * Date article was published.
-         */
+
         public static final String COLUMN_NAME_PUBLISHED = "published";
 
         public static final String COLUMN_NAME_IMAGE = "image";
 
         public static final String COLUMN_NAME_NOTIFICATE = "notificate";
+    }
+
+    private static final String PATH_PHONES = "phones";
+
+    public static class Phones implements BaseColumns {
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.chuvsu.phones";
+
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.chuvsu.phone";
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PHONES).build();
+
+        public static final String TABLE_NAME = "phones";
+
+        public static final String COLUMN_NAME_PHONE_ID = "phone_id";
+
+        public static final String COLUMN_NAME_TITLE = "title";
+
+        public static final String COLUMN_NAME_PHONE_NUMBER = "number";
+
+    }
+
+    private static final String PATH_ADDRESSES = "addresses";
+
+    public static class Addresses implements BaseColumns {
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.chuvsu.addresses";
+
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.chuvsu.address";
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ADDRESSES).build();
+
+        public static final String TABLE_NAME = "addresses";
+
+        public static final String COLUMN_NAME_PHONE_ID = "address_id";
+
+        public static final String COLUMN_NAME_TITLE = "title";
+
+        public static final String COLUMN_NAME_ADDRESS = "address";
+
+        public static final String COLUMN_NAME_IMAGE = "image";
+
     }
 }

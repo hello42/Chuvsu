@@ -16,7 +16,7 @@ import android.util.Log;
 
 import com.ulop.abiturients.AbiturientInfoItem;
 import com.ulop.chuvsu.app.R;
-import com.ulop.parsers.AbiturientNewsPatser;
+import com.ulop.parsers.AbiturientNewsParser;
 import com.ulop.parsers.FacultyInfoParser;
 import com.ulop.parsers.FeedParser;
 import com.ulop.faculty.FacultyContent;
@@ -381,7 +381,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         String published;
         String link;
         String image;
-        final AbiturientNewsPatser aNewsParser = new AbiturientNewsPatser();
+        final AbiturientNewsParser aNewsParser = new AbiturientNewsParser();
 
         Log.i(TAG, "Parsing stream as Atom abiturient news");
         final ArrayList<AbiturientInfoItem> aNewsCards = aNewsParser.parse(downloadUrl(new URL(ABITNEWS_URL)));

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by ulop on 20.07.14.
  */
-public class AbiturientNewsPatser extends BaseParser {
+public class AbiturientNewsParser extends BaseParser {
     public ArrayList<AbiturientInfoItem> parse(InputStream in)
             throws IOException {
         ArrayList<AbiturientInfoItem> newsList = new ArrayList<AbiturientInfoItem>();
@@ -27,9 +27,9 @@ public class AbiturientNewsPatser extends BaseParser {
                 aNew.url = object.getString("url");
                 aNew.image = object.getString("img");
                 aNew.id = object.getInt("id");
-                Boolean aBoolean = object.getBoolean("notification");
-                aNew.notification = (aBoolean) ? 1 : 0;
-                aNew.publicTime = "none =("; //object.getString("updated_at");
+                aNew.notification = object.getInt("notification");
+               // aNew.notification = (aBoolean) ? 1 : 0;
+                aNew.publicTime = object.getString("updated_at");
                 newsList.add(0, aNew);
             }
 

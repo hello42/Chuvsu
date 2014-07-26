@@ -6,6 +6,10 @@
     tools:context="com.ulop.newscardlist.dummy.NewsCardFragment"
     android:background="#ffd1d1d1">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/swipe">
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
@@ -21,5 +25,5 @@
         android:paddingEnd="0dp">
 
     </ListView>
-
+    </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

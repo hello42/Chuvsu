@@ -1,4 +1,4 @@
-package com.ulop.NewsFullView;
+package com.ulop.abiturients;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -24,15 +24,15 @@ import android.widget.ScrollView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.ulop.chuvsu.app.R;
 import com.ulop.syncadapter.Info.InfoContract;
-import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
 
-public class NewsFullActivity extends ActionBarActivity {
+public class AbitNewsFullActivity extends ActionBarActivity {
 
-    private static final String TAG = "FullView";
+    private static final String TAG = "FullViewAnews";
     private int count;
 
 
@@ -66,7 +66,7 @@ public class NewsFullActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.news_full, menu);
         return true;
@@ -95,7 +95,7 @@ public class NewsFullActivity extends ActionBarActivity {
 
 
     /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -140,11 +140,11 @@ public class NewsFullActivity extends ActionBarActivity {
     public static class PlaceholderFragment extends Fragment{
 
         private static final String[] PROJECTION = new String[]{
-                InfoContract.Entry._ID,
-                InfoContract.Entry.COLUMN_NAME_TITLE,
-                InfoContract.Entry.COLUMN_NAME_CONTENT,
-                InfoContract.Entry.COLUMN_NAME_PUBLISHED,
-                InfoContract.Entry.COLUMN_NAME_IMAGE
+                InfoContract.AbitNews._ID,
+                InfoContract.AbitNews.COLUMN_NAME_TITLE,
+                InfoContract.AbitNews.COLUMN_NAME_CONTENT,
+                InfoContract.AbitNews.COLUMN_NAME_PUBLISHED,
+                InfoContract.AbitNews.COLUMN_NAME_IMAGE
         };
 
         private static final int COLUMN_ID = 0;
@@ -193,8 +193,8 @@ public class NewsFullActivity extends ActionBarActivity {
 
             final ContentResolver contentResolver = getActivity().getContentResolver();
 
-            String sortOrder = InfoContract.Entry.COLUMN_NAME_PUBLISHED;
-            Uri uri = InfoContract.Entry.CONTENT_URI;
+            String sortOrder = InfoContract.AbitNews.COLUMN_NAME_PUBLISHED;
+            Uri uri = InfoContract.AbitNews.CONTENT_URI;
             Cursor cursor = contentResolver.query(uri, PROJECTION, null, null, sortOrder + " desc");
 
             int pos = getArguments().getInt(ARG_SECTION_NUMBER);

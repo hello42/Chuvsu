@@ -105,7 +105,6 @@ public class NavigationDrawerFragment extends Fragment {
                 new String[]{
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
-                        getString(R.string.title_section3),
                         getString(R.string.facultetsmenu),
                         getString(R.string.abiturients)
                 }));
@@ -244,7 +243,7 @@ public class NavigationDrawerFragment extends Fragment {
             Log.i(TAG, String.valueOf(mCurrentSelectedPosition));
 
         }
-        if (mDrawerLayout != null && !isDrawerOpen() && mCurrentSelectedPosition == 4) {
+        if (mDrawerLayout != null && !isDrawerOpen() && mCurrentSelectedPosition == 3) {
             // inflater.inflate(R.menu.global, menu);
             showActionBarTabs();
 

@@ -36,7 +36,7 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    private int curentSelectedItem = 0;
+    private int currentSelectedItem = 0;
 
 
     @Override
@@ -76,19 +76,24 @@ public class MainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         //update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
-        curentSelectedItem = position;
+        currentSelectedItem = position;
         switch (position){
             case 0:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, NewsCardFragment.newInstance("lol", "lol"))
                         .commit();
                 break;
-            case 3:
+            case 1:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, AboutUniversityFragment.newInstance())
+                        .commit();
+                break;
+            case 2:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, FacultyFragment.newInstance())
                         .commit();
                 break;
-            case 4:
+            case 3:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, AbiturientNewsFragment.newInstance())
                         .commit();
@@ -127,7 +132,7 @@ public class MainActivity extends ActionBarActivity
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
            // getMenuInflater().inflate(R.menu.main, menu);
-            if (curentSelectedItem != 4) {
+            if (currentSelectedItem != 3) {
                 restoreActionBar();
             }
             return true;

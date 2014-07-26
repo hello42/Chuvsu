@@ -1,7 +1,11 @@
 package com.ulop.abiturients;
 
 
+import android.accounts.Account;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.content.SyncStatusObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,17 +24,20 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.ulop.chuvsu.app.R;
 import com.ulop.syncadapter.Info.InfoContract;
-
-import java.util.Locale;
+import com.ulop.syncadapter.accounts.AuthenticatorService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +56,7 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
     private View mRoot;
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
+
 
 
     public static AbiturientNewsFragment newInstance() {
@@ -90,6 +98,7 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
         });
 
         // For each of the sections in the app, add a tab to the action bar.
+        if (actionBar.getTabCount() < 3)
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
             // Create a tab with text corresponding to the page title defined by
             // the adapter. Also specify this Activity object, which implements
@@ -200,14 +209,14 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
+            // Return a LinksFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
                     return NewsFragment.newInstance(0);
                 case 1:
                     return NewsFragment.newInstance(1);
                 case 2:
-                    return NewsFragment.newInstance(3);
+                    return LinksFragment.newInstance(3);
             }
             return null;
         }
@@ -235,63 +244,61 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class LinksFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-        private static int NEWS_LIST = 0;
-        private static int IMPORTANT_NEWS_LIST = 1;
-        private static int LINKS_LIST = 2;
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
+        public static LinksFragment newInstance(int sectionNumber) {
+            LinksFragment fragment = new LinksFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
             return fragment;
         }
 
-        public PlaceholderFragment() {
+        public LinksFragment() {
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_faculty_list, container, false);
             int pos = getArguments().getInt(ARG_SECTION_NUMBER);
-            switch (pos){
-                case 0: createNewsList(rootView); break;
-                case 1: createImportantNewsList(rootView); break;
-                case 2: createLinksList(rootView); break;
-                default: new IllegalArgumentException("");
 
-            }
+            ListView listView = (ListView) rootView.findViewById(R.id.fctlist);
+            final AbiturientLinksAdapter linksAdapter = new AbiturientLinksAdapter(getActivity());
+            listView.setAdapter(linksAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    String url = linksAdapter.getLinkItem(i).link;
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
+                }
+            });
 
             return rootView;
         }
 
-        private void createLinksList(View view) {
 
-        }
-
-        private void createImportantNewsList(View view) {
-
-        }
-
-        private void createNewsList(View view) {
-        }
     }
 
     public static class NewsFragment extends Fragment
             implements LoaderManager.LoaderCallbacks<Cursor>{
 
         private SimpleCursorAdapter mAdapter;
+        private Object mSyncObserverHandle;
+        private Menu mOptionsMenu;
+
 
         private static final String[] PROJECTION = new String[]{
                 InfoContract.AbitNews._ID,
@@ -356,6 +363,27 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
         }
 
         @Override
+        public void onResume() {
+            super.onResume();
+            mSyncStatusObserver.onStatusChanged(0);
+
+            // Watch for sync state changes
+            final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
+                    ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
+            mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            if (mSyncObserverHandle != null) {
+                ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
+                mSyncObserverHandle = null;
+            }
+        }
+
+
+        @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             mAdapter.changeCursor(data);
         }
@@ -408,7 +436,7 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
                     if (i == COLUMN_PUBLISHED){
                         TextView tW = (TextView) view.findViewById(R.id.textView2);
                         String str = cursor.getString(i);
-                        str = str.substring(0, 6);
+                        str = str.substring(0, 10);
                         tW.setText(str);
                         return  true;
                     }
@@ -425,10 +453,69 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
             listView.setAdapter(mAdapter);
             getLoaderManager().initLoader(0, null, this);
 
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getActivity(), AbitNewsFullActivity.class);
+                    intent.putExtra("position", position);
+                    intent.putExtra("count", ((SimpleCursorAdapter) parent.getAdapter()).getCursor().getCount());
+                    Log.i("cards", Integer.toString(position));
+
+                    startActivity(intent);
+                }
+            });
 
             return rootView;
         }
 
+        void setRefreshActionButtonState(boolean refreshing) {
+            if (mOptionsMenu == null) {
+                return;
+            }
+
+            final MenuItem refreshItem = mOptionsMenu.findItem(R.id.refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
+
+
+        private SyncStatusObserver mSyncStatusObserver = new SyncStatusObserver() {
+            /** Callback invoked with the sync adapter status changes. */
+            @Override
+            public void onStatusChanged(int which) {
+                getActivity().runOnUiThread(new Runnable() {
+                    /**
+                     * The SyncAdapter runs on a background thread. To update the UI, onStatusChanged()
+                     * runs on the UI thread.
+                     */
+                    @Override
+                    public void run() {
+                        // Create a handle to the account that was created by
+                        // SyncService.CreateSyncAccount(). This will be used to query the system to
+                        // see how the sync status has changed.
+                        Account account = AuthenticatorService.GetAccount();
+                        if (account == null) {
+                            // GetAccount() returned an invalid value. This shouldn't happen, but
+                            // we'll set the status to "not refreshing".
+                            setRefreshActionButtonState(false);
+                            return;
+                        }
+
+                        // Test the ContentResolver to see if the sync adapter is active or pending.
+                        // Set the state of the refresh button accordingly.
+                        boolean syncActive = ContentResolver.isSyncActive(
+                                account, InfoContract.CONTENT_AUTHORITY);
+                        boolean syncPending = ContentResolver.isSyncPending(
+                                account, InfoContract.CONTENT_AUTHORITY);
+                        setRefreshActionButtonState(syncActive || syncPending);
+                    }
+                });
+            }        };
 
     }
 }

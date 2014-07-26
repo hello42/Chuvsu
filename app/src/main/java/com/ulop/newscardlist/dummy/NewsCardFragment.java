@@ -13,6 +13,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,8 @@ import android.widget.TextView;
 import com.ulop.NewsFullView.NewsFullActivity;
 import com.ulop.chuvsu.app.R;
 import com.ulop.syncadapter.Info.InfoContract;
+import com.ulop.syncadapter.SyncService;
+import com.ulop.syncadapter.SyncUtils;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 import com.squareup.picasso.Picasso;
 
@@ -92,7 +95,7 @@ public class NewsCardFragment extends Fragment
             R.id.textView2,
             R.id.facultyLogo};
 
-
+    Account mAccount;
 
     /**
      * Use this factory method to create a new instance of
@@ -130,6 +133,7 @@ public class NewsCardFragment extends Fragment
         }
         setHasOptionsMenu(false);
 
+        mAccount = AuthenticatorService.GetAccount();
 
     }
 
@@ -196,6 +200,30 @@ public class NewsCardFragment extends Fragment
             }
 
 
+        });
+
+        final SwipeRefreshLayout swipe = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe);
+        swipe.setColorScheme(
+                R.color.yellow,
+                R.color.blue,
+                R.color.red,
+                R.color.white);
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            public static final String AUTHORITY = InfoContract.CONTENT_AUTHORITY;
+
+            @Override
+            public void onRefresh() {
+                Log.i(TAG, "I'm swiped down!");
+                Bundle settingsBundle = new Bundle();
+                settingsBundle.putBoolean(
+                        ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                settingsBundle.putBoolean(
+                        ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+
+                ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
+
+                swipe.setRefreshing(false);
+            }
         });
         return rootView;
     }

@@ -59,10 +59,6 @@ public class AbitNewsFullActivity extends ActionBarActivity {
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(nPosition);
-
-
-
-
     }
 
 

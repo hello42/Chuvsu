@@ -1,13 +1,16 @@
-<FrameLayout xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ulop.dictionary.Dictionary">
+
+    <!-- TODO: Update blank fragment layout -->
 
     <TabHost
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/tabHost"
-        android:layout_gravity="center_horizontal|top">
+        android:layout_gravity="center">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -30,10 +33,11 @@
                     android:layout_height="fill_parent">
 
                     <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/anews">
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/fragment1">
                     </FrameLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -41,22 +45,14 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
                     <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/impnews">
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/fragment2">
                     </FrameLayout>
+
+
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/tab3"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/links">
-                    </FrameLayout>
-                </LinearLayout>
             </FrameLayout>
         </LinearLayout>
     </TabHost>

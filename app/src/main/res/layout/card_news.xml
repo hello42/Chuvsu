@@ -4,12 +4,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/abc_menu_dropdown_panel_holo_light">
+    android:background="@android:drawable/editbox_background_normal">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:background="#fff"
         >
 
         <FrameLayout

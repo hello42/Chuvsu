@@ -106,7 +106,8 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
                         getString(R.string.facultetsmenu),
-                        getString(R.string.abiturients)
+                        getString(R.string.abiturients),
+                        "Справочник"
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -243,13 +244,7 @@ public class NavigationDrawerFragment extends Fragment {
             Log.i(TAG, String.valueOf(mCurrentSelectedPosition));
 
         }
-        if (mDrawerLayout != null && !isDrawerOpen() && mCurrentSelectedPosition == 3) {
-            // inflater.inflate(R.menu.global, menu);
-            showActionBarTabs();
 
-            Log.i(TAG, String.valueOf(mCurrentSelectedPosition));
-
-        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 

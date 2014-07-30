@@ -32,6 +32,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.activeandroid.content.ContentProvider;
@@ -50,14 +51,12 @@ import com.ulop.syncadapter.accounts.AuthenticatorService;
  * create an instance of this fragment.
  *
  */
-public class AbiturientNewsFragment extends Fragment implements android.support.v7.app.ActionBar.TabListener{
+public class AbiturientNewsFragment extends Fragment {
 
     private static final String TAG = "AbitNews";
     private OnFragmentInteractionListener mListener;
 
     private View mRoot;
-    private ViewPager mViewPager;
-    private SectionsPagerAdapter mSectionsPagerAdapter;
 
 
 
@@ -79,56 +78,41 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
                              Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.fragment_abiturient_pager, container, false);
 
-        final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        FragmentManager fragmentManager = getFragmentManager();
 
+        TabHost tabHost = (TabHost) mRoot.findViewById(R.id.tabHost);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        tabHost.setup();
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) mRoot.findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        TabHost.TabSpec tabSpec;
 
-        // When swiping between different sections, select the corresponding
-        // tab. We can also use ActionBar.Tab#select() to do this if we have
-        // a reference to the Tab.
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
+        // создаем вкладку и указываем тег
+        tabSpec = tabHost.newTabSpec("AbiturientNews").
+                setIndicator("Новости").
+                setContent(R.id.tab1);
+        tabHost.addTab(tabSpec);
 
-        // For each of the sections in the app, add a tab to the action bar.
-        if (actionBar.getTabCount() < 3)
-        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by
-            // the adapter. Also specify this Activity object, which implements
-            // the TabListener interface, as the callback (listener) for when
-            // this tab is selected.
+        tabSpec = tabHost.newTabSpec("ImportantNews").
+                setIndicator("Важно").
+                setContent(R.id.tab2);
+        tabHost.addTab(tabSpec);
 
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(new ActionBar.TabListener() {
-                                @Override
-                                public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-                                    Log.i(TAG, String.valueOf(tab.getPosition()));
+        tabSpec = tabHost.newTabSpec("LinksList").
+                setIndicator("Ссылки").
+                setContent(R.id.tab3);
+        tabHost.addTab(tabSpec);
 
-                                    mViewPager.setCurrentItem(tab.getPosition());
-                                }
+        fragmentManager.beginTransaction()
+                .replace(R.id.anews, NewsFragment.newInstance(0))
+                .commit();
 
-                                @Override
-                                public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        fragmentManager.beginTransaction()
+                .replace(R.id.impnews, NewsFragment.newInstance(1))
+                .commit();
 
-                                }
-
-                                @Override
-                                public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-                                }
-                            }));
-        }
+        fragmentManager.beginTransaction()
+                .replace(R.id.links, LinksFragment.newInstance(0))
+                .commit();
 
         return mRoot;
     }
@@ -171,21 +155,6 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
 
 
 
-    @Override
-    public void onTabSelected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-
-    @Override
-    public void onTabUnselected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
-
-    @Override
-    public void onTabReselected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this

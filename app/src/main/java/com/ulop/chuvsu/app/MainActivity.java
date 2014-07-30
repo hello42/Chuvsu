@@ -12,8 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.activeandroid.ActiveAndroid;
 import com.ulop.abiturients.AbiturientNewsFragment;
+import com.ulop.dictionary.Dictionary;
 import com.ulop.faculty.FacultyFragment;
 import com.ulop.newscardlist.dummy.NewsCardFragment;
 import com.ulop.syncadapter.SyncService;
@@ -38,34 +38,18 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
     private int currentSelectedItem = 0;
-    public static Context cntx;
-
-    {
-        cntx = this;
-    }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-       // ActiveAndroid.dispose();
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //ActiveAndroid.dispose();
-    }
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // ActiveAndroid.initialize(this, true);
-
-       // StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        //StrictMode.setThreadPolicy(policy);
 
         SyncUtils.CreateSyncAccount(this);
 
@@ -115,6 +99,11 @@ public class MainActivity extends ActionBarActivity
             case 3:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, AbiturientNewsFragment.newInstance())
+                        .commit();
+                break;
+            case 4:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, Dictionary.newInstance("s", "s"))
                         .commit();
                 break;
             default: break;

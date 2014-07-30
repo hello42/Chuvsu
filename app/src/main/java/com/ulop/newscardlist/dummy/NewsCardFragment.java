@@ -60,7 +60,6 @@ public class NewsCardFragment extends Fragment
      * Options menu used to populate ActionBar.
      */
     private Menu mOptionsMenu;
-
     private static final int COLUMN_PUBLISHED = 4;
     private static final int COLUMN_IMAGE = 2;
 
@@ -206,8 +205,10 @@ public class NewsCardFragment extends Fragment
                         ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
 
                 ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
+                if (!ContentResolver.isSyncPending(mAccount, AUTHORITY)) {
+                    swipe.setRefreshing(false);
+                }
 
-                swipe.setRefreshing(false);
             }
         });
         return rootView;

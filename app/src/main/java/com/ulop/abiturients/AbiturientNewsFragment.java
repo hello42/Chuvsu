@@ -34,8 +34,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.activeandroid.content.ContentProvider;
 import com.squareup.picasso.Picasso;
 import com.ulop.chuvsu.app.R;
+import com.ulop.models.AbiturientNews;
 import com.ulop.syncadapter.Info.InfoContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 
@@ -300,16 +302,10 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
         private Menu mOptionsMenu;
 
 
-        private static final String[] PROJECTION = new String[]{
-                InfoContract.AbitNews._ID,
-                InfoContract.AbitNews.COLUMN_NAME_TITLE,
-                InfoContract.AbitNews.COLUMN_NAME_CONTENT,
-                InfoContract.AbitNews.COLUMN_NAME_PUBLISHED,
-                InfoContract.AbitNews.COLUMN_NAME_IMAGE
-        };
 
-        private static final int COLUMN_PUBLISHED = 3;
-        private static final int COLUMN_IMAGE = 4;
+
+        private static final int COLUMN_PUBLISHED = 5;
+        private static final int COLUMN_IMAGE = 2;
 
         /**
          * List of Cursor columns to read from when preparing an adapter to populate the ListView.
@@ -355,8 +351,8 @@ public class AbiturientNewsFragment extends Fragment implements android.support.
 
 
             return new CursorLoader(getActivity(),  // Context
-                    InfoContract.AbitNews.CONTENT_URI, // URI
-                    PROJECTION,                // Projection
+                    ContentProvider.createUri(AbiturientNews.class, null), // URI
+                    null,                // Projection
                     selection,                           // Selection
                     null,                           // Selection args
                     InfoContract.AbitNews.COLUMN_NAME_PUBLISHED + " desc");

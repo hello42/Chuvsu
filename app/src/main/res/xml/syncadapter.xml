@@ -16,10 +16,10 @@ limitations under the License.
 -->
 
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
-              android:contentAuthority="com.ulop.syncadapter"
-              android:accountType="com.ulop.syncadapter"
-              android:userVisible="false"
+              android:contentAuthority="com.ulop.chuvsu.app"
+              android:accountType="com.ulop.chuvsu.app"
+              android:userVisible="true"
               android:supportsUploading="false"
               android:allowParallelSyncs="false"
               android:isAlwaysSyncable="true"
-        />
+/>

@@ -1,5 +1,6 @@
 package com.ulop.chuvsu.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,10 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.activeandroid.ActiveAndroid;
 import com.ulop.abiturients.AbiturientNewsFragment;
 import com.ulop.faculty.FacultyFragment;
 import com.ulop.newscardlist.dummy.NewsCardFragment;
-import com.ulop.syncadapter.ChuvsuDatabase;
 import com.ulop.syncadapter.SyncService;
 import com.ulop.syncadapter.SyncUtils;
 
@@ -37,13 +38,31 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
     private int currentSelectedItem = 0;
+    public static Context cntx;
 
+    {
+        cntx = this;
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+       // ActiveAndroid.dispose();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //ActiveAndroid.dispose();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+       // ActiveAndroid.initialize(this, true);
 
        // StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         //StrictMode.setThreadPolicy(policy);
@@ -131,7 +150,7 @@ public class MainActivity extends ActionBarActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-           // getMenuInflater().inflate(R.menu.main, menu);
+            getMenuInflater().inflate(R.menu.main, menu);
             if (currentSelectedItem != 3) {
                 restoreActionBar();
             }
@@ -161,7 +180,7 @@ public class MainActivity extends ActionBarActivity
         FileChannel source=null;
         FileChannel destination=null;
         String currentDBPath = "/data/com.ulop.chuvsu.app/databases/chuvsu.db";
-        String backupDBPath = ChuvsuDatabase.DATABASE_NAME;
+        String backupDBPath = "chuvsu.db";
         File currentDB = new File(data, currentDBPath);
         File backupDB = new File(sd, backupDBPath);
         try {

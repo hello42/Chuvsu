@@ -23,10 +23,19 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 
+import com.activeandroid.Model;
+import com.activeandroid.content.ContentProvider;
+import com.activeandroid.query.Select;
 import com.ulop.chuvsu.app.R;
+import com.ulop.models.Faculty;
 import com.ulop.syncadapter.Info.InfoContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * A fragment representing a list of Items.
@@ -48,20 +57,7 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
     private Menu mOptionsMenu;
 
 
-    private static final String[] PROJECTION = new String[]{
-            InfoContract.Faculty._ID,
-            InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME,
-            InfoContract.Faculty.COLUMN_NAME_INFO,
-            InfoContract.Faculty.COLUMN_NAME_LOGO,
-            InfoContract.Faculty.COLUMN_NAME_URL
-    };
-
-    private static final int COLUMN_ID = 0;
-    private static final int COLUMN_FACULTY_NAME = 1;
-    private static final int COLUMN_INFO = 2;
-    private static final int COLUMN_LOGO = 3;
-    private static final int COLUMN_URL = 4;
-
+    private static final int COLUMN_LOGO = 4;
     private static final String[] FROM_COLUMNS = new String[]{
             InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME,
           //  InfoContract.Faculty.COLUMN_NAME_INFO,
@@ -106,6 +102,8 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
                 TO_FIELDS,           // Layout fields to use
                 0                    // No flags
         );
+
+
 
         mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
@@ -184,12 +182,15 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.i(TAG, "Cursor loader create");
-        return new CursorLoader(getActivity(),  // Context
-                InfoContract.Faculty.CONTENT_URI, // URI
-                PROJECTION,                // Projection
+        Uri uri = ContentProvider.createUri(Faculty.class, null);
+        CursorLoader c = new CursorLoader(getActivity(),  // Context
+                uri, // URI
+                null,                // Projection
                 null,                           // Selection
                 null,                           // Selection args
                 null);
+
+        return c;
     }
 
     @Override

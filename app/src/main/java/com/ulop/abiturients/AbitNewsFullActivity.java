@@ -24,8 +24,10 @@ import android.widget.ScrollView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
+import com.activeandroid.content.ContentProvider;
 import com.squareup.picasso.Picasso;
 import com.ulop.chuvsu.app.R;
+import com.ulop.models.AbiturientNews;
 import com.ulop.syncadapter.Info.InfoContract;
 
 import java.util.Locale;
@@ -194,7 +196,7 @@ public class AbitNewsFullActivity extends ActionBarActivity {
             final ContentResolver contentResolver = getActivity().getContentResolver();
 
             String sortOrder = InfoContract.AbitNews.COLUMN_NAME_PUBLISHED;
-            Uri uri = InfoContract.AbitNews.CONTENT_URI;
+            Uri uri = ContentProvider.createUri(AbiturientNews.class, null);
             Cursor cursor = contentResolver.query(uri, PROJECTION, null, null, sortOrder + " desc");
 
             int pos = getArguments().getInt(ARG_SECTION_NUMBER);
@@ -206,27 +208,6 @@ public class AbitNewsFullActivity extends ActionBarActivity {
             dateTextView.setText(cursor.getString(COLUMN_PUBLISHED).substring(0, 10));
             String str = cursor.getString(COLUMN_IMAGE);
             Picasso.with(getActivity()).load(str).into(imageView);
-
-
-            ScrollView scrollView = (ScrollView) rootView. findViewById(R.id.scroll);
-            scrollView.setOnGenericMotionListener(new View.OnGenericMotionListener() {
-                @Override
-                public boolean onGenericMotion(View view, MotionEvent motionEvent) {
-                    if (motionEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER)) {
-                        switch (motionEvent.getAction()) {
-                            case MotionEvent.ACTION_HOVER_MOVE:
-                                // process the mouse hover movement...
-                                return true;
-                            case MotionEvent.ACTION_SCROLL:
-
-                                Log.i(TAG, "scroool");
-                                return true;
-                        }
-                    }
-                    return true;
-                }
-            });
-
 
             return rootView;
         }

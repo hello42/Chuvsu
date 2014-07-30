@@ -14,6 +14,12 @@ import java.util.ArrayList;
  */
 public class BaseParser {
 
+    String TAG;
+
+    public BaseParser() {
+        this.TAG = this.getClass().getName();
+    }
+
     JSONArray getJSONArray(InputStream in) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         StringBuilder sb = new StringBuilder();

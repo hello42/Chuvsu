@@ -25,7 +25,7 @@ public class SplashScreenActivity extends ActionBarActivity {
 
         getSupportActionBar().hide();
 
-        Uri uri = InfoContract.Entry.CONTENT_URI;
+    /*    Uri uri = InfoContract.Entry.CONTENT_URI;
         Log.i(TAG, "Will work with " + uri);
         Cursor c = getContentResolver().query(uri, PROJECTION, null, null, null);
         Log.i(TAG, "Found " + c.getCount() + " entries.");
@@ -35,7 +35,7 @@ public class SplashScreenActivity extends ActionBarActivity {
             Log.i(TAG, "I want to load " + url);
             Picasso.with(this).load(url);
         }
-        c.close();
+        c.close();*/
 
          new Handler().postDelayed(new Runnable(){
             @Override

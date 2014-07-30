@@ -24,7 +24,10 @@ import android.widget.ScrollView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.content.ContentProvider;
 import com.ulop.chuvsu.app.R;
+import com.ulop.models.Entry;
 import com.ulop.syncadapter.Info.InfoContract;
 import com.squareup.picasso.Picasso;
 
@@ -42,6 +45,7 @@ public class NewsFullActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_news_full);
 
+       // ActiveAndroid.initialize(this);
         Intent intent = getIntent();
 
         int nPosition = intent.getIntExtra("position", 7);
@@ -63,6 +67,11 @@ public class NewsFullActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //ActiveAndroid.dispose();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -194,7 +203,7 @@ public class NewsFullActivity extends ActionBarActivity {
             final ContentResolver contentResolver = getActivity().getContentResolver();
 
             String sortOrder = InfoContract.Entry.COLUMN_NAME_PUBLISHED;
-            Uri uri = InfoContract.Entry.CONTENT_URI;
+            Uri uri = ContentProvider.createUri(Entry.class, null);
             Cursor cursor = contentResolver.query(uri, PROJECTION, null, null, sortOrder + " desc");
 
             int pos = getArguments().getInt(ARG_SECTION_NUMBER);
@@ -206,27 +215,6 @@ public class NewsFullActivity extends ActionBarActivity {
             dateTextView.setText(cursor.getString(COLUMN_PUBLISHED).substring(0, 10));
             String str = cursor.getString(COLUMN_IMAGE);
             Picasso.with(getActivity()).load(str).into(imageView);
-
-
-            ScrollView scrollView = (ScrollView) rootView. findViewById(R.id.scroll);
-            scrollView.setOnGenericMotionListener(new View.OnGenericMotionListener() {
-                @Override
-                public boolean onGenericMotion(View view, MotionEvent motionEvent) {
-                    if (motionEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER)) {
-                        switch (motionEvent.getAction()) {
-                            case MotionEvent.ACTION_HOVER_MOVE:
-                                // process the mouse hover movement...
-                                return true;
-                            case MotionEvent.ACTION_SCROLL:
-
-                                Log.i(TAG, "scroool");
-                                return true;
-                        }
-                    }
-                    return true;
-                }
-            });
-
 
             return rootView;
         }

@@ -25,5 +25,7 @@
     <string name="feed_url">http://chuvsu.vtrave.com/news/last.json</string>
     <string name="faculty_info_url">http://chuvsu.vtrave.com/facults.json</string>
     <string name="abiturient_news_url">http://chuvsu.vtrave.com/abiturients.json</string>
+    <string name="phones_url">http://chuvsu.vtrave.com/phones.json</string>
+    <string name="address_url">http://chuvsu.vtrave.com/addresses.json</string>
 
 </resources>

@@ -9,7 +9,7 @@ import android.util.Log;
 public class AuthenticatorService extends Service {
 
     private static final String TAG = "AuthenticatorService";
-    private static final String ACCOUNT_TYPE = "com.ulop.syncadapter";
+    private static final String ACCOUNT_TYPE = "com.ulop.chuvsu.app";
     private static final String ACCOUNT_NAME = "sync";
 
 

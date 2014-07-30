@@ -14,7 +14,7 @@ public class InfoContract {
     /**
      * Content provider authority.
      */
-    public static final String CONTENT_AUTHORITY = "com.ulop.syncadapter";
+    public static final String CONTENT_AUTHORITY = "com.ulop.chuvsu.app";
 
     /**
      * Base URI. (content://com.example.android.network.sync.basicsyncadapter)
@@ -69,7 +69,7 @@ public class InfoContract {
         public static final String COLUMN_NAME_IMAGE = "image";
     }
 
-    private static final String PATH_FACULTIES = "faculties";
+    private static final String PATH_FACULTIES = "faculty";
 
     public static class Faculty implements BaseColumns {
         /**

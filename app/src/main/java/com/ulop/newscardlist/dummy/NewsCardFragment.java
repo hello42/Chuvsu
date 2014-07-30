@@ -26,8 +26,10 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.activeandroid.content.ContentProvider;
 import com.ulop.NewsFullView.NewsFullActivity;
 import com.ulop.chuvsu.app.R;
+import com.ulop.models.Entry;
 import com.ulop.syncadapter.Info.InfoContract;
 import com.ulop.syncadapter.SyncService;
 import com.ulop.syncadapter.SyncUtils;
@@ -59,25 +61,8 @@ public class NewsCardFragment extends Fragment
      */
     private Menu mOptionsMenu;
 
-    /**
-     * Projection for querying the content provider.
-     */
-    private static final String[] PROJECTION = new String[]{
-            InfoContract.Entry._ID,
-            InfoContract.Entry.COLUMN_NAME_TITLE,
-            InfoContract.Entry.COLUMN_NAME_CONTENT,
-            InfoContract.Entry.COLUMN_NAME_PUBLISHED,
-            InfoContract.Entry.COLUMN_NAME_IMAGE
-    };
-
-    private static final int COLUMN_ID = 0;
-    /** Column index for title */
-    private static final int COLUMN_TITLE = 1;
-    /** Column index for link */
-    private static final int COLUMN_CONTENT = 2;
-    /** Column index for published */
-    private static final int COLUMN_PUBLISHED = 3;
-    private static final int COLUMN_IMAGE = 4;
+    private static final int COLUMN_PUBLISHED = 4;
+    private static final int COLUMN_IMAGE = 2;
 
     /**
      * List of Cursor columns to read from when preparing an adapter to populate the ListView.
@@ -145,7 +130,7 @@ public class NewsCardFragment extends Fragment
 
         Log.i(TAG, "NewsCardFragment view create");
         mAdapter = new SimpleCursorAdapter(
-                (ActionBarActivity) getActivity(),       // Current context
+                getActivity(),       // Current context
                 R.layout.card_news,  // Layout for individual rows
                 null,                // Cursor
                 FROM_COLUMNS,        // Cursor columns to use
@@ -254,8 +239,8 @@ public class NewsCardFragment extends Fragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.i(TAG, "Cursor loader create");
         return new CursorLoader(getActivity(),  // Context
-                InfoContract.Entry.CONTENT_URI, // URI
-                PROJECTION,                // Projection
+                ContentProvider.createUri(Entry.class, null), // URI
+                null,                // Projection
                 null,                           // Selection
                 null,                           // Selection args
                 InfoContract.Entry.COLUMN_NAME_PUBLISHED + " desc");

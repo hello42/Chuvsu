@@ -2,7 +2,8 @@ package com.ulop.parsers;
 
 import android.util.Log;
 
-import com.ulop.models.Entry;
+import com.activeandroid.Model;
+import com.ulop.models.Phone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,23 +15,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ulop on 12.03.14.
+ * Created by ulop on 30.07.14.
  */
-public class FeedParser extends BaseParser{
-
-    public List<Entry> getAsModelList(InputStream inputStream){
-        List<Entry> eList = new ArrayList<Entry>();
+public class PhoneParser extends BaseParser {
+    public List<Phone> getAsModelList(InputStream inputStream){
+        List<Phone> pList = new ArrayList<Phone>();
         try {
             JSONArray jArray = getJSONArray(inputStream);
             for (int i = 0; i < jArray.length(); i++) {
                 JSONObject object = jArray.getJSONObject(i);
-                Entry entry = new Entry();
-                entry.news_id = object.getString("id");
-                entry.title = object.getString("title");
-                entry.content = object.getString("body");
-                entry.image = object.getString("image");
-                entry.published = object.getString("updated_at");
-                eList.add(entry);
+                Phone phone = new Phone();
+                phone.phone_id = object.getInt("id");
+                phone.title = object.getString("title");
+                phone.phone_number = object.getString("number");
+                pList.add(phone);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,9 +37,6 @@ public class FeedParser extends BaseParser{
             e.printStackTrace();
         }
 
-        return eList;
+        return pList;
     }
-
-
-
 }

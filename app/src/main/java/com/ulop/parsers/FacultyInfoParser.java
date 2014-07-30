@@ -1,6 +1,8 @@
 package com.ulop.parsers;
 
-import com.ulop.faculty.FacultyContent;
+import android.util.Log;
+
+import com.ulop.models.Faculty;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,36 +11,38 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ulop on 01.07.14.
  */
 public class FacultyInfoParser extends BaseParser{
-    public ArrayList<FacultyContent.FacultyItem> parse(InputStream in)
-            throws IOException {
-        ArrayList<FacultyContent.FacultyItem> fctList = new ArrayList<FacultyContent.FacultyItem>();
+
+
+    public List<Faculty> getAsModelList(InputStream inputStream){
+        List<Faculty> fList = new ArrayList<Faculty>();
         try {
+            JSONArray jArray = getJSONArray(inputStream);
+            for (int i = 0; i < jArray.length(); i++) {
+                JSONObject object = jArray.getJSONObject(i);
 
-            JSONArray jsonArray = getJSONArray(in);
-
-            for (int i = 0; i < jsonArray.length(); i++){
-                JSONObject object = jsonArray.getJSONObject(i);
-                FacultyContent.FacultyItem fctCard = new FacultyContent.FacultyItem(object.getString("name"),
-                        object.getString("info"), object.getString("url"), "");
-                fctCard.logo = object.getString("logo");
-                fctCard.id = object.getString("id");
-                fctList.add(0, fctCard);
+                Faculty faculty = new Faculty();
+                faculty.faculty_name = object.getString("name");
+                faculty.info = object.getString("info");
+                faculty.faculty_id = object.getString("id");
+                faculty.logo = object.getString("logo");
+                faculty.url = object.getString("url");
+                Log.i(TAG, faculty.faculty_name);
+                fList.add(faculty);
             }
-
-            return fctList;
-
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.i(TAG, "Failed to parse jsonArray");
         } catch (JSONException e) {
             e.printStackTrace();
-        } finally {
-            in.close();
         }
 
-        return fctList;
+        return fList;
     }
 
 }

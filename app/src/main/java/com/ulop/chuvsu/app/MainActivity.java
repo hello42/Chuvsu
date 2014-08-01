@@ -16,6 +16,7 @@ import com.ulop.abiturients.AbiturientNewsFragment;
 import com.ulop.dictionary.Dictionary;
 import com.ulop.faculty.FacultyFragment;
 import com.ulop.newscardlist.dummy.NewsCardFragment;
+import com.ulop.student.Student;
 import com.ulop.syncadapter.SyncService;
 import com.ulop.syncadapter.SyncUtils;
 
@@ -104,6 +105,11 @@ public class MainActivity extends ActionBarActivity
             case 4:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, Dictionary.newInstance("s", "s"))
+                        .commit();
+                break;
+            case 5:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, Student.newInstance())
                         .commit();
                 break;
             default: break;

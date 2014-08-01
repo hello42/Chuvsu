@@ -95,7 +95,7 @@ public class AddressFragment extends Fragment implements LoaderManager.LoaderCal
 
         mAdapter = new SimpleCursorAdapter(
                 getActivity(),       // Current context
-                R.layout.address_card,  // Layout for individual rows
+                R.layout.card_of_address,  // Layout for individual rows
                 null,                // Cursor
                 FROM_COLUMNS,        // Cursor columns to use
                 TO_FIELDS,           // Layout fields to use

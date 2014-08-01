@@ -43,8 +43,8 @@ public class PhoneFragment extends Fragment implements LoaderManager.LoaderCallb
     };
 
     private static final int[] TO_FIELDS = new int[]{
-            R.id.title,
-            R.id.number
+            android.R.id.text1,
+            android.R.id.text2
     };
 
     /**
@@ -87,7 +87,7 @@ public class PhoneFragment extends Fragment implements LoaderManager.LoaderCallb
 
         mAdapter = new SimpleCursorAdapter(
                 getActivity(),       // Current context
-                R.layout.phone_card,  // Layout for individual rows
+                android.R.layout.simple_list_item_2,  // Layout for individual rows
                 null,                // Cursor
                 FROM_COLUMNS,        // Cursor columns to use
                 TO_FIELDS,           // Layout fields to use

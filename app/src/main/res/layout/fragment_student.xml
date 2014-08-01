@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.ulop.student.Student">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <TabHost
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -15,52 +13,73 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            >
+            <HorizontalScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:fillViewport="true">
             <TabWidget
                 android:id="@android:id/tabs"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"></TabWidget>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
+                </TabWidget>
+            </HorizontalScrollView>
             <FrameLayout
                 android:id="@android:id/tabcontent"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="fill_parent">
 
                 <LinearLayout
                     android:id="@+id/scholarship"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"></LinearLayout>
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent">
+
+                    </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/campus"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"></LinearLayout>
+                    android:layout_height="fill_parent">
+
+                    </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/since"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"></LinearLayout>
+                    android:layout_height="fill_parent">
+
+                    </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/sport"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"></LinearLayout>
+                    android:layout_height="fill_parent">
+
+                    </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/culture_events"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"></LinearLayout>
+                    android:layout_height="fill_parent">
+
+                    </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/tour"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"></LinearLayout>
+                    android:layout_height="fill_parent">
+
+                    </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/health"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"></LinearLayout>
+                    android:layout_height="fill_parent">
+
+                    </LinearLayout>
 
 
             </FrameLayout>

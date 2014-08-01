@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.ulop.Organiztions.Organization;
 import com.ulop.abiturients.AbiturientNewsFragment;
 import com.ulop.dictionary.Dictionary;
 import com.ulop.faculty.FacultyFragment;
@@ -110,6 +111,11 @@ public class MainActivity extends ActionBarActivity
             case 5:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, Student.newInstance())
+                        .commit();
+                break;
+            case 6:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, Organization.newInstance())
                         .commit();
                 break;
             default: break;

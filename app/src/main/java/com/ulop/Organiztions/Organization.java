@@ -1,4 +1,4 @@
-package com.ulop.student;
+package com.ulop.Organiztions;
 
 
 
@@ -12,41 +12,29 @@ import android.widget.TabHost;
 import com.ulop.chuvsu.app.R;
 import com.ulop.util.TabsAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Student#newInstance} factory method to
+ * Use the {@link Organization#newInstance} factory method to
  * create an instance of this fragment.
  *
  */
-public class Student extends Fragment {
+public class Organization extends Fragment {
 
     TabsAdapter adapter = new TabsAdapter(new String[]{
-            "Стипендия",
-            "Общежитие",
-            "Наука",
-            "Спорт",
-            "Культурные события",
-            "Экскурсии",
-            "Оздровление"
+            "Профком",
+            "СНО",
+            "Студсовет"
     }, new Integer[]{
-            R.id.scholarship,
-            R.id.campus,
-            R.id.since,
-            R.id.sport,
-            R.id.culture_events,
-            R.id.tour,
-            R.id.health
+            R.id.profcom,
+            R.id.sno,
+            R.id.studsovet
     });
 
-    // TODO: Rename and change types and number of parameters
-    public static Student newInstance() {
-        Student fragment = new Student();
+    public static Organization newInstance() {
+        Organization fragment = new Organization();
         return fragment;
     }
-    public Student() {
+    public Organization() {
         // Required empty public constructor
     }
 
@@ -54,15 +42,13 @@ public class Student extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_student, container, false);
-
+        View rootView = inflater.inflate(R.layout.fragment_organization, container, false);
 
         TabHost tabHost = (TabHost) rootView.findViewById(R.id.tabHost);
 
@@ -80,7 +66,6 @@ public class Student extends Fragment {
 
         return rootView;
     }
-
 
 
 }

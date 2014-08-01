@@ -108,7 +108,8 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.facultetsmenu),
                         getString(R.string.abiturients),
                         "Справочник",
-                        "Судент"
+                        "Студент",
+                        "Организации"
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;

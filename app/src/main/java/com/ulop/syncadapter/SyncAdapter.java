@@ -21,11 +21,13 @@ import com.ulop.models.AbiturientNews;
 import com.ulop.models.Address;
 import com.ulop.models.Entry;
 import com.ulop.models.Faculty;
+import com.ulop.models.InfoForStudent;
 import com.ulop.models.Phone;
 import com.ulop.parsers.AbiturientNewsParser;
 import com.ulop.parsers.AddressParser;
 import com.ulop.parsers.FacultyInfoParser;
 import com.ulop.parsers.FeedParser;
+import com.ulop.parsers.InfoForStudentParser;
 import com.ulop.parsers.PhoneParser;
 import com.ulop.syncadapter.Info.InfoContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
@@ -51,6 +53,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     private String ABITNEWS_URL = getContext().getString(R.string.abiturient_news_url);
     private String PHONE_URL = getContext().getString(R.string.phones_url);
     private String ADDRESS_URL = getContext().getString(R.string.address_url);
+    private String STUDENT_URL = getContext().getString(R.string.student_url);
 
     /**
      * Network connection timeout, in milliseconds.
@@ -110,6 +113,10 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 location = new URL(ADDRESS_URL);
                 stream = downloadUrl(location);
                 updateInfoForAddresses(stream, syncResult);
+
+                location = new URL(STUDENT_URL);
+                stream = downloadUrl(location);
+                updateInfoForStudents(stream, syncResult);
 
             } finally {
                 if (stream != null) {
@@ -449,13 +456,53 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
                 newInfoHashMap.remove(fId);
             } else {
-                new Delete().from(Phone.class).
+                new Delete().from(Address.class).
                         where("address_id = ?", fId).execute();
                 syncResult.stats.numDeletes++;
             }
         }
 
         for (Address e : newInfoHashMap.values()) {
+            e.save();
+        }
+    }
+
+    private void updateInfoForStudents(InputStream inputStream, SyncResult syncResult) {
+        InfoForStudentParser fParser = new InfoForStudentParser();
+        List<InfoForStudent> newInfoList = fParser.getAsModelList(inputStream);
+        Log.i(TAG, "Get " + newInfoList.size() + "info for student's");
+
+        List<InfoForStudent> currentList = new Select().from(InfoForStudent.class).execute();
+        Log.i(TAG, "Found " + currentList.size() + " local student info");
+
+        HashMap<Integer, InfoForStudent> newInfoHashMap = new HashMap<Integer, InfoForStudent>();
+        for (InfoForStudent e : newInfoList) {
+            newInfoHashMap.put(e.infoID, e);
+        }
+
+
+        for (int i = 0; i < currentList.size(); i++) {
+            syncResult.stats.numEntries++;
+            Integer fId = currentList.get(i).infoID;
+            String fName = currentList.get(i).title;
+            InfoForStudent match = newInfoHashMap.get(fId);
+            if (match != null) {
+                if (match.title != null ||
+                        match.title.equals(fName)) {
+                    currentList.get(i).delete();
+                    newInfoHashMap.get(fId).save();
+                    syncResult.stats.numUpdates++;
+
+                }
+                newInfoHashMap.remove(fId);
+            } else {
+                new Delete().from(InfoForStudent.class).
+                        where("infoID = ?", fId).execute();
+                syncResult.stats.numDeletes++;
+            }
+        }
+
+        for (InfoForStudent e : newInfoHashMap.values()) {
             e.save();
         }
     }

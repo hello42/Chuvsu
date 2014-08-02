@@ -20,6 +20,7 @@ import com.ulop.newscardlist.dummy.NewsCardFragment;
 import com.ulop.student.Student;
 import com.ulop.syncadapter.SyncService;
 import com.ulop.syncadapter.SyncUtils;
+import com.ulop.util.MenuByTime;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -82,43 +83,43 @@ public class MainActivity extends ActionBarActivity
         //update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         currentSelectedItem = position;
-        switch (position){
-            case 0:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, NewsCardFragment.newInstance("lol", "lol"))
-                        .commit();
-                break;
-            case 1:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, AboutUniversityFragment.newInstance())
-                        .commit();
-                break;
-            case 2:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, FacultyFragment.newInstance())
-                        .commit();
-                break;
-            case 3:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, AbiturientNewsFragment.newInstance())
-                        .commit();
-                break;
-            case 4:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, Dictionary.newInstance("s", "s"))
-                        .commit();
-                break;
-            case 5:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, Student.newInstance())
-                        .commit();
-                break;
-            case 6:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, Organization.newInstance())
-                        .commit();
-                break;
-            default: break;
+        String s = new MenuByTime(getApplicationContext()).getItemTitle(position).toLowerCase();
+        if (s.equals("новости")) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, NewsCardFragment.newInstance("lol", "lol"))
+                    .commit();
+
+        } else if (s.equals("университет")) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, AboutUniversityFragment.newInstance())
+                    .commit();
+
+        } else if (s.equals("факультеты")) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, FacultyFragment.newInstance())
+                    .commit();
+
+        } else if (s.equals("абитуриент")) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, AbiturientNewsFragment.newInstance())
+                    .commit();
+
+        } else if (s.equals("справочник")) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, Dictionary.newInstance("s", "s"))
+                    .commit();
+
+        } else if (s.equals("студент")) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, Student.newInstance())
+                    .commit();
+
+        } else if (s.equals("организации")) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, Organization.newInstance())
+                    .commit();
+
+        } else {
         }
 
     }

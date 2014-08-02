@@ -29,7 +29,7 @@ public class MenuByTime extends BaseAdapter{
         addPeriod(new DatePeriod("Абитуриент"));
         addPeriod(new DatePeriod("Справочник"));
         addPeriod(new DatePeriod("Студент"));
-        addPeriod(new DatePeriod("Организации", "01/01/2014", "01/05/2014"));
+        addPeriod(new DatePeriod("Организации", "01/01", "01/05"));
     }
 
     public MenuByTime(Context context) {
@@ -47,6 +47,7 @@ public class MenuByTime extends BaseAdapter{
     public boolean needShow(DatePeriod period){
 
         Date today = new Date();
+        today.setYear(70);
 
         return today.getTime() >= period.startDate.getTime() &&
                 today.getTime() <= period.endDate.getTime();

@@ -42,7 +42,7 @@
                     <FrameLayout
                         android:id="@+id/scholarshipFragment"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"></FrameLayout>
+                        android:layout_height="fill_parent"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -53,7 +53,7 @@
                     <FrameLayout
                         android:id="@+id/campusFragment"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"></FrameLayout>
+                        android:layout_height="fill_parent"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -64,7 +64,7 @@
                     <FrameLayout
                         android:id="@+id/sinceFragment"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"></FrameLayout>
+                        android:layout_height="fill_parent"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -75,7 +75,7 @@
                     <FrameLayout
                         android:id="@+id/sportFragment"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"></FrameLayout>
+                        android:layout_height="fill_parent"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -86,7 +86,7 @@
                     <FrameLayout
                         android:id="@+id/cultureFragment"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"></FrameLayout>
+                        android:layout_height="fill_parent"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -97,7 +97,7 @@
                     <FrameLayout
                         android:id="@+id/tourFragment"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"></FrameLayout>
+                        android:layout_height="fill_parent"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -108,7 +108,7 @@
                     <FrameLayout
                         android:id="@+id/healthFragment"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"></FrameLayout>
+                        android:layout_height="fill_parent"/>
                 </LinearLayout>
 
 

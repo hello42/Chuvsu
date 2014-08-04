@@ -2,6 +2,7 @@ package com.ulop.parsers;
 
 import android.util.Log;
 
+import com.ulop.models.Organization;
 import com.ulop.models.Phone;
 
 import org.json.JSONArray;
@@ -16,18 +17,19 @@ import java.util.List;
 /**
  * Created by ulop on 30.07.14.
  */
-public class PhoneParser extends BaseParser {
-    public List<Phone> getAsModelList(InputStream inputStream){
-        List<Phone> pList = new ArrayList<Phone>();
+public class OrganizationParser extends BaseParser {
+    public List<Organization> getAsModelList(InputStream inputStream){
+        List<Organization> oList = new ArrayList<Organization>();
         try {
             JSONArray jArray = getJSONArray(inputStream);
             for (int i = 0; i < jArray.length(); i++) {
                 JSONObject object = jArray.getJSONObject(i);
-                Phone phone = new Phone();
-                phone.phone_id = object.getInt("id");
-                phone.title = object.getString("title");
-                phone.phone_number = object.getString("number");
-                pList.add(phone);
+                Organization organization = new Organization();
+                organization.organizationID = object.getInt("id");
+                organization.name = object.getString("name");
+                organization.body = object.getString("body");
+                organization.section = object.getString("typeof");
+                oList.add(organization);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -36,6 +38,6 @@ public class PhoneParser extends BaseParser {
             e.printStackTrace();
         }
 
-        return pList;
+        return oList;
     }
 }

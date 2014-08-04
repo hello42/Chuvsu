@@ -56,9 +56,6 @@ public class AbiturientNewsFragment extends Fragment {
     private static final String TAG = "AbitNews";
     private OnFragmentInteractionListener mListener;
 
-    private View mRoot;
-
-
 
     public static AbiturientNewsFragment newInstance() {
         AbiturientNewsFragment fragment = new AbiturientNewsFragment();
@@ -76,7 +73,7 @@ public class AbiturientNewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.fragment_abiturient_pager, container, false);
+        View mRoot = inflater.inflate(R.layout.fragment_abiturient_pager, container, false);
 
         FragmentManager fragmentManager = getFragmentManager();
 

@@ -1,6 +1,5 @@
 package com.ulop.chuvsu.app;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.ulop.Organiztions.Organization;
+import com.ulop.Organiztions.OrganizationFragment;
 import com.ulop.abiturients.AbiturientNewsFragment;
 import com.ulop.dictionary.Dictionary;
 import com.ulop.faculty.FacultyFragment;
@@ -116,7 +115,7 @@ public class MainActivity extends ActionBarActivity
 
         } else if (s.equals("организации")) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, Organization.newInstance())
+                    .replace(R.id.container, OrganizationFragment.newInstance())
                     .commit();
 
         } else {

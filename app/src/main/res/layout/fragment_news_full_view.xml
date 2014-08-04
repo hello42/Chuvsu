@@ -52,10 +52,9 @@
         android:id="@+id/body"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:autoText="false"
         android:textStyle="normal"
         android:typeface="serif"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:lineSpacingExtra="6dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp" />

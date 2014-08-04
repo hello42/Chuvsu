@@ -22,12 +22,14 @@ import com.ulop.models.Address;
 import com.ulop.models.Entry;
 import com.ulop.models.Faculty;
 import com.ulop.models.InfoForStudent;
+import com.ulop.models.Organization;
 import com.ulop.models.Phone;
 import com.ulop.parsers.AbiturientNewsParser;
 import com.ulop.parsers.AddressParser;
 import com.ulop.parsers.FacultyInfoParser;
 import com.ulop.parsers.FeedParser;
 import com.ulop.parsers.InfoForStudentParser;
+import com.ulop.parsers.OrganizationParser;
 import com.ulop.parsers.PhoneParser;
 import com.ulop.syncadapter.Info.InfoContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
@@ -37,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -48,6 +51,7 @@ import java.util.List;
 class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String TAG = "SyncAdapter";
+    private String ORGANIZATION_URL = getContext().getString(R.string.organization_url);
     private String FEED_URL = getContext().getString(R.string.feed_url);
     private String FACULTY_URL = getContext().getString(R.string.faculty_info_url);
     private String ABITNEWS_URL = getContext().getString(R.string.abiturient_news_url);
@@ -118,6 +122,10 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 stream = downloadUrl(location);
                 updateInfoForStudents(stream, syncResult);
 
+                location = new URL(ORGANIZATION_URL);
+                stream = downloadUrl(location);
+                updateInfoForOrganizations(stream, syncResult);
+
             } finally {
                 if (stream != null) {
                     stream.close();
@@ -136,18 +144,6 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
         Log.i(TAG, "Network synchronization complete");
         // ActiveAndroid.dispose();
-    }
-
-    void updateLocalFeedData(final InputStream stream, final SyncResult syncResult)
-            throws IOException, RemoteException,
-            OperationApplicationException, ParseException {
-
-
-        //updateNews(stream, syncResult);
-        //updateFacultyInfo(syncResult);
-        // updateAbiturientNews(syncResult);
-        //updateInfoForFaculty(syncResult);
-
     }
 
     /*
@@ -248,19 +244,40 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
     */
 
-    private InputStream downloadUrl(final URL url) throws IOException {
+    private InputStream downloadUrl(final URL url) {
         Log.i(TAG, "Streaming data from network: " + url);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        HttpURLConnection conn = null;
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert conn != null;
         conn.setReadTimeout(NET_READ_TIMEOUT_MILLIS /* milliseconds */);
         conn.setConnectTimeout(NET_CONNECT_TIMEOUT_MILLIS /* milliseconds */);
-        conn.setRequestMethod("GET");
+        try {
+            conn.setRequestMethod("GET");
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        }
         conn.setDoInput(true);
         // Starts the query
-        conn.connect();
+        try {
+            conn.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        return conn.getInputStream();
+        try {
+            return conn.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
+    //Плохой, плохой и ещё раз плохой код
+    //Стыдно (x_x])
     private void updateInfoForFaculty(InputStream inputStream, SyncResult syncResult) {
         FacultyInfoParser fParser = new FacultyInfoParser();
         List<Faculty> facultyList = fParser.getAsModelList(inputStream);
@@ -354,6 +371,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         Log.i(TAG, "Found " + currentList.size() + " local AbiturientNews");
 
         HashMap<Integer, AbiturientNews> newInfoHashMap = new HashMap<Integer, AbiturientNews>();
+
         for (AbiturientNews e : newInfoList) {
             newInfoHashMap.put(e.news_id, e);
         }
@@ -481,15 +499,15 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
 
-        for (int i = 0; i < currentList.size(); i++) {
+        for (InfoForStudent currentItem : currentList) {
             syncResult.stats.numEntries++;
-            Integer fId = currentList.get(i).infoID;
-            String fName = currentList.get(i).title;
+            Integer fId = currentItem.infoID;
+            String fName = currentItem.title;
             InfoForStudent match = newInfoHashMap.get(fId);
             if (match != null) {
                 if (match.title != null ||
                         match.title.equals(fName)) {
-                    currentList.get(i).delete();
+                    currentItem.delete();
                     newInfoHashMap.get(fId).save();
                     syncResult.stats.numUpdates++;
 
@@ -503,6 +521,46 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
         for (InfoForStudent e : newInfoHashMap.values()) {
+            e.save();
+        }
+    }
+
+    private void updateInfoForOrganizations(InputStream inputStream, SyncResult syncResult) {
+        OrganizationParser fParser = new OrganizationParser();
+        List<Organization> newInfoList = fParser.getAsModelList(inputStream);
+        Log.i(TAG, "Get " + newInfoList.size() + "info about organization's");
+
+        List<Organization> currentList = new Select().from(Organization.class).execute();
+        Log.i(TAG, "Found " + currentList.size() + " local student info");
+
+        HashMap<Integer, Organization> newInfoHashMap = new HashMap<Integer, Organization>();
+        for (Organization e : newInfoList) {
+            newInfoHashMap.put(e.organizationID, e);
+        }
+
+
+        for (Organization currentItem : currentList) {
+            syncResult.stats.numEntries++;
+            Integer fId = currentItem.organizationID;
+            String fName = currentItem.name;
+            Organization match = newInfoHashMap.get(fId);
+            if (match != null) {
+                if (match.name != null ||
+                        match.name.equals(fName)) {
+                    currentItem.delete();
+                    newInfoHashMap.get(fId).save();
+                    syncResult.stats.numUpdates++;
+
+                }
+                newInfoHashMap.remove(fId);
+            } else {
+                new Delete().from(Organization.class).
+                        where("organizationID = ?", fId).execute();
+                syncResult.stats.numDeletes++;
+            }
+        }
+
+        for (Organization e : newInfoHashMap.values()) {
             e.save();
         }
     }

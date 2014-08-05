@@ -124,7 +124,7 @@ public class Student extends Fragment {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_about_university, container, false);
+            View rootView = inflater.inflate(R.layout.text_view_layout, container, false);
             int newsType = getArguments().getInt("INFO_TYPE");
             InfoForStudent info = new Select()
                     .from(InfoForStudent.class)
@@ -132,8 +132,7 @@ public class Student extends Fragment {
                     .executeSingle();
 
             if (info.title != null) {
-                ((TextView) rootView.findViewById(R.id.title)).setText(info.title);
-                ((TextView) rootView.findViewById(R.id.body)).setText(Html.fromHtml(info.body));
+                ((TextView) rootView).setText(Html.fromHtml(info.body));
             }
             return rootView;
         }

@@ -29,5 +29,5 @@
     <string name="address_url">http://chuvsu.vtrave.com/addresses.json</string>
     <string name="student_url">http://chuvsu.vtrave.com/students.json</string>
     <string name="organization_url">http://chuvsu.vtrave.com/organisations.json</string>
-
+    <string name="pages_url">http://chuvsu.vtrave.com/pages.json</string>
 </resources>

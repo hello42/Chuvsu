@@ -24,6 +24,7 @@ import com.ulop.models.Faculty;
 import com.ulop.models.InfoForStudent;
 import com.ulop.models.Organization;
 import com.ulop.models.Phone;
+import com.ulop.models.StaticInfo;
 import com.ulop.parsers.AbiturientNewsParser;
 import com.ulop.parsers.AddressParser;
 import com.ulop.parsers.FacultyInfoParser;
@@ -31,6 +32,7 @@ import com.ulop.parsers.FeedParser;
 import com.ulop.parsers.InfoForStudentParser;
 import com.ulop.parsers.OrganizationParser;
 import com.ulop.parsers.PhoneParser;
+import com.ulop.parsers.StaticInfoParser;
 import com.ulop.syncadapter.Info.InfoContract;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 
@@ -51,6 +53,7 @@ import java.util.List;
 class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String TAG = "SyncAdapter";
+    private String PAGES_URL = getContext().getString(R.string.pages_url);
     private String ORGANIZATION_URL = getContext().getString(R.string.organization_url);
     private String FEED_URL = getContext().getString(R.string.feed_url);
     private String FACULTY_URL = getContext().getString(R.string.faculty_info_url);
@@ -125,6 +128,11 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 location = new URL(ORGANIZATION_URL);
                 stream = downloadUrl(location);
                 updateInfoForOrganizations(stream, syncResult);
+
+
+                location = new URL(PAGES_URL);
+                stream = downloadUrl(location);
+                updateInfoForPages(stream, syncResult);
 
             } finally {
                 if (stream != null) {
@@ -277,7 +285,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     //Плохой, плохой и ещё раз плохой код
-    //Стыдно (x_x])
+    //Стыдно (x_x)
     private void updateInfoForFaculty(InputStream inputStream, SyncResult syncResult) {
         FacultyInfoParser fParser = new FacultyInfoParser();
         List<Faculty> facultyList = fParser.getAsModelList(inputStream);
@@ -333,7 +341,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             newInfoHashMap.put(e.news_id, e);
         }
 
-        new TableInfo(Faculty.class).getFields();
+//        new TableInfo(null).;
 
         for (int i = 0; i < currentList.size(); i++) {
             syncResult.stats.numEntries++;
@@ -561,6 +569,46 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
         for (Organization e : newInfoHashMap.values()) {
+            e.save();
+        }
+    }
+
+    private void updateInfoForPages(InputStream inputStream, SyncResult syncResult) {
+        StaticInfoParser fParser = new StaticInfoParser();
+        List<StaticInfo> newInfoList = fParser.getAsModelList(inputStream);
+        Log.i(TAG, "Get " + newInfoList.size() + " static info");
+
+        List<StaticInfo> currentList = new Select().from(StaticInfo.class).execute();
+        Log.i(TAG, "Found " + currentList.size() + " local static info");
+
+        HashMap<Integer, StaticInfo> newInfoHashMap = new HashMap<Integer, StaticInfo>();
+        for (StaticInfo e : newInfoList) {
+            newInfoHashMap.put(e.page_id, e);
+        }
+
+
+        for (StaticInfo currentItem : currentList) {
+            syncResult.stats.numEntries++;
+            Integer fId = currentItem.page_id;
+            String fName = currentItem.title;
+            StaticInfo match = newInfoHashMap.get(fId);
+            if (match != null) {
+                if (match.title != null ||
+                        match.title.equals(fName)) {
+                    currentItem.delete();
+                    newInfoHashMap.get(fId).save();
+                    syncResult.stats.numUpdates++;
+
+                }
+                newInfoHashMap.remove(fId);
+            } else {
+                new Delete().from(StaticInfo.class).
+                        where("page_id = ?", fId).execute();
+                syncResult.stats.numDeletes++;
+            }
+        }
+
+        for (StaticInfo e : newInfoHashMap.values()) {
             e.save();
         }
     }

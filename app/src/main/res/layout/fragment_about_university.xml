@@ -22,7 +22,8 @@
                 android:text="Large Text"
                 android:id="@+id/title"
                 android:padding="8dp"
-                android:textAlignment="center" />
+                android:gravity="center"
+                android:textAlignment="gravity" />
 
             <TextView
                 android:layout_width="fill_parent"

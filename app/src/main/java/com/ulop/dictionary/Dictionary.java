@@ -126,7 +126,7 @@ public class Dictionary extends Fragment {
                 .commit();
 
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment2, AddressFragment.newInstance("", ""))
+                .replace(R.id.fragment2, AddressFragment.newInstance())
                 .commit();
 
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {

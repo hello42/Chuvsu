@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:drawable/editbox_background_normal">
+    android:background="@drawable/abc_menu_dropdown_panel_holo_dark">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
 
                 <RelativeLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="49dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="5dp">
 
                     <TextView
@@ -58,7 +58,8 @@
                         android:id="@+id/Title"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true" />
+                        android:layout_alignParentStart="true"
+                        android:maxLines="2" />
                 </RelativeLayout>
 
                 <LinearLayout

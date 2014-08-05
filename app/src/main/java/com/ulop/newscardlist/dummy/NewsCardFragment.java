@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SyncStatusObserver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -144,10 +145,11 @@ public class NewsCardFragment extends Fragment
             public boolean setViewValue(View view, Cursor cursor, int i) {
              if (i == COLUMN_IMAGE) {
                     String str = cursor.getString(i);
+                 Log.i(TAG, cursor.getColumnName(i) + " " + str);
                  //final ProgressBar spinner = (ProgressBar) rootView.findViewById(R.id.loading);
 
                  Picasso.with(getActivity()).
-                         load(str).
+                         load(Uri.parse(str)).
                          into((ImageView) view);
                     return true;
                 } else

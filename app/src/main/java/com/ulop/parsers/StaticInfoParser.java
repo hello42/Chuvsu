@@ -2,7 +2,8 @@ package com.ulop.parsers;
 
 import android.util.Log;
 
-import com.ulop.models.Address;
+import com.ulop.models.InfoForStudent;
+import com.ulop.models.StaticInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,22 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ulop on 30.07.14.
+ * Created by ulop on 02.08.14.
  */
-public class AddressParser extends BaseParser {
-    public List<Address> getAsModelList(InputStream inputStream){
-        List<Address> aList = new ArrayList<Address>();
+public class StaticInfoParser extends BaseParser {
+    public List<StaticInfo> getAsModelList(InputStream inputStream){
+        List<StaticInfo> iList = new ArrayList<StaticInfo>();
         try {
             JSONArray jArray = getJSONArray(inputStream);
             for (int i = 0; i < jArray.length(); i++) {
                 JSONObject object = jArray.getJSONObject(i);
-                Address address = new Address();
-                address.address_id = object.getInt("id");
-                address.title = object.getString("title");
-                address.image = object.getString("image");
-                address.address = object.getString("address");
-                address.coordinates = object.getString("coord");
-                aList.add(address);
+                StaticInfo info = new StaticInfo();
+                info.page_id = object.getInt("id");
+                info.title = object.getString("title");
+                info.body = object.getString("body");
+                info.section = object.getString("typeof");
+                iList.add(info);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -38,6 +38,6 @@ public class AddressParser extends BaseParser {
             e.printStackTrace();
         }
 
-        return aList;
+        return iList;
     }
 }

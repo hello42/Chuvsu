@@ -1,6 +1,7 @@
 package com.ulop.dictionary;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,14 +10,17 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.activeandroid.content.ContentProvider;
+import com.activeandroid.query.Select;
 import com.squareup.picasso.Picasso;
 import com.ulop.chuvsu.app.R;
 import com.ulop.models.Address;
@@ -31,15 +35,9 @@ import com.ulop.models.Address;
  *
  */
 public class AddressFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private static final Integer COLUMN_IMAGE = 3;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final Integer COLUMN_IMAGE = 4;
+    private static final String TAG = "ADDRESS";
 
     private OnFragmentInteractionListener mListener;
     private SimpleCursorAdapter mAdapter;
@@ -59,30 +57,15 @@ public class AddressFragment extends Fragment implements LoaderManager.LoaderCal
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment AddressFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddressFragment newInstance(String param1, String param2) {
+    public static AddressFragment newInstance() {
         AddressFragment fragment = new AddressFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
     public AddressFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -122,6 +105,32 @@ public class AddressFragment extends Fragment implements LoaderManager.LoaderCal
         list.setAdapter(mAdapter);
         getLoaderManager().initLoader(0, null, this);
 
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG, "i = " + i);               
+                Address address;
+                address = new Select()
+                        .from(Address.class)
+                        .where("address_id = ?", i + 1)
+                        .executeSingle();
+                String labelLocation = address.title;
+
+                String[] coordinate = address.coordinates.split(" ");
+                String mLatitude = coordinate[1];
+                String mLongitude = coordinate[0];
+
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("geo:<" +
+                                mLatitude  + ">,<" +
+                                mLongitude + ">?q=<" +
+                                mLatitude  + ">,<" +
+                                mLongitude + ">(" +
+                                labelLocation + ")"));
+
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }

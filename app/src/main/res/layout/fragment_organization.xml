@@ -37,21 +37,30 @@
                     android:id="@+id/sno"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
-
+                    <FrameLayout
+                        android:id="@+id/snoFragment"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"/>
                     </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/profcom"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
-
+                    <FrameLayout
+                        android:id="@+id/profcomFragment"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"/>
                     </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/studsovet"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
-
+                    <FrameLayout
+                        android:id="@+id/studsovetFragment"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"/>
                     </LinearLayout>
             </FrameLayout>
         </LinearLayout>

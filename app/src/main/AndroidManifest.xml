@@ -51,7 +51,7 @@
             android:value="chuvsu.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="7" />
+            android:value="9" />
 
         <activity
             android:name="com.ulop.abiturients.AbitNewsFullActivity"

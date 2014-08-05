@@ -135,7 +135,7 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Cursor cursor = mAdapter.getCursor();
                 cursor.moveToPosition(i);
-                String url = cursor.getString(4);
+                String url = cursor.getString(5);
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));

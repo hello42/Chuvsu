@@ -28,9 +28,11 @@ public class MenuByTime extends BaseAdapter{
         addPeriod(new DatePeriod("Университет"));
         addPeriod(new DatePeriod("Факультеты"));
         addPeriod(new DatePeriod("Абитуриент"));
+        addPeriod(new DatePeriod("Библиотека"));
         addPeriod(new DatePeriod("Справочник"));
         addPeriod(new DatePeriod("Студент"));
-        addPeriod(new DatePeriod("Организации", "01/01", "01/05"));
+        addPeriod(new DatePeriod("Первокурсник"));
+        addPeriod(new DatePeriod("Организации"));
     }
 
     public MenuByTime(Context context) {

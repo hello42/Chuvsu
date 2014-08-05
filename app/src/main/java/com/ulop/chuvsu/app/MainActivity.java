@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.ulop.abiturients.AbiturientNewsFragment;
 import com.ulop.dictionary.Dictionary;
 import com.ulop.faculty.FacultyFragment;
 import com.ulop.newscardlist.dummy.NewsCardFragment;
+import com.ulop.student.PagesFragment;
 import com.ulop.student.Student;
 import com.ulop.syncadapter.SyncService;
 import com.ulop.syncadapter.SyncUtils;
@@ -31,6 +33,7 @@ import java.nio.channels.FileChannel;
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    private static final String TAG = "main";
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -40,11 +43,6 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
     private int currentSelectedItem = 0;
-
-
-
-
-
 
 
     @Override
@@ -68,13 +66,10 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    protected void onPostCreate (Bundle savedInstanceState){
+    protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
     }
-
-
-
 
 
     @Override
@@ -88,9 +83,14 @@ public class MainActivity extends ActionBarActivity
                     .replace(R.id.container, NewsCardFragment.newInstance("lol", "lol"))
                     .commit();
 
+        } else if (s.equals("первокурсник")) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, PagesFragment.newInstance(2))
+                    .commit();
+
         } else if (s.equals("университет")) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, AboutUniversityFragment.newInstance())
+                    .replace(R.id.container, PagesFragment.newInstance(1))
                     .commit();
 
         } else if (s.equals("факультеты")) {
@@ -116,6 +116,11 @@ public class MainActivity extends ActionBarActivity
         } else if (s.equals("организации")) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, OrganizationFragment.newInstance())
+                    .commit();
+
+        } else if (s.equals("библиотека")) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, PagesFragment.newInstance(3))
                     .commit();
 
         } else {
@@ -169,17 +174,17 @@ public class MainActivity extends ActionBarActivity
         if (id == R.id.refresh) {
             startService(new Intent(this, SyncService.class));
         }
-        if (id == R.id.export){
+        if (id == R.id.export) {
             exportDB();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void exportDB(){
+    private void exportDB() {
         File sd = Environment.getExternalStorageDirectory();
         File data = Environment.getDataDirectory();
-        FileChannel source=null;
-        FileChannel destination=null;
+        FileChannel source = null;
+        FileChannel destination = null;
         String currentDBPath = "/data/com.ulop.chuvsu.app/databases/chuvsu.db";
         String backupDBPath = "chuvsu.db";
         File currentDB = new File(data, currentDBPath);
@@ -191,7 +196,7 @@ public class MainActivity extends ActionBarActivity
             source.close();
             destination.close();
             Toast.makeText(this, "DB Exported!", Toast.LENGTH_LONG).show();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

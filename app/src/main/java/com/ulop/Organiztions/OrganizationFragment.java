@@ -34,6 +34,11 @@ public class OrganizationFragment extends Fragment {
             R.id.profcom,
             R.id.studsovet
     });
+    private int[] fragments = new int[]{
+            R.id.snoFragment,
+            R.id.profcomFragment,
+            R.id.studsovetFragment
+    };
 
     public static OrganizationFragment newInstance() {
         OrganizationFragment fragment = new OrganizationFragment();
@@ -70,6 +75,11 @@ public class OrganizationFragment extends Fragment {
                     setContent(adapter.getResourceID(i));
 
             tabHost.addTab(tabSpec);
+
+
+            fragmentManager.beginTransaction()
+                    .replace(fragments[i], OrganizationInfo.newInstance(i))
+                    .commit();
         }
 
         return rootView;
@@ -89,7 +99,7 @@ public class OrganizationFragment extends Fragment {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_about_university, container, false);
+            View rootView = inflater.inflate(R.layout.text_view_layout, container, false);
 
             int orgType = getArguments().getInt("ORGANIZATION_TYPE");
             Organization info = new Select()
@@ -97,8 +107,7 @@ public class OrganizationFragment extends Fragment {
                     .where("organizationID = ?", orgType + 1)
                     .executeSingle();
 
-            ((TextView) rootView.findViewById(R.id.title)).setText(info.name);
-            ((TextView) rootView.findViewById(R.id.body)).setText(Html.fromHtml(info.body));
+            ((TextView) rootView).setText(Html.fromHtml(info.body));
 
             return rootView;
         }

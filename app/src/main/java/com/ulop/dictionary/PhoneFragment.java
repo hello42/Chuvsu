@@ -2,7 +2,9 @@ package com.ulop.dictionary;
 
 
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -13,9 +15,11 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.activeandroid.content.ContentProvider;
+import com.activeandroid.query.Select;
 import com.ulop.chuvsu.app.R;
 import com.ulop.models.Phone;
 
@@ -96,6 +100,21 @@ public class PhoneFragment extends Fragment implements LoaderManager.LoaderCallb
 
         list.setAdapter(mAdapter);
         getLoaderManager().initLoader(0, null, this);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Phone phone = new Select()
+                        .from(Phone.class)
+                        .where("phone_id = ?", i + 1)
+                        .executeSingle();
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + phone.phone_number));
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+        });
 
         return rootView;
     }

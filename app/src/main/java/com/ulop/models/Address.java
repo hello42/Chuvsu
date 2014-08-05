@@ -21,6 +21,9 @@ public class Address extends Model {
     @Column(name = "image")
     public String image;
 
+    @Column(name = "coordinates")
+    public String coordinates;
+
     public Address() {
        super();
     }

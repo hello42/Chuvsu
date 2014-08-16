@@ -1,14 +1,8 @@
 package com.ulop.chuvsu.app;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.net.Uri;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
 import com.ulop.syncadapter.Info.InfoContract;
 
 

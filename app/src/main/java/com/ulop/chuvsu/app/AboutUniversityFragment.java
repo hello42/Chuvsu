@@ -42,8 +42,7 @@ public class AboutUniversityFragment extends Fragment {
         TextView title = (TextView) view.findViewById(R.id.title);
         TextView body = (TextView) view.findViewById(R.id.body);
 
-        title.setText(R.string.title);
-        body.setText(R.string.body);
+        //TODO доделать
         return view;
     }
 

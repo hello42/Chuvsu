@@ -10,7 +10,7 @@ public class AuthenticatorService extends Service {
 
     private static final String TAG = "AuthenticatorService";
     private static final String ACCOUNT_TYPE = "com.ulop.chuvsu.app";
-    private static final String ACCOUNT_NAME = "sync";
+    private static final String ACCOUNT_NAME = "Студент";
 
 
     private Authenticator mAuthenticator;

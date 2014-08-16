@@ -33,10 +33,12 @@ public class FeedParser extends BaseParser{
                 eList.add(entry);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             Log.i(TAG, "Failed to parse jsonArray");
         } catch (JSONException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            Log.i(TAG, "Failed to parse jsonArray");
+
         }
 
         return eList;

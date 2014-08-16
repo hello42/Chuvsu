@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class BaseParser {
 
     String TAG;
+    private boolean ready;
 
     public BaseParser() {
         this.TAG = this.getClass().getName();

@@ -101,6 +101,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         try {
             URL location = new URL(FEED_URL);
             InputStream stream = null;
+
             try {
                 stream = downloadUrl(location);
                 updateInfoForNews(stream, syncResult);
@@ -133,14 +134,11 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 location = new URL(PAGES_URL);
                 stream = downloadUrl(location);
                 updateInfoForPages(stream, syncResult);
-
             } finally {
                 if (stream != null) {
                     stream.close();
                 }
             }
-
-
         } catch (MalformedURLException e) {
             Log.wtf(TAG, "Feed URL is malformed", e);
             syncResult.stats.numParseExceptions++;
@@ -149,9 +147,20 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e(TAG, "Error reading from network: " + e.toString());
             syncResult.stats.numIoExceptions++;
             return;
+        }  catch (ParseException e) {
+            Log.e(TAG, "Error parsing feed: " + e.toString());
+            syncResult.stats.numParseExceptions++;
+            return;
+        } catch (RemoteException e) {
+            Log.e(TAG, "Error updating database: " + e.toString());
+            syncResult.databaseError = true;
+            return;
+        } catch (OperationApplicationException e) {
+            Log.e(TAG, "Error updating database: " + e.toString());
+            syncResult.databaseError = true;
+            return;
         }
         Log.i(TAG, "Network synchronization complete");
-        // ActiveAndroid.dispose();
     }
 
     /*
@@ -252,41 +261,22 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
     */
 
-    private InputStream downloadUrl(final URL url) {
+    private InputStream downloadUrl(final URL url) throws IOException {
         Log.i(TAG, "Streaming data from network: " + url);
         HttpURLConnection conn = null;
-        try {
-            conn = (HttpURLConnection) url.openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        assert conn != null;
+        conn = (HttpURLConnection) url.openConnection();
         conn.setReadTimeout(NET_READ_TIMEOUT_MILLIS /* milliseconds */);
         conn.setConnectTimeout(NET_CONNECT_TIMEOUT_MILLIS /* milliseconds */);
-        try {
-            conn.setRequestMethod("GET");
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        }
+        conn.setRequestMethod("GET");
         conn.setDoInput(true);
-        // Starts the query
-        try {
-            conn.connect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            return conn.getInputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        conn.connect();
+        return conn.getInputStream();
     }
 
     //Плохой, плохой и ещё раз плохой код
     //Стыдно (x_x)
-    private void updateInfoForFaculty(InputStream inputStream, SyncResult syncResult) {
+    private void updateInfoForFaculty(InputStream inputStream, SyncResult syncResult) throws IOException, RemoteException,
+            OperationApplicationException, ParseException{
         FacultyInfoParser fParser = new FacultyInfoParser();
         List<Faculty> facultyList = fParser.getAsModelList(inputStream);
         Log.i(TAG, "Get " + facultyList.size() + "faculty info");

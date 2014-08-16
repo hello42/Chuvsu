@@ -24,7 +24,15 @@
                 <TabWidget
                     android:id="@android:id/tabs"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:layoutMode="opticalBounds"
+                    android:measureWithLargestChild="false"
+                    android:orientation="horizontal"
+                    android:showDividers="middle"
+                    android:tabStripEnabled="false"
+                    android:textAlignment="textStart"
+                    android:baselineAligned="true">
 
                 </TabWidget>
             </HorizontalScrollView>

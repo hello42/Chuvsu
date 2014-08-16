@@ -150,6 +150,7 @@ public class NewsCardFragment extends Fragment
 
                  Picasso.with(getActivity()).
                          load(Uri.parse(str)).
+                         placeholder(R.drawable.loading).
                          into((ImageView) view);
                     return true;
                 } else
@@ -207,9 +208,7 @@ public class NewsCardFragment extends Fragment
                         ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
 
                 ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
-                if (!ContentResolver.isSyncPending(mAccount, AUTHORITY)) {
-                    swipe.setRefreshing(false);
-                }
+                swipe.setRefreshing(false);
 
             }
         });
@@ -307,4 +306,5 @@ public class NewsCardFragment extends Fragment
             });
         }
     };
+
 }

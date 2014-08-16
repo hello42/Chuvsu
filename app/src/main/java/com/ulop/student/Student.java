@@ -5,7 +5,7 @@ package com.ulop.student;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,8 @@ import com.ulop.chuvsu.app.R;
 import com.ulop.models.InfoForStudent;
 import com.ulop.util.TabsAdapter;
 
-import in.uncod.android.bypass.*;
+import in.uncod.android.bypass.Bypass;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -130,10 +131,19 @@ public class Student extends Fragment {
                     .from(InfoForStudent.class)
                     .where("infoID = ?", newsType + 1)
                     .executeSingle();
+            Bypass bypass = new Bypass();
+            CharSequence str = bypass.markdownToSpannable(info.body);
+
+
 
             if (info.title != null) {
-                ((TextView) rootView).setText(Html.fromHtml(info.body));
+                ((TextView) rootView).setText(str);
+                ((TextView) rootView).setMovementMethod(LinkMovementMethod.getInstance());
             }
+
+            /*if (info.title != null) {
+                ((WebView) rootView).loadDataWithBaseURL(null, info.body, "text/html", "UTF-8", null);
+            }*/
             return rootView;
         }
     }

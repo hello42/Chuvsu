@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="QuoteTextAppearance" parent="android:TextAppearance">
+        <item name="android:background">#ffe53527</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+</resources>

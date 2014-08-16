@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.net.Uri;
+import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.ulop.syncadapter.Info.InfoContract;
@@ -21,9 +22,10 @@ public class SplashScreenActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // getSupportActionBar().hide();
+
         setContentView(R.layout.activity_splas_screen);
 
-        getSupportActionBar().hide();
 
     /*    Uri uri = InfoContract.Entry.CONTENT_URI;
         Log.i(TAG, "Will work with " + uri);
@@ -41,7 +43,7 @@ public class SplashScreenActivity extends ActionBarActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
                 SplashScreenActivity.this.startActivity(mainIntent);
                 SplashScreenActivity.this.finish();
             }

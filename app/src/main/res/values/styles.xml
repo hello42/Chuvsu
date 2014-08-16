@@ -2,7 +2,32 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/ChuvsuActionBar</item>
+        <item name="actionBarStyle">@style/ChuvsuActionBar</item>
+        <item name="android:actionBarTabStyle">@style/ChuvsuActionBar.TabStyle</item>
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="ChuvsuActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">#002c69</item>
+    </style>
+
+    <style name="ChuvsuActionBar.TabStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+        <item name="android:background">@drawable/chuvsu_tab_indicator</item>
+        <item name="android:paddingLeft">32dp</item>
+        <item name="android:paddingRight">32dp</item>
+    </style>
+
+    <style name="NoActionBar" parent="Theme.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="actionBarStyle">@style/ActionBar</item>
+        <item name="android:actionBarSize">1dp</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+       <!--<item name="android:windowNoTitle">true</item>-->
+        <item name="android:background">#00f0</item>
+        <item name="android:actionBarSize">0dp</item>
+    </style>
 </resources>

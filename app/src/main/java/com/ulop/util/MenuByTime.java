@@ -24,14 +24,14 @@ public class MenuByTime extends BaseAdapter{
     LayoutInflater lInflater;
 
     {
+        addPeriod(new DatePeriod("Абитуриент"));
+        addPeriod(new DatePeriod("Первокурсник"));
         addPeriod(new DatePeriod("Новости"));
         addPeriod(new DatePeriod("Университет"));
         addPeriod(new DatePeriod("Факультеты"));
-        addPeriod(new DatePeriod("Абитуриент"));
+        addPeriod(new DatePeriod("Студент"));
         addPeriod(new DatePeriod("Библиотека"));
         addPeriod(new DatePeriod("Справочник"));
-        addPeriod(new DatePeriod("Студент"));
-        addPeriod(new DatePeriod("Первокурсник"));
         addPeriod(new DatePeriod("Организации"));
     }
 

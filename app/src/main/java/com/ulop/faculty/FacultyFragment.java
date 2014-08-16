@@ -1,6 +1,8 @@
 package com.ulop.faculty;
 
 import android.accounts.Account;
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -19,9 +21,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.activeandroid.Model;
 import com.activeandroid.content.ContentProvider;
@@ -39,14 +44,14 @@ import java.util.ListIterator;
 
 /**
  * A fragment representing a list of Items.
- * <p />
+ * <p/>
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
- * <p />
+ * <p/>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class FacultyFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class FacultyFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "NewsCardFragment";
 
@@ -55,18 +60,19 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
     private Object mSyncObserverHandle;
 
     private Menu mOptionsMenu;
+    ValueAnimator mAnimator;
 
 
     private static final int COLUMN_LOGO = 4;
     private static final String[] FROM_COLUMNS = new String[]{
             InfoContract.Faculty.COLUMN_NAME_FACULTY_NAME,
-          //  InfoContract.Faculty.COLUMN_NAME_INFO,
+            InfoContract.Faculty.COLUMN_NAME_INFO,
             InfoContract.Faculty.COLUMN_NAME_LOGO
     };
 
     private static final int[] TO_FIELDS = new int[]{
             R.id.facultyName,
-           // R.id.facultyInfo,
+            R.id.facultyInfo,
             R.id.facultyLogo};
 
 
@@ -104,10 +110,9 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
         );
 
 
-
         mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
-            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+            public boolean setViewValue(final View view, Cursor cursor, int columnIndex) {
                 if (columnIndex == COLUMN_LOGO) {
                     String str = cursor.getString(columnIndex);
                     //imageLoader.displayImage(str, ((ImageView) view), options);
@@ -115,14 +120,34 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
                             resize(96, 96).
                             into((ImageView) view);
                     return true;
-                }
-                else {
+                } else if (columnIndex == 3) {
+                    ((TextView) view).setText(cursor.getString(columnIndex));
+                    //view.setVisibility(View.GONE);
+                    view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                        @Override
+                        public boolean onPreDraw() {
+                            view.getViewTreeObserver().removeOnPreDrawListener(this);
+                            view.setVisibility(View.GONE);
+
+                            final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                            final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                            view.measure(widthSpec, heightSpec);
+
+                            mAnimator = slideAnimator(0, view.getMeasuredHeight(), view);
+                            mAnimator.start();
+                            return true;
+                        }
+                    });
+                    return true;
+                } else {
                     // Let SimpleCursorAdapter handle other fields automatically
                     return false;
                 }
 
             }
         });
+
+        //mAdapter.set
 
 
         AbsListView listView = (AbsListView) view.findViewById(R.id.fctlist);
@@ -143,8 +168,83 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                TextView fInfo = (TextView) view.findViewById(R.id.facultyInfo);
+                if (fInfo.getVisibility() == View.GONE) {
+                  // view.setVisibility(View.VISIBLE);
+                    expand(fInfo);
+                } else {
+                    //view.setVisibility(View.VISIBLE);
+                    collapse(fInfo);
+                }
+                return true;
+            }
+        });
+
 
         return view;
+    }
+
+    private void collapse(final View view) {
+        int finalHeight = view.getHeight();
+        Log.i(TAG, "I'm must collapse! But... " + finalHeight);
+
+        ValueAnimator mAnimator = slideAnimator(finalHeight, 0, view);
+
+
+        mAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                view.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+
+        });
+        mAnimator.start();
+    }
+
+    private void expand(View view) {
+        //set Visible
+        view.setVisibility(View.VISIBLE);
+        Log.i(TAG, "I'm must expand! But...");
+/*
+        final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        view.measure(widthSpec, heightSpec);
+
+*/
+        mAnimator.start();
+
+    }
+
+    private ValueAnimator slideAnimator(int start, int end, final View view) {
+        ValueAnimator animator = new ValueAnimator().ofInt(start, end);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int value = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                layoutParams.height = value;
+                view.setLayoutParams(layoutParams);
+            }
+        });
+        return animator;
     }
 
     @Override
@@ -205,15 +305,15 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
 
 
     /**
-    * This interface must be implemented by activities that contain this
-    * fragment to allow an interaction in this fragment to be communicated
-    * to the activity and potentially other fragments contained in that
-    * activity.
-    * <p>
-    * See the Android Training lesson <a href=
-    * "http://developer.android.com/training/basics/fragments/communicating.html"
-    * >Communicating with Other Fragments</a> for more information.
-    */
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
@@ -267,7 +367,6 @@ public class FacultyFragment extends Fragment implements LoaderManager.LoaderCal
             });
         }
     };
-
 
 
 }

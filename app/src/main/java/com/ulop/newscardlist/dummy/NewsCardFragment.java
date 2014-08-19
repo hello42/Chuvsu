@@ -15,7 +15,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,12 +27,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.activeandroid.content.ContentProvider;
-import com.ulop.NewsFullView.NewsFullActivity;
+import com.ulop.chuvsu.app.NewsFullActivity;
 import com.ulop.chuvsu.app.R;
 import com.ulop.models.Entry;
 import com.ulop.syncadapter.Info.InfoContract;
-import com.ulop.syncadapter.SyncService;
-import com.ulop.syncadapter.SyncUtils;
 import com.ulop.syncadapter.accounts.AuthenticatorService;
 import com.squareup.picasso.Picasso;
 
@@ -74,8 +71,8 @@ public class NewsCardFragment extends Fragment
             InfoContract.Entry.COLUMN_NAME_IMAGE
     };
 
-    private static final int[] TO_FIELDS = new int[]{
-            R.id.Title,
+    private static final int[]      TO_FIELDS = new int[]{
+            R.id.newTitle,
             R.id.textView,
             R.id.textView2,
             R.id.facultyLogo};
@@ -151,6 +148,7 @@ public class NewsCardFragment extends Fragment
                  Picasso.with(getActivity()).
                          load(Uri.parse(str)).
                          placeholder(R.drawable.loading).
+                         fit().
                          into((ImageView) view);
                     return true;
                 } else

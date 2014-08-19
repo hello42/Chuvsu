@@ -36,8 +36,9 @@
             android:screenOrientation="sensorPortrait"/>
 
         <activity
-            android:name="com.ulop.NewsFullView.NewsFullActivity"
-            android:label="@string/title_activity_news_full">
+            android:name=".NewsFullActivity"
+            android:label="@string/title_activity_news_full"
+            android:theme="@style/OverleyTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ulop.chuvsu.app.MainActivity" />

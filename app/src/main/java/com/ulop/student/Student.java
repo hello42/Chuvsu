@@ -2,6 +2,7 @@ package com.ulop.student;
 
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -133,12 +134,14 @@ public class Student extends Fragment {
                     .executeSingle();
             Bypass bypass = new Bypass();
             CharSequence str = bypass.markdownToSpannable(info.body);
+            Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Light.ttf");
 
 
 
             if (info.title != null) {
                 ((TextView) rootView).setText(str);
                 ((TextView) rootView).setMovementMethod(LinkMovementMethod.getInstance());
+                ((TextView) rootView).setTypeface(typeface);
             }
 
             /*if (info.title != null) {

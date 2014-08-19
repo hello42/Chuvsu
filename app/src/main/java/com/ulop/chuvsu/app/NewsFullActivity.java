@@ -1,8 +1,9 @@
-package com.ulop.NewsFullView;
+package com.ulop.chuvsu.app;
 
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -45,7 +46,6 @@ public class NewsFullActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_news_full);
 
-       // ActiveAndroid.initialize(this);
         Intent intent = getIntent();
 
         int nPosition = intent.getIntExtra("position", 7);
@@ -61,16 +61,6 @@ public class NewsFullActivity extends ActionBarActivity {
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(nPosition);
-
-
-
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //ActiveAndroid.dispose();
     }
 
     @Override
@@ -86,7 +76,6 @@ public class NewsFullActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        ShareActionProvider mShareActionProvider = new ShareActionProvider(getApplication());
        // mShareActionProvider.
         int id = item.getItemId();
         if (id == R.id.share) {
@@ -209,12 +198,33 @@ public class NewsFullActivity extends ActionBarActivity {
             int pos = getArguments().getInt(ARG_SECTION_NUMBER);
 
             cursor.move(pos);
+            Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Light.ttf");
 
             titleTextView.setText(cursor.getString(COLUMN_TITLE));
             contentTextView.setText(cursor.getString(COLUMN_CONTENT));
+            contentTextView.setTypeface(typeface);
             dateTextView.setText(cursor.getString(COLUMN_PUBLISHED).substring(0, 10));
             String str = cursor.getString(COLUMN_IMAGE);
-            Picasso.with(getActivity()).load(str).into(imageView);
+            Log.i(TAG, str);
+            Picasso.with(getActivity())
+                    .load(str)
+                   // .fit()
+                    .into(imageView);
+
+        /*    final ScrollView scrollView = (ScrollView) rootView.findViewById(R.id.scroll);
+            int barHeight;
+
+
+            scrollView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                       Log.i(TAG, String.valueOf(scrollView.getScrollY()));
+                       if (scrollView.getScrollY() <= 2){
+                           //getActivity().getActionBar().
+                       }
+                    return false;
+                }
+            });*/
 
             return rootView;
         }

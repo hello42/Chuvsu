@@ -2,9 +2,11 @@ package com.ulop.student;
 
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.ulop.chuvsu.app.R;
 import com.ulop.models.StaticInfo;
+
+import in.uncod.android.bypass.Bypass;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,8 +56,18 @@ public class PagesFragment extends Fragment {
         TextView title = (TextView) rootView.findViewById(R.id.title);
         TextView body = (TextView) rootView.findViewById(R.id.body);
 
+        Bypass bypass = new Bypass();
+        CharSequence str = bypass.markdownToSpannable(info.body);
+
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Light.ttf");
+
+
         title.setText(info.title);
-        body.setText(Html.fromHtml(info.body));
+        body.setText(str);
+        body.setMovementMethod(LinkMovementMethod.getInstance());
+
+        body.setTypeface(typeface);
+        title.setTypeface(typeface);
         return rootView;
     }
 

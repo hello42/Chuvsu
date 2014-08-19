@@ -6,9 +6,10 @@
 
     <TabHost
         android:id="@+id/tabHost"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:measureAllChildren="false">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -16,10 +17,11 @@
             android:orientation="vertical">
 
             <HorizontalScrollView
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fillViewport="true"
-                android:scrollbars="none">
+                android:scrollbars="none"
+                android:measureAllChildren="false">
 
                 <TabWidget
                     android:id="@android:id/tabs"
@@ -29,10 +31,9 @@
                     android:layoutMode="opticalBounds"
                     android:measureWithLargestChild="false"
                     android:orientation="horizontal"
-                    android:showDividers="middle"
                     android:tabStripEnabled="false"
                     android:textAlignment="textStart"
-                    android:baselineAligned="true">
+                    android:baselineAligned="false">
 
                 </TabWidget>
             </HorizontalScrollView>

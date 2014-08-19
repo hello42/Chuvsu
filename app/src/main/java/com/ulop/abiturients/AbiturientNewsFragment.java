@@ -19,8 +19,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -284,7 +282,7 @@ public class AbiturientNewsFragment extends Fragment {
         };
 
         private static final int[] TO_FIELDS = new int[]{
-                R.id.Title,
+                R.id.newTitle,
                 R.id.textView,
                 R.id.textView2,
                 R.id.facultyLogo};

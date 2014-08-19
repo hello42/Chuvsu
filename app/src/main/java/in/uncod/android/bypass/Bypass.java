@@ -15,6 +15,7 @@ import android.text.style.StyleSpan;
 import android.text.style.TextAppearanceSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
+import android.util.Log;
 
 import com.ulop.chuvsu.app.*;
 import com.ulop.chuvsu.app.R;
@@ -42,6 +43,8 @@ public class Bypass {
 
 	private CharSequence recurseElement(Element element) {
 
+
+
 		CharSequence[] spans = new CharSequence[element.size()];
 		for (int i = 0; i < element.size(); i++) {
 			spans[i] = recurseElement(element.children[i]);
@@ -54,23 +57,34 @@ public class Bypass {
 		if (element.size() == 0
 				&& element.getParent().getType() == Type.LIST_ITEM) {
 			text = text.replace('\n', ' ');
-		}
-		if (element.getParent() != null
-				&& element.getParent().getType() == Type.LIST_ITEM
-				&& element.getType() == Type.LIST) {
-			builder.append("\n");
-		}
+
+        }
+/*
+
+            for (int i = 0; i < element.children.length; i++) {
+                Log.i("BYPASS", i + element.children[i].text);
+            }
+*/
+
 		if (element.getType() == Type.LIST_ITEM) {
 
 			builder.append("\t\u2022\u00A0");
-		}
+
+        }
+
+        if (element.getType() == Type.TEXT
+                && element.getParent() != null
+                && element.getParent().getType() == Type.LINEBREAK){
+            builder.append("lol");
+        }
 		builder.append(text);
 		builder.append(concat);
 		if (element.getType() == Type.LIST && element.getParent() != null) {
 
 		} else if (element.getType() == Type.LIST_ITEM) {
 			if (element.size() > 0 && element.children[element.size()-1].isBlockElement()) {
-			}
+
+				}
 			else {
 				builder.append("\n");
 			}

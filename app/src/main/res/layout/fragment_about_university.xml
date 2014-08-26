@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ulop.chuvsu.app.AboutUniversityFragment">
+    tools:context="com.greengrass.chuvsu.app.AboutUniversityFragment"
+    android:background="#fff">
 
 
     <ScrollView
@@ -13,24 +14,28 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:gravity="fill_horizontal|fill_vertical">
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
                 android:id="@+id/title"
                 android:padding="8dp"
                 android:gravity="center"
-                android:textAlignment="gravity" />
+                android:textAlignment="gravity"
+                android:textSize="20sp"
+                android:background="#fff"/>
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+            <WebView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="New Text"
                 android:id="@+id/body"
-                android:padding="8dp" />
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="12dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

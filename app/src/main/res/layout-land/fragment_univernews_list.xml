@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ulop.newscardlist.dummy.NewsCardFragment">
+    tools:context="com.greengrass.newscardlist.dummy.NewsCardFragment">
 
     <GridView
         android:id="@+id/listView1"

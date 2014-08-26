@@ -1,9 +1,46 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:choiceMode="singleChoice"
-    android:divider="@android:color/transparent"
-    android:dividerHeight="0dp"
     android:background="#cce0f7fa"
-    tools:context="com.ulop.chuvsu.app.NavigationDrawerFragment" />
+    android:orientation="vertical"
+    tools:context="com.greengrass.chuvsu.app.NavigationDrawerFragment"
+    >
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:paddingTop="8dp"
+        tools:listitem="@layout/menu_element"/>
+
+    <TextView
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="8dp"
+        android:enabled="true"
+        android:focusable="true"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:singleLine="true"
+        android:text="@string/About"
+        android:textSize="16sp"/>
+
+
+</RelativeLayout>

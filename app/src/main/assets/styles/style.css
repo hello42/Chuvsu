@@ -1,0 +1,10 @@
+@font-face {
+font-family: Roboto;
+src: url("file:///android_asset/fonts/Roboto-Light.ttf")
+}
+
+body {
+font-family: Roboto;
+font-size: 1em;
+text-align: justify;
+}

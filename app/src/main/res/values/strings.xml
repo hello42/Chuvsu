@@ -30,4 +30,9 @@
     <string name="student_url">http://chuvsu.vtrave.com/students.json</string>
     <string name="organization_url">http://chuvsu.vtrave.com/organisations.json</string>
     <string name="pages_url">http://chuvsu.vtrave.com/pages.json</string>
+    <string name="title_activity_faculty_info">FacultyInfoActivity</string>
+    <string name="Abiturient">Абитуриент</string>
+    <string name="About">О приложении</string>
+    <string name="title_activity_about_app">О приложении</string>
+
 </resources>

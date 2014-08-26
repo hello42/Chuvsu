@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ulop.chuvsu.app.MainActivity">
+    tools:context="com.greengrass.chuvsu.app.MainActivity">
 
 
     <!-- As the main content view, the view below consumes the entire
@@ -27,6 +27,6 @@
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:name="com.ulop.chuvsu.app.NavigationDrawerFragment" />
+        android:name="com.greengrass.chuvsu.app.NavigationDrawerFragment" />
 
 </android.support.v4.widget.DrawerLayout>

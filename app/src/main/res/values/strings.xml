@@ -34,5 +34,7 @@
     <string name="Abiturient">Абитуриент</string>
     <string name="About">О приложении</string>
     <string name="title_activity_about_app">О приложении</string>
-
+    <string name="chuvsu">Чувашский государственный университет им. И. Н. Ульянова</string>
+    <string name="fonStyleStart"></string>
+    <string name="fonStyleEnd"></string>
 </resources>

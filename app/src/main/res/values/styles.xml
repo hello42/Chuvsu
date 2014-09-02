@@ -5,16 +5,15 @@
         <item name="android:actionBarStyle">@style/ChuvsuActionBar</item>
         <item name="actionBarStyle">@style/ChuvsuActionBar</item>
         <item name="android:actionBarTabStyle">@style/ChuvsuActionBar.TabStyle</item>
+        <item name="actionBarTabStyle">@style/ChuvsuActionBar.TabStyle</item>
     </style>
 
-    <style name="ChuvsuActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <style name="ChuvsuActionBar" parent="@style/Widget.AppCompat.Base.ActionBar">
         <item name="android:background">#002c69</item>
-        <!--<item name="android:actionBarSize">56dp</item>-->
         <item name="android:titleTextStyle">@style/Title</item>
-
     </style>
 
-    <style name="ChuvsuActionBar.TabStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+    <style name="ChuvsuActionBar.TabStyle">
         <item name="android:background">@drawable/chuvsu_tab_indicator</item>
         <item name="android:paddingLeft">32dp</item>
         <item name="android:paddingRight">32dp</item>
@@ -49,5 +48,9 @@
         <item name="android:actionBarSize">56dp</item>
         <item name="android:titleTextStyle">@style/Title</item>
 
+    </style>
+
+    <style name="ListStyle">
+        <item name="android:listSelector">@drawable/chuvsu_list_selector</item>
     </style>
 </resources>

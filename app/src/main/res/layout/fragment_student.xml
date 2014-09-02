@@ -8,42 +8,46 @@
         android:id="@+id/tabHost"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="center_horizontal"
-        android:measureAllChildren="false">
+        android:measureAllChildren="true"
+        android:layout_marginRight="-2dp">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:measureWithLargestChild="false">
 
             <HorizontalScrollView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fillViewport="true"
                 android:scrollbars="none"
-                android:measureAllChildren="false">
+                android:measureAllChildren="true"
+                android:clickable="false"
+                >
 
                 <TabWidget
                     android:id="@android:id/tabs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:layoutMode="opticalBounds"
-                    android:measureWithLargestChild="false"
+                    android:measureWithLargestChild="true"
                     android:orientation="horizontal"
                     android:tabStripEnabled="false"
-                    android:textAlignment="textStart"
-                    android:baselineAligned="false">
+                    android:showDividers="none"
+                    android:baselineAligned="false"
+                    android:background="#f00">
 
                 </TabWidget>
             </HorizontalScrollView>
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin">
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:background="#fff">
 
                 <LinearLayout
                     android:id="@+id/scholarship"
@@ -53,7 +57,9 @@
                     <FrameLayout
                         android:id="@+id/scholarshipFragment"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"/>
+                        android:layout_height="fill_parent">
+
+                    </FrameLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -67,38 +73,6 @@
                         android:layout_height="fill_parent"/>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/since"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <FrameLayout
-                        android:id="@+id/sinceFragment"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/sport"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <FrameLayout
-                        android:id="@+id/sportFragment"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/culture_events"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <FrameLayout
-                        android:id="@+id/cultureFragment"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"/>
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/tour"
@@ -122,8 +96,21 @@
                         android:layout_height="fill_parent"/>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/education"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <FrameLayout
+                        android:id="@+id/educationFragment"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"/>
+                </LinearLayout>
+
+
 
             </FrameLayout>
         </LinearLayout>
     </TabHost>
+
 </FrameLayout>

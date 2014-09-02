@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.greengrass.chuvsu.app.SplashScreenActivity"
+            android:name=".SplashScreenActivity"
             android:theme="@style/NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,16 +29,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.greengrass.chuvsu.app.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="sensorPortrait" />
         <activity
-            android:name="com.greengrass.chuvsu.app.NewsFullActivity"
+            android:name=".NewsFullActivity"
             android:label="@string/title_activity_news_full"
+            android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
             android:theme="@style/OverleyTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ulop.chuvsu.app.MainActivity" />
+            <meta-data
+                android:name="android.support.UI_OPTIONS"
+                android:value="splitActionBarWhenNarrow" />
         </activity>
 
         <provider
@@ -87,20 +92,10 @@
         <activity
             android:name="com.greengrass.faculty.FacultyInfoActivity"
             android:label="@string/title_activity_faculty_info"
-            android:parentActivityName="com.greengrass.chuvsu.app.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ulop.chuvsu.app.MainActivity" />
-        </activity>
-        <activity
-            android:name="com.greengrass.chuvsu.app.AboutApp"
-            android:label="@string/title_activity_about_app"
-            android:parentActivityName="com.greengrass.chuvsu.app.MainActivity"
-            android:theme="@style/NoActionBar">
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ulop.chuvsu.app.MainActivity" />
         </activity>
     </application>
-
 </manifest>

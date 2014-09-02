@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:id="@+id/imageView"
+        android:id="@+id/chuvsuLogo"
         android:src="@drawable/logo"
         android:layout_weight="5"
         android:scaleType="fitCenter"/>
@@ -24,26 +24,41 @@
         android:text="@string/chuvsu"
         android:id="@+id/textView"
         android:layout_weight="1.5"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:autoText="false"
+        android:gravity="top|center_horizontal"
+        android:autoLink="web"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:text="Сделано в:"
         android:id="@+id/textView2"
-        android:layout_weight="0.2"
+        android:layout_weight="1"
         android:layout_gravity="bottom|center_horizontal"
-        />
+        android:gravity="bottom|center_horizontal"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:id="@+id/imageView2"
+        android:id="@+id/grasslogo"
         android:layout_weight="3"
         android:src="@drawable/logo_names"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter"
+        android:onClick=""/>
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="www.vtrave.com"
+        android:id="@+id/textView4"
+        android:layout_gravity="top|center_horizontal"
+        android:autoLink="web"
+        android:layout_weight="0.5"/>
+
+    TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="www.vtrave.com"

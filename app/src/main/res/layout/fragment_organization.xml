@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.greengrass.Organiztions.OrganizationFragment">
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.greengrass.Organiztions.OrganizationFragment">
 
 
     <TabHost
@@ -19,49 +19,70 @@
             <HorizontalScrollView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:fillViewport="true">
+                android:fillViewport="true"
+                android:measureAllChildren="false"
+                android:scrollbars="none">
 
                 <TabWidget
                     android:id="@android:id/tabs"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:showDividers="none"
+                    />
             </HorizontalScrollView>
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:background="#fff">
 
                 <LinearLayout
                     android:id="@+id/sno"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
+
                     <FrameLayout
                         android:id="@+id/snoFragment"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"/>
-                    </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/profcom"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
+
                     <FrameLayout
                         android:id="@+id/profcomFragment"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"/>
-                    </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/studsovet"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
+
                     <FrameLayout
                         android:id="@+id/studsovetFragment"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"/>
-                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tourclub"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <FrameLayout
+                        android:id="@+id/tourclubFragment"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"/>
+                </LinearLayout>
             </FrameLayout>
         </LinearLayout>
     </TabHost>

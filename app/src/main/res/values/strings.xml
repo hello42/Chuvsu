@@ -37,4 +37,5 @@
     <string name="chuvsu">Чувашский государственный университет им. И. Н. Ульянова\n www.chuvsu.ru</string>
     <string name="fonStyleStart"><![CDATA[<html><head><link rel="stylesheet" href="styles/style.css"></head><body>]]></string>
     <string name="fonStyleEnd"><![CDATA[</body>]]></string>
+    <string name="announcement_url">http://chuvsu.vtrave.com/annonces.json</string>
 </resources>

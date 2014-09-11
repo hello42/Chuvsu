@@ -10,7 +10,7 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_stat_share"
         android:actionProviderClass=
-            "android.widget.ShareActionProvider"
+            "android.support.v7.widget.ShareActionProvider"
         />
     
 </menu>

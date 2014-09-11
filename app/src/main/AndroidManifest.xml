@@ -36,14 +36,10 @@
             android:name=".NewsFullActivity"
             android:label="@string/title_activity_news_full"
             android:screenOrientation="portrait"
-            android:showOnLockScreen="true"
-            android:theme="@style/OverleyTheme" >
+            android:showOnLockScreen="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ulop.chuvsu.app.MainActivity" />
-            <meta-data
-                android:name="android.support.UI_OPTIONS"
-                android:value="splitActionBarWhenNarrow" />
+                android:value="com.greengrass.chuvsu.app.MainActivity" />
         </activity>
 
         <provider
@@ -57,7 +53,7 @@
             android:value="chuvsu.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="9" />
+            android:value="10" />
 
         <activity
             android:name="com.greengrass.abiturients.AbitNewsFullActivity"
@@ -95,7 +91,7 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ulop.chuvsu.app.MainActivity" />
+                android:value="com.greengrass.chuvsu.app.MainActivity" />
         </activity>
     </application>
 </manifest>

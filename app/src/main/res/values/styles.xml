@@ -4,25 +4,36 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="android:actionBarStyle">@style/ChuvsuActionBar</item>
         <item name="actionBarStyle">@style/ChuvsuActionBar</item>
+        
         <item name="android:actionBarTabStyle">@style/ChuvsuActionBar.TabStyle</item>
         <item name="actionBarTabStyle">@style/ChuvsuActionBar.TabStyle</item>
+        
+        <item name="android:actionBarTabTextStyle">@style/Title</item>
+        <item name="actionBarTabTextStyle">@style/TabTextStyle</item>
+
     </style>
 
     <style name="ChuvsuActionBar" parent="@style/Widget.AppCompat.Base.ActionBar">
         <item name="android:background">#002c69</item>
+
+        <item name="background">@color/darkblue</item>
+
+
         <item name="android:titleTextStyle">@style/Title</item>
+        <item name="titleTextStyle">@style/Title</item>
     </style>
 
     <style name="ChuvsuActionBar.TabStyle">
         <item name="android:background">@drawable/chuvsu_tab_indicator</item>
-        <item name="android:paddingLeft">32dp</item>
-        <item name="android:paddingRight">32dp</item>
+
     </style>
 
     <style name="NoActionBar" parent="Theme.AppCompat.Light">
         <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="actionBarStyle">@style/ActionBar</item>
         <item name="android:actionBarSize">1dp</item>
+        <item name="actionBarSize">1dp</item>
+
         <!-- Customize your theme here. -->
     </style>
 
@@ -30,11 +41,20 @@
         <!--<item name="android:windowNoTitle">true</item>-->
         <item name="android:background">#00f0</item>
         <item name="android:actionBarSize">0dp</item>
+
+        <item name="actionBarSize">0dp</item>
     </style>
 
-    <style name="Title" parent="@style/TextAppearance.AppCompat.Widget.Base.ActionBar.Title">
-        <item name="android:textScaleX">3</item>
+    <style name="Title"  parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">#fff</item>
+
+    </style>
+
+    <style name="TabTextStyle"
+           parent="@style/Widget.AppCompat.ActionBar.TabText">
+        <item name="android:textColor">#fff</item>
+        <item name="android:paddingLeft">32dp</item>
+        <item name="android:paddingRight">32dp</item>
     </style>
 
     <style name="OverleyTheme" parent="Theme.AppCompat.Light.DarkActionBar">

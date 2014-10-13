@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 
 /**
  * Created by greengrass on 29.07.14.
+ * comment
  */
 @Table(name = "abitnew", id = "_id")
 public class AbiturientNews extends Model {

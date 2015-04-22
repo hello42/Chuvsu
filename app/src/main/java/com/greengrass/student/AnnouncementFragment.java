@@ -31,7 +31,8 @@ import java.util.Date;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class AnnouncementFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class AnnouncementFragment extends ListFragment
+		implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	private static final String TAG = "ANNOUNCEMENT";
 	private static final String[] FROM_COLUMNS = new String[]{
@@ -108,6 +109,11 @@ public class AnnouncementFragment extends ListFragment implements LoaderManager.
 
 	}
 
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		getListView().setBackgroundColor(getResources().getColor(R.color.white));
+	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {

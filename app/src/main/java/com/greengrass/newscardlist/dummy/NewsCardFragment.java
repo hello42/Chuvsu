@@ -17,11 +17,8 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -59,10 +56,6 @@ public class NewsCardFragment extends Fragment
     private Object mSyncObserverHandle;
 	private SwipeRefreshLayout swipe;
 
-	/**
-     * Options menu used to populate ActionBar.
-     */
-    private Menu mOptionsMenu;
     private static final int COLUMN_PUBLISHED = 4;
     private static final int COLUMN_IMAGE = 2;
 
@@ -155,7 +148,7 @@ public class NewsCardFragment extends Fragment
                  Picasso.with(getActivity()).
                          load(Uri.parse(Uri.decode(str))).
                          placeholder(R.drawable.loading).
-                         fit().
+                        // fit().
                          into((ImageView) view);
                     return true;
                 } else
@@ -178,8 +171,12 @@ public class NewsCardFragment extends Fragment
                     return false;
                 }
 
+
+
             }
         });
+
+
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView1);
 
@@ -202,7 +199,7 @@ public class NewsCardFragment extends Fragment
         });
 
         swipe = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe);
-        swipe.setColorScheme(
+        swipe.setColorSchemeResources(
                 R.color.yellow,
                 R.color.blue,
                 R.color.red,
@@ -220,10 +217,13 @@ public class NewsCardFragment extends Fragment
                         ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
 
                 ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
-
+                swipe.setRefreshing(false);
 
             }
         });
+
+
+
         return rootView;
     }
 
@@ -291,12 +291,6 @@ public class NewsCardFragment extends Fragment
                     // SyncService.CreateSyncAccount(). This will be used to query the system to
                     // see how the sync status has changed.
                     Account account = AuthenticatorService.GetAccount();
-                    if (account == null) {
-                        // GetAccount() returned an invalid value. This shouldn't happen, but
-                        // we'll set the status to "not refreshing".
-                        setRefreshActionButtonState(false);
-                        return;
-                    }
 
                     // Test the ContentResolver to see if the sync adapter is active or pending.
                     // Set the state of the refresh button accordingly.

@@ -1,9 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.greengrass.faculty.FacultyInfoActivity" >
+      xmlns:tools="http://schemas.android.com/tools"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      tools:context="com.greengrass.faculty.FacultyInfoActivity"
+
+    >
     <item android:id="@+id/faculty_url"
-        android:title="Сайт факультета"
+        android:title="@string/faculty_site"
         android:orderInCategory="100"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_faculty_url"
-        android:showAsAction="always" />
+        android:actionProviderClass=
+            "android.support.v7.widget.ShareActionProvider">
+
+            </item>
 </menu>

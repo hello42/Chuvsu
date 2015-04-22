@@ -11,6 +11,7 @@ public class DatePeriod {
     public String periodName;
     public Date startDate;
     public Date endDate;
+	public int iconID;
 
     public DatePeriod(String periodName, Date startDate, Date endDate) {
         this.startDate = startDate;
@@ -20,6 +21,7 @@ public class DatePeriod {
 
     public DatePeriod(String periodName){
         this.periodName = periodName;
+	    iconID = android.R.drawable.ic_menu_help;
         try {
             startDate = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1970");
         } catch (ParseException e) {
@@ -31,6 +33,21 @@ public class DatePeriod {
             e.printStackTrace();
         }
     }
+
+	public DatePeriod(String periodName, int iconID){
+		this.periodName = periodName;
+		this.iconID = iconID;
+		try {
+			startDate = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1970");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {
+			endDate = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/1970");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
 
     public DatePeriod(String periodName, String startDate, String endDate){
         this.periodName = periodName;

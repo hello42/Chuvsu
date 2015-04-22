@@ -12,12 +12,12 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -69,7 +70,7 @@ public class NavigationDrawerFragment extends Fragment {
 	private View mFragmentContainerView;
 
 	private int mCurrentSelectedPosition = 2;
-	private int mLastSelectedPosition = 0;
+	private int mLastSelectedPosition = -1;
 	private boolean mFromSavedInstanceState;
 	private boolean mUserLearnedDrawer;
 
@@ -111,30 +112,16 @@ public class NavigationDrawerFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				selectItem(position);
-
 			}
 		});
-
-        /*mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.facultetsmenu),
-                        getString(R.string.abiturients),
-                        "Справочник",
-                        "Студент",
-                        "Организации"
-                }));*/
 
 		mDrawerListView.setAdapter(new MenuByTime(getActivity()));
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
+
 		Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Medium.ttf");
 		final TextView about = (TextView) rootView.findViewById(R.id.button);
-		about.setTypeface(typeface);
+		//about.setTypeface(typeface);
 		about.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -147,6 +134,12 @@ public class NavigationDrawerFragment extends Fragment {
 			}
 		});
 
+		mDrawerListView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+			@Override
+			public void onSystemUiVisibilityChange(int visibility) {
+				Log.i(TAG, "visibility is " + visibility);
+			}
+		});
 		return rootView;
 	}
 
@@ -177,7 +170,7 @@ public class NavigationDrawerFragment extends Fragment {
 		mDrawerToggle = new ActionBarDrawerToggle(
 				getActivity(),                    /* host Activity */
 				mDrawerLayout,                    /* DrawerLayout object */
-				R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
+				//R.drawable.hz,             /* nav drawer image to replace 'Up' caret */
 				R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
 				R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
 		) {
@@ -187,6 +180,8 @@ public class NavigationDrawerFragment extends Fragment {
 				if (!isAdded()) {
 					return;
 				}
+
+
 
 				getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
 			}
@@ -205,7 +200,9 @@ public class NavigationDrawerFragment extends Fragment {
 					SharedPreferences sp = PreferenceManager
 							.getDefaultSharedPreferences(getActivity());
 					sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+
 				}
+
 
 				getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
 			}
@@ -221,6 +218,15 @@ public class NavigationDrawerFragment extends Fragment {
 		mDrawerLayout.post(new Runnable() {
 			@Override
 			public void run() {
+				if (mDrawerListView != null){
+					View selectedView =	mDrawerListView.getChildAt(mCurrentSelectedPosition);
+					selectedView.setBackgroundColor(Color.parseColor("#FFEEEEEE"));
+					((TextView) selectedView.findViewById(R.id.item)).setTextColor(Color.parseColor("#1d4474"));
+					((ImageView) selectedView.findViewById(R.id.menu_item_icon))
+							.setColorFilter(Color.parseColor("#1d4474"));
+					((TextView) selectedView.findViewById(R.id.item)).setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+				}
+
 				mDrawerToggle.syncState();
 			}
 		});
@@ -231,24 +237,44 @@ public class NavigationDrawerFragment extends Fragment {
 	private void selectItem(int position) {
 		mCurrentSelectedPosition = position;
 
+
 		if (mDrawerListView != null) {
 			mDrawerListView.setItemChecked(position, true);
+
 			if (Build.VERSION.SDK_INT > 11) {
 
 				//for (int i = 0; i <mDrawerListView.getChildCount(); i++) {
-				mDrawerListView.getChildAt(mLastSelectedPosition).setBackgroundColor(Color.parseColor("#00000000"));
+				View lastSelectedView = mDrawerListView.getChildAt(mLastSelectedPosition);
+				if (lastSelectedView != null) {
+					Log.i(TAG, "Child count: " + mDrawerListView.getChildCount());
+					Log.i(TAG, "Last selected: " + mLastSelectedPosition);
+					lastSelectedView.setBackgroundColor(Color.parseColor("#ffffff"));
+					((TextView) lastSelectedView.findViewById(R.id.item)).setTextColor(Color.parseColor("#000000"));
+					((TextView) lastSelectedView.findViewById(R.id.item)).setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+					((ImageView) lastSelectedView.findViewById(R.id.menu_item_icon))
+							.clearColorFilter();
+				}
 				//
-				mDrawerListView.getChildAt(position).setBackgroundColor(Color.parseColor("#cfe0f7fa"));
+				View selectedView =	mDrawerListView.getChildAt(mCurrentSelectedPosition);
+				if (selectedView != null) {
+					selectedView.setBackgroundColor(Color.parseColor("#FFEEEEEE"));
+					((TextView) selectedView.findViewById(R.id.item)).setTextColor(Color.parseColor("#1d4474"));
+					((ImageView) selectedView.findViewById(R.id.menu_item_icon))
+							.setColorFilter(Color.parseColor("#1d4474"));
+					((TextView) selectedView.findViewById(R.id.item)).setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+				}
 			}
 		}
+
 		if (mDrawerLayout != null) {
 
 			mDrawerLayout.closeDrawer(mFragmentContainerView);
 		}
+
 		if (mCallbacks != null) {
-			mCallbacks.onNavigationDrawerItemSelected(position);
+			mCallbacks.onNavigationDrawerItemSelected(mCurrentSelectedPosition);
 		}
-		mLastSelectedPosition = position;
+		mLastSelectedPosition = mCurrentSelectedPosition;
 	}
 
 	@Override
@@ -297,11 +323,8 @@ public class NavigationDrawerFragment extends Fragment {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
+		return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 
-		return super.onOptionsItemSelected(item);
 	}
 
 	/**
@@ -311,14 +334,11 @@ public class NavigationDrawerFragment extends Fragment {
 	private void showGlobalContextActionBar() {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		//actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setTitle(R.string.app_name);
 	}
 
-	private void showActionBarTabs() {
-		ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-	}
+
 
 	private ActionBar getActionBar() {
 		return ((ActionBarActivity) getActivity()).getSupportActionBar();

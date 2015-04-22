@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,6 +44,9 @@ public class NewsFullActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_news_full);
+
+	    Toolbar toolbar = (Toolbar) findViewById(R.id.support_actionbar);
+	    setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
 
@@ -206,7 +210,7 @@ public class NewsFullActivity extends ActionBarActivity {
 
 
 	        titleTextView.setText(cursor.getString(COLUMN_TITLE));
-	        titleTextView.setTypeface(mediumTypeface);
+	        //titleTextView.setTypeface(mediumTypeface);
 
             contentTextView.setText(cursor.getString(COLUMN_CONTENT));
             contentTextView.setTypeface(typeface);

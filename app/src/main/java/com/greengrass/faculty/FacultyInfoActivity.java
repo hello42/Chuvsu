@@ -1,21 +1,22 @@
 package com.greengrass.faculty;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.squareup.picasso.Picasso;
 import com.greengrass.chuvsu.app.R;
 import com.greengrass.models.Faculty;
+import com.squareup.picasso.Picasso;
 
-public class FacultyInfoActivity extends Activity {
+public class FacultyInfoActivity extends ActionBarActivity {
 
 	String faculty_id;
 	Faculty fct;
@@ -24,6 +25,10 @@ public class FacultyInfoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty_info);
+
+	    Toolbar toolbar = (Toolbar) findViewById(R.id.support_actionbar);
+	    setSupportActionBar(toolbar);
+
 	    Intent intent = getIntent();
 	    faculty_id = intent.getStringExtra("faculty_id");
 	    fct = new Select()

@@ -101,7 +101,7 @@ public class StudentFragment extends Fragment {
 
 		mSlidingTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs);
 		mSlidingTabLayout.setViewPager(mViewPager);
-		mSlidingTabLayout.setBackgroundColor(Color.parseColor("#002c69"));
+		mSlidingTabLayout.setBackgroundColor(getResources().getColor(R.color.flat_dark_blue));
 		mSlidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
 			@Override
 			public int getIndicatorColor(int position) {

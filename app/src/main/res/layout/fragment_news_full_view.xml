@@ -70,7 +70,8 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="8dp"
                         android:text="Large Text"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:typeface="serif"/>
 
                     <TextView
                         android:id="@+id/publicDate"

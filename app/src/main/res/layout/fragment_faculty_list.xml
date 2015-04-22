@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context="com.greengrass.faculty.FacultyFragment">
 
     <ListView
@@ -12,8 +13,7 @@
         android:dividerHeight="0dp"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
-        android:divider="#ffd1d1d1"
-        android:paddingTop="8dp" />
+        android:divider="#ffd1d1d1"/>
 
 
 </FrameLayout>

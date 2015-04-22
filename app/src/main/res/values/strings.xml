@@ -38,4 +38,7 @@
     <string name="fonStyleStart"><![CDATA[<html><head><link rel="stylesheet" href="styles/style.css"></head><body>]]></string>
     <string name="fonStyleEnd"><![CDATA[</body>]]></string>
     <string name="announcement_url">http://chuvsu.vtrave.com/annonces.json</string>
+    <string name="all_info_url">http://chuvsu.vtrave.com/api/all.json</string>
+    <string name="university_name">ЧГУ им И.Н. Ульянова</string>
+    <string name="faculty_site">Сайт факультета</string>
 </resources>

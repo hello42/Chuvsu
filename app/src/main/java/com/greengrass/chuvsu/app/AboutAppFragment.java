@@ -51,12 +51,12 @@ public class AboutAppFragment extends Fragment {
 		    }
 	    });
 
-	    rootView.findViewById(R.id.grasslogo).setOnClickListener(new View.OnClickListener() {
+	   /* rootView.findViewById(R.id.grasslogo).setOnClickListener(new View.OnClickListener() {
 		    @Override
 		    public void onClick(View view) {
 			    openLink(Uri.parse("http://vtrave.com/"));
 		    }
-	    });
+	    });*/
 	    return rootView;
     }
 

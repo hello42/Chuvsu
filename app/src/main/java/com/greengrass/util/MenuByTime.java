@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -22,22 +23,22 @@ import java.util.Date;
  */
 public class MenuByTime extends BaseAdapter{
 
-    ArrayList<DatePeriod> pList = new ArrayList<DatePeriod>();
+    ArrayList<DatePeriod> pList = new ArrayList<>();
 
     Context ctx;
     LayoutInflater lInflater;
 
     {
-	    addPeriod(new DatePeriod("Анонсы"));
-	    addPeriod(new DatePeriod("Университет"));
+	    addPeriod(new DatePeriod("Анонсы", R.drawable.anons));
+	    addPeriod(new DatePeriod("Университет", R.drawable.university));
 	    addPeriod(new DatePeriod("Абитуриент", "01/03", "25/08"));
 	    addPeriod(new DatePeriod("Первокурсник", "25/08", "01/11"));
-	    addPeriod(new DatePeriod("Новости"));
-        addPeriod(new DatePeriod("Факультеты"));
-        addPeriod(new DatePeriod("Студент"));
-        addPeriod(new DatePeriod("Библиотека"));
-	    addPeriod(new DatePeriod("Организации"));
-        addPeriod(new DatePeriod("Справочник"));
+	    addPeriod(new DatePeriod("Новости", R.drawable.news));
+        addPeriod(new DatePeriod("Факультеты", R.drawable.facultets));
+        addPeriod(new DatePeriod("Студент", R.drawable.student));
+        addPeriod(new DatePeriod("Библиотека", R.drawable.library));
+	    addPeriod(new DatePeriod("Организации", R.drawable.organisations));
+        addPeriod(new DatePeriod("Справочник", R.drawable.spravochnik));
     }
 
     public MenuByTime(Context context) {
@@ -97,8 +98,12 @@ public class MenuByTime extends BaseAdapter{
             view = lInflater.inflate(R.layout.menu_element, parent, false);
         }
 	    TextView item = (TextView) view.findViewById(R.id.item);
-	    Typeface typeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/Roboto-Medium.ttf");
-		item.setTypeface(typeface);
+	    Typeface typeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/Roboto-Regular.ttf");
+		//item.setTypeface(typeface);
+
+	    ImageView imageView = (ImageView) view.findViewById(R.id.menu_item_icon);
+	    imageView.setImageResource(((DatePeriod) getItem(i)).iconID);
+
 	    item.setText(((DatePeriod) getItem(i)).periodName);
         return view;
     }

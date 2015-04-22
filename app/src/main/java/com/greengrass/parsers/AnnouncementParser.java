@@ -42,4 +42,30 @@ public class AnnouncementParser extends BaseParser {
 
 		return eList;
 	}
+
+	public List<Announcement> getAsModelList(JSONArray jArray){
+		List<Announcement> fList = new ArrayList<Announcement>();
+		try {
+			generateModelList(fList, jArray);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return fList;
+	}
+
+	private void generateModelList(List<Announcement> fList, JSONArray jArray) throws JSONException {
+		for (int i = 0; i < jArray.length(); i++) {
+			JSONObject object = jArray.getJSONObject(i);
+
+			Announcement announcement = new Announcement();
+			announcement.announcement_id = object.getInt("id");
+			announcement.title = object.getString("title");
+			announcement.body = object.getString("body");
+			announcement.date = object.getString("date");
+			announcement.notification = object.getBoolean("notification");
+			//Log.i(TAG, faculty.faculty_name);
+			fList.add(announcement);
+		}
+	}
 }

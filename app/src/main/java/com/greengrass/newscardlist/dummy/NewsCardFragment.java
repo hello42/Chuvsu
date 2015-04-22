@@ -9,6 +9,7 @@ import android.content.SyncStatusObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -98,11 +99,7 @@ public class NewsCardFragment extends Fragment
         // Required empty public constructor
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
 
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,6 +120,13 @@ public class NewsCardFragment extends Fragment
 
         final View rootView = inflater.inflate(R.layout.fragment_univernews_list, container, false);
 
+
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View rootView, Bundle savedInstanceState) {
         Log.i(TAG, "NewsCardFragment view create");
         mAdapter = new SimpleCursorAdapter(
                 getActivity(),       // Current context
@@ -133,44 +137,41 @@ public class NewsCardFragment extends Fragment
                 0                    // No flags
         );
 
-	    final SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-	    final SimpleDateFormat output = new SimpleDateFormat("EEEE, dd.MM.yyy");
+        final SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        final SimpleDateFormat output = new SimpleDateFormat("EEEE, dd.MM.yyy");
 
 
-	    mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+        mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int i) {
-             if (i == COLUMN_IMAGE) {
+                if (i == COLUMN_IMAGE) {
                     String str = cursor.getString(i);
 
-	             //final ProgressBar spinner = (ProgressBar) rootView.findViewById(R.id.loading);
+                    //final ProgressBar spinner = (ProgressBar) rootView.findViewById(R.id.loading);
 
-                 Picasso.with(getActivity()).
-                         load(Uri.parse(Uri.decode(str))).
-                         placeholder(R.drawable.loading).
-                        // fit().
-                         into((ImageView) view);
+                    Picasso.with(getActivity()).
+                            load(Uri.parse(Uri.decode(str))).
+                            placeholder(R.drawable.loading).
+                            // fit().
+                                    into((ImageView) view);
                     return true;
-                } else
-             if (i == COLUMN_PUBLISHED){
-                 TextView tW = (TextView) view.findViewById(R.id.textView2);
-	             String str = cursor.getString(COLUMN_PUBLISHED);
-	             Date date = null;
-	             try {
-		             date = input.parse(str);
-	             } catch (ParseException e) {
-		             e.printStackTrace();
-	             }
-	             str = output.format(date);
+                } else if (i == COLUMN_PUBLISHED) {
+                    TextView tW = (TextView) view.findViewById(R.id.textView2);
+                    String str = cursor.getString(COLUMN_PUBLISHED);
+                    Date date = null;
+                    try {
+                        date = input.parse(str);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    str = output.format(date);
 
-	             tW.setText(str);
-                 return  true;
-             }
-             else {
+                    tW.setText(str);
+                    return true;
+                } else {
                     // Let SimpleCursorAdapter handle other fields automatically
                     return false;
                 }
-
 
 
             }
@@ -210,6 +211,8 @@ public class NewsCardFragment extends Fragment
             @Override
             public void onRefresh() {
                 Log.i(TAG, "I'm swiped down!");
+                //swipe.setRefreshing(true);
+
                 Bundle settingsBundle = new Bundle();
                 settingsBundle.putBoolean(
                         ContentResolver.SYNC_EXTRAS_MANUAL, true);
@@ -217,14 +220,17 @@ public class NewsCardFragment extends Fragment
                         ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
 
                 ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
-                swipe.setRefreshing(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipe.setRefreshing(false);
+                    }
+                }, 1500);
 
             }
         });
 
 
-
-        return rootView;
     }
 
     @Override
@@ -272,7 +278,7 @@ public class NewsCardFragment extends Fragment
 
     void setRefreshActionButtonState(boolean refreshing) {
 
-            swipe.setRefreshing(refreshing);
+           // swipe.setRefreshing(refreshing);
 
     }
 

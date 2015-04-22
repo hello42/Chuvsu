@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.greengrass.abiturients.AbiturientNewsFragment;
@@ -22,24 +23,32 @@ import com.greengrass.student.PagesFragment;
 import com.greengrass.student.StudentFragment;
 import com.greengrass.syncadapter.SyncService;
 import com.greengrass.util.MenuByTime;
+import com.mikepenz.iconics.typeface.FontAwesome;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "main";
 	private int lastItem = -1;
+	private Drawer.Result drawer = null;
+	private String lastOpened = "";
+	static FragmentManager fragmentManager = null;
+
 
 	/**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    //private NavigationDrawerFragment mNavigationDrawerFragment;
+	private ArrayList<IDrawerItem> menuItems = null;
 
 
 	@Override
@@ -63,27 +72,42 @@ public class MainActivity extends ActionBarActivity
 		Toolbar toolbar = (Toolbar) findViewById(R.id.support_actionbar);
 		setSupportActionBar(toolbar);
 
+		fragmentManager = getSupportFragmentManager();
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+		menuItems = MenuByTime.getDrawerItems();
 
+		drawer = new Drawer()
+				.withActivity(this)
+				.withToolbar(toolbar)
+				.withActionBarDrawerToggle(true)
+				.withDelayOnDrawerClose(100)
+				.withStickyHeader(R.layout.drawer_header)
+				.withHeaderDivider(true)
+				.withDrawerItems(menuItems)
+				//.
+				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> adapterView, View view, int position, long l, IDrawerItem iDrawerItem) {
+						onNavigationDrawerItemSelected(position);
+					}
+				})
+				.build();
+
+				drawer.setSelection(3);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-	    mNavigationDrawerFragment.setUp(
-			    R.id.navigation_drawer,
-			    (DrawerLayout) findViewById(R.id.drawer_layout));
 
     }
 
 
-    @Override
     public void onNavigationDrawerItemSelected(int position) {
         //update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
         String s = new MenuByTime(getApplicationContext()).getItemTitle(position).toLowerCase();
+		if (s.equals(lastOpened)) return;
+		Log.i(TAG, s);
 	    lastItem = position;
 	    switch (s) {
 		    case "новости":
@@ -149,10 +173,11 @@ public class MainActivity extends ActionBarActivity
 		    default:
 			    break;
 	    }
+		lastOpened = s;
 
     }
 
-	@Override
+
 	public void onAboutAppSelect() {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction()
@@ -166,8 +191,9 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-	    return !mNavigationDrawerFragment.isDrawerOpen() || super.onCreateOptionsMenu(menu);
-    }
+	   // return !mNavigationDrawerFragment.isDrawerOpen() || super.onCreateOptionsMenu(menu);
+		return false;
+	}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -207,6 +233,14 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+	@Override
+	public void onBackPressed() {
+		if (drawer != null) {
+			if (drawer.isDrawerOpen()) super.onBackPressed();
+			else drawer.openDrawer();
 
-
+		} else {
+			super.onBackPressed();
+		}
+	}
 }

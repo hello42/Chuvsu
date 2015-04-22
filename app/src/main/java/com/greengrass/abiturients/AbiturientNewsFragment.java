@@ -20,6 +20,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -371,7 +372,7 @@ public class AbiturientNewsFragment extends Fragment {
             View rootView = inflater.inflate(R.layout.fragment_faculty_list, container, false);
 
             mAdapter = new SimpleCursorAdapter(
-                    (ActionBarActivity) getActivity(),       // Current context
+                    (AppCompatActivity) getActivity(),       // Current context
                     R.layout.card_news,  // Layout for individual rows
                     null,                // Cursor
                     FROM_COLUMNS,        // Cursor columns to use

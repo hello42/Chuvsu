@@ -9,18 +9,18 @@
         <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/activeandroid-d6c52795b24d57668cda181c86ca5f57259d0894.jar" />
     </item>
     <item
-        jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
+        jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.0/libs/internal_impl-22.1.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
-        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-6ac8725b097afdbb6d5f1e53b1c73d342d1626bd.jar" />
+        sha1="025cb89f2896c63200ff4c2e6c467a95691d880a">
+        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.0-5090724ad16355629f723d79c8a97f7286cd7c0d.jar" />
     </item>
     <item
-        jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
+        jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
-        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/classes-20ff77166656469abacec4eabdc76ec131e8157f.jar" />
+        sha1="eeebabdfd8203f6ab639ccea4ffa1f20e1adee3a">
+        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/classes-960a6153578af4234e815b1dc01617d782bab767.jar" />
     </item>
     <item
         jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/libs/activeandroid.jar"
@@ -30,25 +30,11 @@
         <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/activeandroid-d6c52795b24d57668cda181c86ca5f57259d0894.jar" />
     </item>
     <item
-        jar="/home/ulop/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
-        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-1023b1200861bed0c81919b946941ce2371a7653.jar" />
-    </item>
-    <item
         jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/libs/activeandroid.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="bfd658f61ca0374df28fb81b57fd53cb1b49798c">
         <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/activeandroid-d6c52795b24d57668cda181c86ca5f57259d0894.jar" />
-    </item>
-    <item
-        jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
-        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/classes-e7c7db2e411cb03c25400e9156aa2b351adcb541.jar" />
     </item>
     <item
         jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/classes.jar"
@@ -65,25 +51,39 @@
         <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/classes-290cbfc7e914d371f91daf82ee9d4bd2193427ca.jar" />
     </item>
     <item
-        jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/libs/picasso-2.3.2.jar"
-        jumboMode="false"
-        revision="21.0.2"
-        sha1="d6b7f0093cec6c9faf65dbfd6a6a345d0ed25e27">
-        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/picasso-2.3.2-3d0378f0acde161c05192f8413896afd03722f09.jar" />
-    </item>
-    <item
-        jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/libs/picasso-2.3.2.jar"
+        jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="d6b7f0093cec6c9faf65dbfd6a6a345d0ed25e27">
-        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/picasso-2.3.2-3d0378f0acde161c05192f8413896afd03722f09.jar" />
+        sha1="983e2f375504bc04def18e709c35192afe92e65f">
+        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/classes-81e205e73422af31aeae9920b29235caa9a115a7.jar" />
     </item>
     <item
-        jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/libs/picasso-2.3.2.jar"
+        jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/exploded-aar/com.mikepenz.materialdrawer/library/2.8.0/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="d6b7f0093cec6c9faf65dbfd6a6a345d0ed25e27">
-        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/picasso-2.3.2-3d0378f0acde161c05192f8413896afd03722f09.jar" />
+        revision="21.1.2"
+        sha1="7bced718127d2ea6a9395da5c7d8bbb91ffebe63">
+        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/classes-13bfb5f3a159280c8ea9e5a8f9acb2f34bb38882.jar" />
+    </item>
+    <item
+        jar="/home/ulop/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.0/support-annotations-22.1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="281bc6c58ecb3644c23fbc5ee0452019f67b4d5d">
+        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.0-167e0fa30467203f93fbf7b63f06a8fb2baa02ba.jar" />
+    </item>
+    <item
+        jar="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/exploded-aar/com.mikepenz.iconics/library/0.9.1/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4054f18e4e7d1c148fa71ded4b17348428273e21">
+        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/classes-3a27e56ca98bca17c6eadc91abf70c9e0abd6aae.jar" />
+    </item>
+    <item
+        jar="/home/ulop/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="/home/ulop/AndroidStudioProjects/Chuvsu/app/build/intermediates/pre-dexed/debug/picasso-2.5.2-7b8a724b5f5f428b462c12952406e05f4cd69643.jar" />
     </item>
 
 </items>

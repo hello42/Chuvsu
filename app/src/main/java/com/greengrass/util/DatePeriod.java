@@ -49,9 +49,28 @@ public class DatePeriod {
 		}
 	}
 
+
+
     public DatePeriod(String periodName, String startDate, String endDate){
         this.periodName = periodName;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
+        try {
+            this.startDate = sdf.parse(startDate);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            this.endDate = sdf.parse(endDate);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public DatePeriod(String periodName, String startDate, String endDate, int iconID){
+        this.periodName = periodName;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
+        this.iconID = iconID;
+
         try {
             this.startDate = sdf.parse(startDate);
         } catch (java.text.ParseException e) {

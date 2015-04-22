@@ -1,6 +1,7 @@
 package com.greengrass.util;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,10 @@ import android.widget.TextView;
 
 
 import com.greengrass.chuvsu.app.R;
+import com.mikepenz.iconics.typeface.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,16 +28,16 @@ import java.util.Date;
  */
 public class MenuByTime extends BaseAdapter{
 
-    ArrayList<DatePeriod> pList = new ArrayList<>();
+    static ArrayList<DatePeriod> pList = new ArrayList<>();
 
     Context ctx;
     LayoutInflater lInflater;
 
-    {
+    static {
 	    addPeriod(new DatePeriod("Анонсы", R.drawable.anons));
 	    addPeriod(new DatePeriod("Университет", R.drawable.university));
-	    addPeriod(new DatePeriod("Абитуриент", "01/03", "25/08"));
-	    addPeriod(new DatePeriod("Первокурсник", "25/08", "01/11"));
+	    addPeriod(new DatePeriod("Абитуриент", "01/03", "25/08", R.drawable.cow_trans));
+	    addPeriod(new DatePeriod("Первокурсник", "25/08", "01/11", R.drawable.abit));
 	    addPeriod(new DatePeriod("Новости", R.drawable.news));
         addPeriod(new DatePeriod("Факультеты", R.drawable.facultets));
         addPeriod(new DatePeriod("Студент", R.drawable.student));
@@ -47,13 +52,13 @@ public class MenuByTime extends BaseAdapter{
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void addPeriod(DatePeriod period){
+    public static void addPeriod(DatePeriod period){
         if (needShow(period)) {
             pList.add(period);
         }
     }
 
-    public boolean needShow(DatePeriod period){
+    public static boolean needShow(DatePeriod period){
 
         Date today = new Date();
         today.setYear(70);
@@ -106,5 +111,20 @@ public class MenuByTime extends BaseAdapter{
 
 	    item.setText(((DatePeriod) getItem(i)).periodName);
         return view;
+    }
+
+    public static ArrayList<IDrawerItem> getDrawerItems(){
+        ArrayList<IDrawerItem> dList = new ArrayList<>();
+        for(DatePeriod period:pList){
+            dList.add(new PrimaryDrawerItem()
+                            .withName(period.periodName)
+                            .withIcon(period.iconID)
+                            .withDisabledIconColor(Color.parseColor("#ffcd0ae0"))
+                            .withSelectedIconColor(Color.parseColor("#ff1d4474"))
+                            .withTintSelectedIcon(true)
+                            //.add something
+            );
+        }
+        return dList;
     }
 }
